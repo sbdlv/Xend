@@ -60,6 +60,7 @@ public class HomeFragment extends Fragment {
 
         // Create a connection and login to the example.org XMPP service.
 
+        /*
         Thread thread = new Thread(new Runnable() {
             AbstractXMPPConnection connection;
 
@@ -107,6 +108,6 @@ public class HomeFragment extends Fragment {
             }
         });
 
-        getActivity().runOnUiThread(thread);
+        getActivity().runOnUiThread(thread);*/
     }
 }
