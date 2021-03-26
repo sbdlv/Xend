@@ -9,6 +9,6 @@
         android:id="@+id/nav_chats"
         android:name="me.sergiobarriodelavega.xend.ui.chats.ChatsFragment"
         android:label="@string/menu_chats"
-        tools:layout="@layout/fragment_home" />
+        tools:layout="@layout/fragment_chats" />
 
 </navigation>

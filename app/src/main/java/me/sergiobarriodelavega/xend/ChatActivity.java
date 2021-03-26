@@ -2,6 +2,7 @@ package me.sergiobarriodelavega.xend;
 
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
@@ -11,6 +12,8 @@ import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.jivesoftware.smack.AbstractXMPPConnection;
 import org.jivesoftware.smack.ConnectionConfiguration;
@@ -40,6 +43,7 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
     private IncomingChatMessageListener incomingChatMessageListener;
     private EditText txtChat;
     private Chat chat;
+    private FloatingActionButton btnSendMessage;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -57,6 +61,7 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
 
         //Find views
         txtChat = findViewById(R.id.txtChat);
+        btnSendMessage = findViewById(R.id.btnSendMessage);
         RecyclerView rvMessages = findViewById(R.id.rvMessages);
 
         //Chat message
@@ -133,12 +138,12 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
     @Override
     public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
         if(i == EditorInfo.IME_ACTION_DONE){
-            sendMessage();
+            sendMessage(null);
         }
         return false;
     }
 
-    private void sendMessage(){
+    private void sendMessage(View view){
         try {
             Toast.makeText(this,"Se ha querido enviar el msg: " + txtChat.getText(), Toast.LENGTH_LONG).show();
             chat.send(txtChat.getText());

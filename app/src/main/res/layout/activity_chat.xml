@@ -26,19 +26,20 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ems="10"
+        android:hint="Xend something..."
         android:imeOptions="actionDone"
         android:importantForAutofill="no"
         android:inputType="textPersonName"
         app:layout_constraintBottom_toBottomOf="@+id/rvMessages"
         app:layout_constraintEnd_toStartOf="@+id/btnSendMessage"
         app:layout_constraintStart_toStartOf="parent"
-        tools:text="Xend something..." />
+        app:layout_constraintTop_toTopOf="@+id/btnSendMessage" />
 
-    <Button
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
         android:id="@+id/btnSendMessage"
         style="@style/ButtonSendMessage"
-        android:layout_height="wrap_content"
-        android:background="@drawable/ic_send"
+        android:clickable="true"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintEnd_toEndOf="parent" />
+        app:layout_constraintEnd_toEndOf="parent"
+        app:srcCompat="@drawable/ic_send" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -46,13 +46,43 @@
     
     <style name="ChatTextField">
         <item name="android:background">@drawable/chat_text_field</item>
-        <item name="android:layout_margin">4dp</item>
+        <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:layout_marginRight">8dp</item>
+        <item name="android:layout_marginLeft">8dp</item>
     </style>
 
     <style name="ButtonSendMessage">
-        <item name="android:background">@color/colorPrimary</item>
-        <item name="android:layout_width">64dp</item>
+        <item name="android:layout_width">48dp</item>
+        <item name="android:layout_height">48dp</item>
+        <item name="fabCustomSize">48dp</item>
+        <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:layout_marginRight">8dp</item>
+    </style>
+
+
+    <!-- User ViewHolder -->
+    <style name="UserViewHolderLinearLayout">
+        <item name="android:gravity">center</item>
+        <item name="android:padding">8dp</item>
+    </style>
+
+    <style name="UserPictureViewHolder">
         <item name="android:layout_height">64dp</item>
+        <item name="android:layout_width">64dp</item>
+    </style>
+
+    <style name="UserInfoLinearLayoutViewHolder">
+        <item name="android:layout_marginStart">16dp</item>
+    </style>
+
+    <style name="UserPictureCardViewHolder">
+        <item name="cardCornerRadius">32dp</item>
+        <item name="cardElevation">0dp</item>
+    </style>
+
+    <style name="UserNameViewHolder">
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginBottom">2dp</item>
 
     </style>
 
