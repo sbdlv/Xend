@@ -15,6 +15,11 @@
         android:title="@string/menu_contacts" />
 
         <item
+            android:id="@+id/nav_servers"
+            android:icon="@drawable/ic_at_sign"
+            android:title="@string/menu_servers" />
+
+        <item
             android:id="@+id/nav_settings"
             android:icon="@drawable/ic_settings"
             android:title="@string/menu_settings" />

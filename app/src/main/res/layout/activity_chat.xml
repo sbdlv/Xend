@@ -16,5 +16,21 @@
         app:layout_constraintTop_toTopOf="parent"
         tools:itemCount="4"
         tools:listitem="@layout/viewholder_message"
-        style="@style/ChatMessagesRecycler"/>
+        style="@style/ChatMessagesRecycler">
+
+    </androidx.recyclerview.widget.RecyclerView>
+
+    <EditText
+        android:id="@+id/txtChat"
+        style="@style/ChatTextField"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        android:ems="10"
+        android:inputType="textPersonName"
+        app:layout_constraintBottom_toBottomOf="@+id/rvMessages"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintHorizontal_bias="0.0"
+        app:layout_constraintStart_toStartOf="parent"
+        tools:text="Xend something..."
+        android:imeOptions="actionDone"/>
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -1,6 +1,10 @@
 package me.sergiobarriodelavega.xend;
 
 import android.os.Bundle;
+import android.view.KeyEvent;
+import android.view.inputmethod.EditorInfo;
+import android.widget.EditText;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.Nullable;
@@ -19,6 +23,7 @@ import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 import org.jxmpp.jid.EntityBareJid;
+import org.jxmpp.jid.impl.JidCreate;
 import org.jxmpp.stringprep.XmppStringprepException;
 
 import java.io.IOException;
@@ -28,11 +33,13 @@ import java.util.ArrayList;
 
 import me.sergiobarriodelavega.xend.recyclers.MessageAdapter;
 
-public class ChatActivity extends AppCompatActivity implements IncomingChatMessageListener {
+public class ChatActivity extends AppCompatActivity implements IncomingChatMessageListener, TextView.OnEditorActionListener {
 
     private ArrayList<Message> messages;
     private MessageAdapter messageAdapter;
     private IncomingChatMessageListener incomingChatMessageListener;
+    private EditText txtChat;
+    private Chat chat;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,8 +55,14 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
         msgTest.setBody("Este es un mensaje local de prueba");
         messages.add(msgTest);
 
+        //Find views
+        txtChat = findViewById(R.id.txtChat);
         RecyclerView rvMessages = findViewById(R.id.rvMessages);
 
+        //Chat message
+        txtChat.setOnEditorActionListener(this);
+
+        //Recycler
         messageAdapter = new MessageAdapter(messages);
 
         rvMessages.setAdapter(messageAdapter);
@@ -81,6 +94,10 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
                     ChatManager chatManager = ChatManager.getInstanceFor(connection);
                     chatManager.addIncomingListener(incomingChatMessageListener);
 
+                    //TODO jid remote user should be loaded from bundle ex: user1@xend
+                    EntityBareJid jid = JidCreate.entityBareFrom("pepe@xend");
+                    chat = chatManager.chatWith(jid);
+
                 } catch (SmackException.EndpointConnectionException | UnknownHostException | XmppStringprepException e) {
                     Toast.makeText(getApplicationContext(), "No se pudo realizar la conexion", Toast.LENGTH_LONG).show();
                     e.printStackTrace();
@@ -105,11 +122,30 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
             @Override
             public void run() {
                 //Toast.makeText(getApplicationContext(), message.getBody(), Toast.LENGTH_LONG).show();
-                System.out.println("Msg recivido: " + message.getBody());
+                System.out.println("Msg recibido: " + message.getBody());
                 messages.add(message);
                 messageAdapter.notifyDataSetChanged();
             }
         });
 
+    }
+
+    @Override
+    public boolean onEditorAction(TextView textView, int i, KeyEvent keyEvent) {
+        if(i == EditorInfo.IME_ACTION_DONE){
+            sendMessage();
+        }
+        return false;
+    }
+
+    private void sendMessage(){
+        try {
+            Toast.makeText(this,"Se ha querido enviar el msg: " + txtChat.getText(), Toast.LENGTH_LONG).show();
+            chat.send(txtChat.getText());
+        } catch (SmackException.NotConnectedException e) {
+            e.printStackTrace();
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
     }
 }

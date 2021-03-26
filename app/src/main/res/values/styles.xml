@@ -16,6 +16,11 @@
 
     <style name="AppTheme.PopupOverlay" parent="ThemeOverlay.AppCompat.Light" />
 
+    <!-- Nav Header -->
+    <style name="NavHeaderInfo">
+        <item name="android:layout_marginStart">16dp</item>
+    </style>
+    
     <!-- View Holder Message Chat-->
     <style name="MessageViewHolderCard">
         <item name="cardBackgroundColor">@color/colorAccent</item>
@@ -37,6 +42,11 @@
     <style name="ChatMessagesRecycler">
         <item name="android:paddingTop">@dimen/view_holder_message_text_margin_top_bottom</item>
         <item name="android:paddingBottom">@dimen/view_holder_message_text_margin_top_bottom</item>
+    </style>
+    
+    <style name="ChatTextField">
+        <item name="android:background">@drawable/chat_text_field</item>
+        <item name="android:layout_margin">4dp</item>
     </style>
 
 </resources>
