@@ -52,7 +52,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         public ViewHolder(View view) {
             super(view);
             // Define click listener for the ViewHolder's View
-            tvMessageText = (TextView) view.findViewById(R.id.tvMesaggeText);
+            tvMessageText = view.findViewById(R.id.tvMessageText);
         }
     }
 

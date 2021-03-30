@@ -20,11 +20,11 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/tvMesaggeText"
+                android:id="@+id/tvMessageText"
                 style="@style/MessageViewHolderMessageText"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
-                tools:text="Hello budy!" />
+                tools:text="Hello buddy!" />
         </LinearLayout>
 
     </androidx.cardview.widget.CardView>
