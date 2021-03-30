@@ -13,12 +13,10 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.jivesoftware.smack.AbstractXMPPConnection;
-import org.jivesoftware.smack.ConnectionConfiguration;
+import com.google.android.material.snackbar.Snackbar;
+
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
-import org.jivesoftware.smack.tcp.XMPPTCPConnection;
-import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 import org.jivesoftware.smackx.search.ReportedData;
 import org.jivesoftware.smackx.search.UserSearchManager;
 import org.jivesoftware.smackx.xdata.BooleanFormField;
@@ -27,7 +25,6 @@ import org.jivesoftware.smackx.xdata.packet.DataForm;
 import org.jxmpp.jid.DomainBareJid;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -36,10 +33,13 @@ import me.sergiobarriodelavega.xend.R;
 import me.sergiobarriodelavega.xend.entities.XMPPUser;
 import me.sergiobarriodelavega.xend.recyclers.UserAdapter;
 
-public class UsersFragment extends Fragment {
+public class UsersFragment extends Fragment implements View.OnClickListener{
     private RecyclerView recycler;
     private View view;
     private ProgressBar pbUsers;
+    private UserAdapter userAdapter;
+    private ArrayList<XMPPUser> usersList;
+    private View.OnClickListener onClickListener;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -50,19 +50,25 @@ public class UsersFragment extends Fragment {
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         pbUsers = view.findViewById(R.id.pbUsers);
+        onClickListener = this;
         new ScanUsersTask().execute();
+    }
+
+    @Override
+    public void onClick(View view) {
+        //Load chat
+        //TODO Open chat activity to selected user
+        Snackbar.make(getView(),"Chat with " + usersList.get(recycler.getChildAdapterPosition(view)).getUserName(),Snackbar.LENGTH_LONG).show();
     }
 
     private class ScanUsersTask extends AsyncTask<Void, Void, List<XMPPUser>>{
 
-
-
         @Override
         protected List<XMPPUser> doInBackground(Void... voids) {
             //XMPP Users query
-            //TODO Better search form structure
+            //TODO Better search form structure and better managing of Exceptions (Warning messages)
             ArrayList<XMPPUser> users = new ArrayList<>();
-            UserSearchManager userSearchManager = null;
+            UserSearchManager userSearchManager;
             try {
 
                 userSearchManager = new UserSearchManager(App.getConnection());
@@ -90,13 +96,17 @@ public class UsersFragment extends Fragment {
 
         @Override
         protected void onPostExecute(List<XMPPUser> users) {
+            usersList = (ArrayList<XMPPUser>) users;
             recycler = view.findViewById(R.id.recyclerUsers);
 
             //Recycler
-            recycler.setAdapter(new UserAdapter(users));
+            userAdapter = new UserAdapter(users);
+            userAdapter.setOnClickListener(onClickListener);
+            recycler.setAdapter(userAdapter);
             recycler.setLayoutManager(new LinearLayoutManager(getContext()));
 
             pbUsers.setVisibility(View.GONE);
         }
+
     }
 }

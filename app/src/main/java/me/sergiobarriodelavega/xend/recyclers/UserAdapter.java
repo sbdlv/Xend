@@ -16,6 +16,7 @@ import me.sergiobarriodelavega.xend.entities.XMPPUser;
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
 
     private List<XMPPUser> users;
+    private View.OnClickListener onClickListener;
 
     public UserAdapter(List<XMPPUser> users) {
         this.users = users;
@@ -27,7 +28,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
         // Create a new view, which defines the UI of the list item
         View view = LayoutInflater.from(parent.getContext())
                 .inflate(R.layout.viewholder_user, parent, false);
-
+        view.setOnClickListener(onClickListener);
         return new ViewHolder(view);
     }
 
@@ -54,5 +55,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
         }
     }
 
-
+    public void setOnClickListener(View.OnClickListener onClickListener) {
+        this.onClickListener = onClickListener;
+    }
 }
