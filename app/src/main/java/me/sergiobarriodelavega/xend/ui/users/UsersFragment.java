@@ -1,9 +1,11 @@
 package me.sergiobarriodelavega.xend.ui.users;
 
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -36,48 +38,65 @@ import me.sergiobarriodelavega.xend.recyclers.UserAdapter;
 
 public class UsersFragment extends Fragment {
     private RecyclerView recycler;
+    private View view;
+    private ProgressBar pbUsers;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
-        View root = inflater.inflate(R.layout.fragment_users, container, false);
-        return root;
+        view = inflater.inflate(R.layout.fragment_users, container, false);
+        return view;
     }
 
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
-        recycler = view.findViewById(R.id.recyclerUsers);
-        ArrayList<XMPPUser> users = new ArrayList<>();
-
-        //XMPP Users query
-        //TODO Better search form structure
-        UserSearchManager userSearchManager = null;
-        try {
-
-            userSearchManager = new UserSearchManager(App.getConnection());
-
-            List<DomainBareJid> searchServices = userSearchManager.getSearchServices();
-            DataForm build2 = DataForm.builder(DataForm.Type.result).addField(FormField.builder("search").setValue("*").build()).addField(BooleanFormField.booleanBuilder("Name").setValue(true).build()).build();
-            ReportedData searchResults = userSearchManager.getSearchResults(build2, searchServices.get(1));
-
-            for(ReportedData.Row row : searchResults.getRows()) {
-                users.add(new XMPPUser(row.getValues("Username").toString(),row.getValues("Email").toString()));
-            }
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (XMPPException e) {
-            e.printStackTrace();
-        } catch (SmackException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (Exception e){
-            e.printStackTrace();
-        }
-
-
-        //Recycler
-        recycler.setAdapter(new UserAdapter(users));
-        recycler.setLayoutManager(new LinearLayoutManager(getContext()));
+        pbUsers = view.findViewById(R.id.pbUsers);
+        new ScanUsersTask().execute();
     }
 
+    private class ScanUsersTask extends AsyncTask<Void, Void, List<XMPPUser>>{
+
+
+
+        @Override
+        protected List<XMPPUser> doInBackground(Void... voids) {
+            //XMPP Users query
+            //TODO Better search form structure
+            ArrayList<XMPPUser> users = new ArrayList<>();
+            UserSearchManager userSearchManager = null;
+            try {
+
+                userSearchManager = new UserSearchManager(App.getConnection());
+
+                List<DomainBareJid> searchServices = userSearchManager.getSearchServices();
+                DataForm build2 = DataForm.builder(DataForm.Type.result).addField(FormField.builder("search").setValue("*").build()).addField(BooleanFormField.booleanBuilder("Name").setValue(true).build()).build();
+                ReportedData searchResults = userSearchManager.getSearchResults(build2, searchServices.get(1));
+
+                for(ReportedData.Row row : searchResults.getRows()) {
+                    users.add(new XMPPUser(row.getValues("Username").toString(),row.getValues("Email").toString()));
+                }
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (XMPPException e) {
+                e.printStackTrace();
+            } catch (SmackException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            } catch (Exception e){
+                e.printStackTrace();
+            }
+            return users;
+        }
+
+        @Override
+        protected void onPostExecute(List<XMPPUser> users) {
+            recycler = view.findViewById(R.id.recyclerUsers);
+
+            //Recycler
+            recycler.setAdapter(new UserAdapter(users));
+            recycler.setLayoutManager(new LinearLayoutManager(getContext()));
+
+            pbUsers.setVisibility(View.GONE);
+        }
+    }
 }

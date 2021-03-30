@@ -8,16 +8,16 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import java.util.ArrayList;
+import java.util.List;
 
 import me.sergiobarriodelavega.xend.R;
 import me.sergiobarriodelavega.xend.entities.XMPPUser;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
 
-    private ArrayList<XMPPUser> users;
+    private List<XMPPUser> users;
 
-    public UserAdapter(ArrayList<XMPPUser> users) {
+    public UserAdapter(List<XMPPUser> users) {
         this.users = users;
     }
 
