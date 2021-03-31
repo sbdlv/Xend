@@ -36,7 +36,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         XMPPUser user = users.get(position);
         holder.tvUserName.setText(user.getUserName());
-        holder.tvUserEmail.setText(user.getEmail());
+        holder.tvUserJID.setText(user.getJid());
     }
 
     @Override
@@ -45,13 +45,13 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView tvUserName, tvUserEmail;
+        private final TextView tvUserName, tvUserJID;
 
         public ViewHolder(View view) {
             super(view);
             // Define click listener for the ViewHolder's View
             tvUserName = view.findViewById(R.id.tvUserName);
-            tvUserEmail = view.findViewById(R.id.tvUserEmail);
+            tvUserJID = view.findViewById(R.id.tvUserJID);
         }
     }
 

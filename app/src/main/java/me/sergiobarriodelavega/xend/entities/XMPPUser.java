@@ -4,11 +4,11 @@ package me.sergiobarriodelavega.xend.entities;
  * Stores data from a XMPPUser
  */
 public class XMPPUser {
-    private String userName, email;
+    private String userName, jid;
 
-    public XMPPUser(String userName, String email) {
+    public XMPPUser(String userName, String jid) {
         this.userName = userName;
-        this.email = email;
+        this.jid = jid;
     }
 
     public String getUserName() {
@@ -19,12 +19,12 @@ public class XMPPUser {
         this.userName = userName;
     }
 
-    public String getEmail() {
-        return email;
+    public String getJid() {
+        return jid;
     }
 
-    public void setEmail(String email) {
-        this.email = email;
+    public void setJid(String jid) {
+        this.jid = jid;
     }
 
 

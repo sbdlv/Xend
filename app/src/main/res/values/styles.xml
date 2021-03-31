@@ -93,4 +93,14 @@
 
     </style>
 
+    <!-- Users Fragment -->
+    <style name="UsersFragmentLinearLayoutNoUsers">
+        <item name="android:gravity">center</item>
+    </style>
+
+    <style name="UsersFragmentTextNoUsers">
+        <item name="android:layout_margin">8dp</item>
+        <item name="android:gravity">center</item>
+    </style>
+
 </resources>

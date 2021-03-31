@@ -5,6 +5,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.ProgressBar;
 
 import androidx.annotation.NonNull;
@@ -40,6 +41,7 @@ public class UsersFragment extends Fragment implements View.OnClickListener{
     private UserAdapter userAdapter;
     private ArrayList<XMPPUser> usersList;
     private View.OnClickListener onClickListener;
+    private LinearLayout llNoUsersFound;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -50,6 +52,7 @@ public class UsersFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         pbUsers = view.findViewById(R.id.pbUsers);
+        llNoUsersFound = view.findViewById(R.id.llNoUsers);
         onClickListener = this;
         new ScanUsersTask().execute();
     }
@@ -77,8 +80,16 @@ public class UsersFragment extends Fragment implements View.OnClickListener{
                 DataForm build2 = DataForm.builder(DataForm.Type.result).addField(FormField.builder("search").setValue("*").build()).addField(BooleanFormField.booleanBuilder("Name").setValue(true).build()).build();
                 ReportedData searchResults = userSearchManager.getSearchResults(build2, searchServices.get(1));
 
+                String userName, jid;
                 for(ReportedData.Row row : searchResults.getRows()) {
-                    users.add(new XMPPUser(row.getValues("Username").toString(),row.getValues("Email").toString()));
+                    //TODO Check that the app user is not saved on the list
+                    jid = row.getValues("jid").toString();
+                    jid = jid.substring(1, jid.length() - 1);
+
+                    userName = row.getValues("Username").toString();
+                    userName = userName.substring(1, userName.length() - 1);
+
+                    users.add(new XMPPUser(userName,jid));
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -97,13 +108,18 @@ public class UsersFragment extends Fragment implements View.OnClickListener{
         @Override
         protected void onPostExecute(List<XMPPUser> users) {
             usersList = (ArrayList<XMPPUser>) users;
-            recycler = view.findViewById(R.id.recyclerUsers);
 
-            //Recycler
-            userAdapter = new UserAdapter(users);
-            userAdapter.setOnClickListener(onClickListener);
-            recycler.setAdapter(userAdapter);
-            recycler.setLayoutManager(new LinearLayoutManager(getContext()));
+            if(usersList.size() == 0){
+                llNoUsersFound.setVisibility(View.VISIBLE);
+            } else {
+                recycler = view.findViewById(R.id.recyclerUsers);
+
+                //Recycler
+                userAdapter = new UserAdapter(users);
+                userAdapter.setOnClickListener(onClickListener);
+                recycler.setAdapter(userAdapter);
+                recycler.setLayoutManager(new LinearLayoutManager(getContext()));
+            }
 
             pbUsers.setVisibility(View.GONE);
         }
