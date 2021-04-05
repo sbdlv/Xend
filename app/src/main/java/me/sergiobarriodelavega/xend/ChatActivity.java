@@ -34,6 +34,7 @@ import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
+import me.sergiobarriodelavega.xend.entities.XMPPUser;
 import me.sergiobarriodelavega.xend.recyclers.MessageAdapter;
 
 public class ChatActivity extends AppCompatActivity implements IncomingChatMessageListener, TextView.OnEditorActionListener {
@@ -44,6 +45,7 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
     private EditText txtChat;
     private Chat chat;
     private FloatingActionButton btnSendMessage;
+    private XMPPUser user;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -52,9 +54,14 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
 
         incomingChatMessageListener = this;
 
-        //TODO Messages should come from bundle
+        user = (XMPPUser) getIntent().getSerializableExtra("user");
+
+        getSupportActionBar().setTitle(user.getUserName());
+
+        //TODO Old messages should be loaded if exists
         messages = new ArrayList<>();
 
+        //Temporal: For testing purposes
         Message msgTest = new Message();
         msgTest.setBody("Este es un mensaje local de prueba");
         messages.add(msgTest);
@@ -73,34 +80,15 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
         rvMessages.setAdapter(messageAdapter);
         rvMessages.setLayoutManager(new LinearLayoutManager(this));
 
-
-
-        //TODO: Temporal connection and chat reciver
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
                 try  {
-                    AbstractXMPPConnection connection;
-                    XMPPTCPConnectionConfiguration config = XMPPTCPConnectionConfiguration.builder()
-                            .setUsernameAndPassword("sergio", "usuario")
-                            .setHostAddress(InetAddress.getByName("192.168.1.97"))
-                            .setXmppDomain("xend")
-                            .setPort(5222)
-                            .setSecurityMode(ConnectionConfiguration.SecurityMode.disabled)
-                            .build();
-
-                    connection = new XMPPTCPConnection(config);
-                    connection.connect().login();
-
-                    Toast.makeText(getApplicationContext(), "Conexion realizada", Toast.LENGTH_LONG).show();
-
-
                     //Chat
-                    ChatManager chatManager = ChatManager.getInstanceFor(connection);
+                    ChatManager chatManager = ChatManager.getInstanceFor(App.getConnection());
                     chatManager.addIncomingListener(incomingChatMessageListener);
 
-                    //TODO jid remote user should be loaded from bundle ex: user1@xend
-                    EntityBareJid jid = JidCreate.entityBareFrom("pepe@xend");
+                    EntityBareJid jid = JidCreate.entityBareFrom(user.getJid());
                     chat = chatManager.chatWith(jid);
 
                 } catch (SmackException.EndpointConnectionException | UnknownHostException | XmppStringprepException e) {
@@ -126,8 +114,6 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
         runOnUiThread(new Runnable() {
             @Override
             public void run() {
-                //Toast.makeText(getApplicationContext(), message.getBody(), Toast.LENGTH_LONG).show();
-                System.out.println("Msg recibido: " + message.getBody());
                 messages.add(message);
                 messageAdapter.notifyDataSetChanged();
             }
@@ -143,9 +129,8 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
         return false;
     }
 
-    private void sendMessage(View view){
+    public void sendMessage(View view){
         try {
-            Toast.makeText(this,"Se ha querido enviar el msg: " + txtChat.getText(), Toast.LENGTH_LONG).show();
             chat.send(txtChat.getText());
         } catch (SmackException.NotConnectedException e) {
             e.printStackTrace();

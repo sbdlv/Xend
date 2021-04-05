@@ -1,9 +1,11 @@
 package me.sergiobarriodelavega.xend.entities;
 
+import java.io.Serializable;
+
 /**
  * Stores data from a XMPPUser
  */
-public class XMPPUser {
+public class XMPPUser implements Serializable {
     private String userName, jid;
 
     public XMPPUser(String userName, String jid) {
@@ -19,6 +21,7 @@ public class XMPPUser {
         this.userName = userName;
     }
 
+    //TODO For optimization it could be possible to save only the domain String and concatenate 'username + @ + domain' on getJid
     public String getJid() {
         return jid;
     }

@@ -39,6 +39,7 @@
         android:id="@+id/btnSendMessage"
         style="@style/ButtonSendMessage"
         android:clickable="true"
+        android:onClick="sendMessage"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
         app:srcCompat="@drawable/ic_send" />

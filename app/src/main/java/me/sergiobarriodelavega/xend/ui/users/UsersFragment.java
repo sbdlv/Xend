@@ -1,5 +1,6 @@
 package me.sergiobarriodelavega.xend.ui.users;
 
+import android.content.Intent;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -23,6 +24,7 @@ import org.jivesoftware.smackx.search.UserSearchManager;
 import org.jivesoftware.smackx.xdata.BooleanFormField;
 import org.jivesoftware.smackx.xdata.FormField;
 import org.jivesoftware.smackx.xdata.packet.DataForm;
+import org.jxmpp.jid.BareJid;
 import org.jxmpp.jid.DomainBareJid;
 
 import java.io.IOException;
@@ -30,6 +32,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.sergiobarriodelavega.xend.App;
+import me.sergiobarriodelavega.xend.ChatActivity;
 import me.sergiobarriodelavega.xend.R;
 import me.sergiobarriodelavega.xend.entities.XMPPUser;
 import me.sergiobarriodelavega.xend.recyclers.UserAdapter;
@@ -60,8 +63,10 @@ public class UsersFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onClick(View view) {
         //Load chat
-        //TODO Open chat activity to selected user
-        Snackbar.make(getView(),"Chat with " + usersList.get(recycler.getChildAdapterPosition(view)).getUserName(),Snackbar.LENGTH_LONG).show();
+        XMPPUser user = usersList.get(recycler.getChildAdapterPosition(view));
+        Intent i = new Intent(getContext(), ChatActivity.class);
+        i.putExtra("user", user);
+        startActivity(i);
     }
 
     private class ScanUsersTask extends AsyncTask<Void, Void, List<XMPPUser>>{
