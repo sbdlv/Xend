@@ -1,5 +1,7 @@
 package me.sergiobarriodelavega.xend;
 
+import android.app.Activity;
+import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
 import android.view.View;
@@ -10,27 +12,25 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.appcompat.view.menu.ActionMenuItem;
+import androidx.appcompat.view.menu.ActionMenuItemView;
+import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
-import org.jivesoftware.smack.AbstractXMPPConnection;
-import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.chat2.Chat;
 import org.jivesoftware.smack.chat2.ChatManager;
 import org.jivesoftware.smack.chat2.IncomingChatMessageListener;
 import org.jivesoftware.smack.packet.Message;
-import org.jivesoftware.smack.tcp.XMPPTCPConnection;
-import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 import org.jxmpp.jid.EntityBareJid;
 import org.jxmpp.jid.impl.JidCreate;
 import org.jxmpp.stringprep.XmppStringprepException;
 
 import java.io.IOException;
-import java.net.InetAddress;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 
@@ -46,6 +46,8 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
     private Chat chat;
     private FloatingActionButton btnSendMessage;
     private XMPPUser user;
+    private Toolbar toolbar;
+    private ActionMenuItemView miInfo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -56,7 +58,21 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
 
         user = (XMPPUser) getIntent().getSerializableExtra("user");
 
-        getSupportActionBar().setTitle(user.getUserName());
+        //Toolbar
+        toolbar = findViewById(R.id.tbChat);
+
+        miInfo = toolbar.findViewById(R.id.miInfo);
+
+        miInfo.setOnClickListener(new View.OnClickListener() {
+            @Override
+            public void onClick(View view) {
+                Intent i = new Intent(getApplicationContext(), ProfileInfoActivity.class);
+                i.putExtra("user", user);
+
+                startActivity(i);
+            }
+        });
+
 
         //TODO Old messages should be loaded if exists
         messages = new ArrayList<>();

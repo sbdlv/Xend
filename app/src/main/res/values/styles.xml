@@ -5,11 +5,13 @@
         <item name="colorPrimary">@color/colorPrimary</item>
         <item name="colorPrimaryDark">@color/colorPrimaryDark</item>
         <item name="colorAccent">@color/colorAccent</item>
+        <item name="actionMenuTextColor">@color/colorPrimary</item>
     </style>
 
     <style name="AppTheme.NoActionBar">
         <item name="windowActionBar">false</item>
         <item name="windowNoTitle">true</item>
+        <item name="actionMenuTextColor">@color/colorPrimary</item>
     </style>
 
     <style name="AppTheme.AppBarOverlay" parent="ThemeOverlay.AppCompat.Dark.ActionBar" />
@@ -47,7 +49,6 @@
     
     <style name="ChatTextField">
         <item name="android:background">@drawable/chat_text_field</item>
-        <item name="android:layout_marginBottom">16dp</item>
         <item name="android:layout_marginRight">8dp</item>
         <item name="android:layout_marginLeft">8dp</item>
     </style>
@@ -102,6 +103,56 @@
     <style name="UsersFragmentTextNoUsers">
         <item name="android:layout_margin">8dp</item>
         <item name="android:gravity">center</item>
+        <item name="android:drawablePadding">32dp</item>
+    </style>
+
+    <!-- Profile Edit -->
+    <style name="ProfileEditLinearLayout">
+        <item name="android:gravity">center_horizontal</item>
+        <item name="android:paddingTop">32dp</item>
+        <item name="android:paddingBottom">32dp</item>
+        <item name="android:paddingStart">16dp</item>
+        <item name="android:paddingEnd">16dp</item>
+    </style>
+
+    <style name="ProfileEditCardViewPorfilePicture">
+        <item name="cardCornerRadius">16dp</item>
+        <item name="android:layout_marginBottom">32dp</item>
+        <item name="android:layout_height">168dp</item>
+        <item name="android:layout_width">168dp</item>
+
+    </style>
+
+    <style name="ProfileEditCardViewSection">
+        <item name="cardCornerRadius">8dp</item>
+        <item name="android:layout_margin">16dp</item>
+        <item name="cardElevation">1dp</item>
+    </style>
+
+    <style name="ProfileEditLinearLayoutSection">
+        <item name="android:padding">16dp</item>
+    </style>
+
+    <style name="ProfileEditIconSection">
+        <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_width">wrap_content</item>
+
+        <item name="android:layout_marginEnd">8dp</item>
+    </style>
+
+    <style name="ProfileEditCardSectionTitle">
+        <item name="android:textColor">@color/colorPrimary</item>
+        <item name="android:textStyle">bold</item>
+        <item name="android:layout_marginBottom">16dp</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:drawablePadding">8dp</item>
+    </style>
+
+    <!-- View Holder String -->
+    <style name="StringViewHolderLinearLayout">
+        <item name="android:padding">8dp</item>
+        <item name="android:clickable">true</item>
+        <item name="android:foreground">?android:attr/selectableItemBackground</item>
     </style>
 
 </resources>

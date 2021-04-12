@@ -8,12 +8,14 @@ import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
 import android.widget.ProgressBar;
+import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
+import androidx.swiperefreshlayout.widget.SwipeRefreshLayout;
 
 import com.google.android.material.snackbar.Snackbar;
 
@@ -37,14 +39,15 @@ import me.sergiobarriodelavega.xend.R;
 import me.sergiobarriodelavega.xend.entities.XMPPUser;
 import me.sergiobarriodelavega.xend.recyclers.UserAdapter;
 
-public class UsersFragment extends Fragment implements View.OnClickListener{
+public class UsersFragment extends Fragment implements View.OnClickListener , SwipeRefreshLayout.OnRefreshListener {
     private RecyclerView recycler;
     private View view;
     private ProgressBar pbUsers;
     private UserAdapter userAdapter;
     private ArrayList<XMPPUser> usersList;
     private View.OnClickListener onClickListener;
-    private LinearLayout llNoUsersFound;
+    private TextView tvNoUsersFound;
+    private SwipeRefreshLayout swRedreshUsers;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -55,7 +58,9 @@ public class UsersFragment extends Fragment implements View.OnClickListener{
     @Override
     public void onViewCreated(@NonNull View view, @Nullable Bundle savedInstanceState) {
         pbUsers = view.findViewById(R.id.pbUsers);
-        llNoUsersFound = view.findViewById(R.id.llNoUsers);
+        tvNoUsersFound = view.findViewById(R.id.tvNoUsersFound);
+        swRedreshUsers = view.findViewById(R.id.swRefreshUsers);
+        swRedreshUsers.setOnRefreshListener(this);
         onClickListener = this;
         new ScanUsersTask().execute();
     }
@@ -67,6 +72,11 @@ public class UsersFragment extends Fragment implements View.OnClickListener{
         Intent i = new Intent(getContext(), ChatActivity.class);
         i.putExtra("user", user);
         startActivity(i);
+    }
+
+    @Override
+    public void onRefresh() {
+        new ScanUsersTask().execute();
     }
 
     private class ScanUsersTask extends AsyncTask<Void, Void, List<XMPPUser>>{
@@ -115,7 +125,7 @@ public class UsersFragment extends Fragment implements View.OnClickListener{
             usersList = (ArrayList<XMPPUser>) users;
 
             if(usersList.size() == 0){
-                llNoUsersFound.setVisibility(View.VISIBLE);
+                tvNoUsersFound.setVisibility(View.VISIBLE);
             } else {
                 recycler = view.findViewById(R.id.recyclerUsers);
 
@@ -127,6 +137,8 @@ public class UsersFragment extends Fragment implements View.OnClickListener{
             }
 
             pbUsers.setVisibility(View.GONE);
+
+            swRedreshUsers.setRefreshing(false);
         }
 
     }

@@ -6,17 +6,28 @@
     android:layout_width="match_parent"
     android:layout_height="match_parent">
 
-    <androidx.recyclerview.widget.RecyclerView
-        android:id="@+id/rvMessages"
+    <androidx.appcompat.widget.Toolbar
+        android:id="@+id/tbChat"
         android:layout_width="match_parent"
-        android:layout_height="match_parent"
-        app:layout_constraintBottom_toBottomOf="parent"
+        android:layout_height="wrap_content"
+        android:background="?attr/colorPrimary"
+        android:minHeight="?attr/actionBarSize"
+        android:theme="?attr/actionBarTheme"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
+        app:menu="@menu/chat_menu" />
+
+    <androidx.recyclerview.widget.RecyclerView
+        android:id="@+id/rvMessages"
+        style="@style/ChatMessagesRecycler"
+        android:layout_width="match_parent"
+        android:layout_height="wrap_content"
+        app:layout_constraintEnd_toEndOf="parent"
+        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintTop_toBottomOf="@+id/tbChat"
         tools:itemCount="4"
-        tools:listitem="@layout/viewholder_message"
-        style="@style/ChatMessagesRecycler">
+        tools:listitem="@layout/viewholder_message">
 
     </androidx.recyclerview.widget.RecyclerView>
 
@@ -30,7 +41,7 @@
         android:imeOptions="actionDone"
         android:importantForAutofill="no"
         android:inputType="textPersonName"
-        app:layout_constraintBottom_toBottomOf="@+id/rvMessages"
+        app:layout_constraintBottom_toBottomOf="@+id/btnSendMessage"
         app:layout_constraintEnd_toStartOf="@+id/btnSendMessage"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="@+id/btnSendMessage" />
