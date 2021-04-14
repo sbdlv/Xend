@@ -16,7 +16,7 @@ public class App {
     private static AbstractXMPPConnection connection;
 
     public static AbstractXMPPConnection getConnection() throws InterruptedException, XMPPException, SmackException, IOException {
-        if(connection == null){
+        if(connection == null || !connection.isAuthenticated()){
             //TODO: Temporal connection
             XMPPTCPConnectionConfiguration config = XMPPTCPConnectionConfiguration.builder()
                     .setUsernameAndPassword("sergio", "usuario")

@@ -3,9 +3,11 @@ package me.sergiobarriodelavega.xend;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 
@@ -33,6 +35,10 @@ public class ProfileInfoActivity extends AppCompatActivity {
 
         //Bundle
         user = (XMPPUser) getIntent().getExtras().getSerializable("user");
+
+        //Toolbar
+        getSupportActionBar().setTitle(user.getJid());
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Views
         tvProfileName = findViewById(R.id.tvProfileName);
@@ -85,20 +91,34 @@ public class ProfileInfoActivity extends AppCompatActivity {
      * @return If first name is null, returns null, else the full name without null values
      */
     private static String getFullName(VCard vCard){
+        StringBuilder fullName;
         if (vCard.getFirstName() == null){
             return null;
         }
 
-        String fullName = vCard.getFirstName();
+        fullName = new StringBuilder(vCard.getFirstName());
 
         if(vCard.getMiddleName() != null){
-            fullName += vCard.getMiddleName();
+            fullName.append(" ");
+            fullName.append(vCard.getMiddleName());
         }
 
         if(vCard.getLastName()!= null){
-            fullName += vCard.getLastName();
+            fullName.append(" ");
+            fullName.append(vCard.getLastName());
         }
 
-        return fullName;
+        return fullName.toString();
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
+        }
     }
 }

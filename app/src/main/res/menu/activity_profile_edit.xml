@@ -3,10 +3,10 @@
     xmlns:android="http://schemas.android.com/apk/res/android">
 
     <item
-        android:id="@+id/miInfo"
-        android:icon="@drawable/ic_info"
-        android:iconTint="@color/iconActionBarTint"
-        android:onClick="showProfileInfo"
-        android:title="Item"
+        android:id="@+id/imSaveProfile"
+        android:icon="@drawable/ic_save"
+        android:onClick="saveChanges"
+        android:title="@string/save"
+        android:visible="true"
         app:showAsAction="always" />
 </menu>

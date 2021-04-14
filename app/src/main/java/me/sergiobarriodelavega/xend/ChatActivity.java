@@ -4,12 +4,16 @@ import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
+import android.view.Menu;
+import android.view.MenuInflater;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
 import android.widget.TextView;
 import android.widget.Toast;
 
+import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.view.menu.ActionMenuItem;
@@ -44,10 +48,7 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
     private IncomingChatMessageListener incomingChatMessageListener;
     private EditText txtChat;
     private Chat chat;
-    private FloatingActionButton btnSendMessage;
     private XMPPUser user;
-    private Toolbar toolbar;
-    private ActionMenuItemView miInfo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,24 +59,12 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
 
         user = (XMPPUser) getIntent().getSerializableExtra("user");
 
-        //Toolbar
-        toolbar = findViewById(R.id.tbChat);
-
-        miInfo = toolbar.findViewById(R.id.miInfo);
-
-        miInfo.setOnClickListener(new View.OnClickListener() {
-            @Override
-            public void onClick(View view) {
-                Intent i = new Intent(getApplicationContext(), ProfileInfoActivity.class);
-                i.putExtra("user", user);
-
-                startActivity(i);
-            }
-        });
-
-
         //TODO Old messages should be loaded if exists
         messages = new ArrayList<>();
+
+        //Toolbar
+        getSupportActionBar().setTitle(user.getJid());
+        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Temporal: For testing purposes
         Message msgTest = new Message();
@@ -84,7 +73,6 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
 
         //Find views
         txtChat = findViewById(R.id.txtChat);
-        btnSendMessage = findViewById(R.id.btnSendMessage);
         RecyclerView rvMessages = findViewById(R.id.rvMessages);
 
         //Chat message
@@ -152,6 +140,31 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
             e.printStackTrace();
         } catch (InterruptedException e) {
             e.printStackTrace();
+        }
+    }
+
+    public boolean showProfileInfo(MenuItem item){
+        Intent i = new Intent(getApplicationContext(), ProfileInfoActivity.class);
+        i.putExtra("user", user);
+        startActivity(i);
+        return true;
+    }
+
+    @Override
+    public boolean onCreateOptionsMenu(Menu menu) {
+        MenuInflater inflater = getMenuInflater();
+        inflater.inflate(R.menu.chat_menu, menu);
+        return true;
+    }
+
+    @Override
+    public boolean onOptionsItemSelected(@NonNull MenuItem item) {
+        switch (item.getItemId()) {
+            case android.R.id.home:
+                finish();
+                return true;
+            default:
+                return super.onOptionsItemSelected(item);
         }
     }
 }
