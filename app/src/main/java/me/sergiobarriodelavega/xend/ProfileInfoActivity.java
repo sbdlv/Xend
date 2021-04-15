@@ -2,10 +2,12 @@ package me.sergiobarriodelavega.xend;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.widget.ImageView;
 import android.widget.TextView;
+import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -18,6 +20,7 @@ import org.jivesoftware.smackx.vcardtemp.packet.VCard;
 import org.jxmpp.jid.impl.JidCreate;
 
 import java.io.IOException;
+import java.util.List;
 
 import me.sergiobarriodelavega.xend.entities.XMPPUser;
 
@@ -45,11 +48,40 @@ public class ProfileInfoActivity extends AppCompatActivity {
         tvProfileUserName= findViewById(R.id.tvProfileUserName);
         ivProfileImage = findViewById(R.id.ivProfileImage);
 
-        VCardManager vCardManager;
-        VCard vCard;
-        try {
-            vCardManager = VCardManager.getInstanceFor(App.getConnection());
-            vCard = vCardManager.loadVCard(JidCreate.entityBareFrom(user.getJid()));
+        new LoadVCard().execute();
+
+    }
+
+    private class LoadVCard extends AsyncTask<Void, Void, VCard> {
+
+        @Override
+        protected VCard doInBackground(Void... voids) {
+            VCardManager vCardManager;
+            VCard vCard;
+
+            try {
+                vCardManager = VCardManager.getInstanceFor(App.getConnection());
+                vCard = vCardManager.loadVCard(JidCreate.entityBareFrom(user.getJid()));
+
+                return vCard;
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            } catch (XMPPException e) {
+                e.printStackTrace();
+            } catch (SmackException e) {
+                e.printStackTrace();
+            } catch (IOException e) {
+                e.printStackTrace();
+            }
+
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(VCard vCard) {
+            if(vCard == null){
+                Toast.makeText(getApplicationContext(),"Error loading profile", Toast.LENGTH_SHORT).show();
+            }
 
             //Show data
             tvProfileUserName.setText(user.getJid());
@@ -70,19 +102,7 @@ public class ProfileInfoActivity extends AppCompatActivity {
                 Bitmap bmp = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
                 ivProfileImage.setImageBitmap(bmp);
             }
-
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (XMPPException e) {
-            e.printStackTrace();
-        } catch (SmackException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
         }
-
-
-
     }
 
     /**

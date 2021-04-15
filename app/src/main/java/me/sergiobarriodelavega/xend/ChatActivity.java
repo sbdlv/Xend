@@ -63,7 +63,8 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
         messages = new ArrayList<>();
 
         //Toolbar
-        getSupportActionBar().setTitle(user.getJid());
+        getSupportActionBar().setTitle(user.getUserName()); //TODO Should load full name from vCard
+        getSupportActionBar().setSubtitle(user.getJid());
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Temporal: For testing purposes

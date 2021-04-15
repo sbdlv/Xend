@@ -55,5 +55,4 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             tvMessageText = view.findViewById(R.id.tvMessageText);
         }
     }
-
 }
