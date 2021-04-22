@@ -5,7 +5,6 @@
     <item
         android:id="@+id/miInfo"
         android:icon="@drawable/ic_info"
-        android:iconTint="@color/iconActionBarTint"
         android:onClick="showProfileInfo"
         android:title="Item"
         app:showAsAction="always" />

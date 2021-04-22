@@ -13,6 +13,12 @@ public class XMPPUser implements Serializable {
         this.jid = jid;
     }
 
+    public XMPPUser(String jid) {
+        this.jid = jid;
+
+        //TODO VCard loading etc
+    }
+
     public String getUserName() {
         return userName;
     }

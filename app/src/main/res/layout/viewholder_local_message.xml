@@ -6,11 +6,11 @@
     android:layout_height="wrap_content">
 
     <androidx.cardview.widget.CardView
-        style="@style/MessageViewHolderCard"
+        style="@style/MessageViewHolderCard.LocalMessage"
         android:layout_width="wrap_content"
         android:layout_height="wrap_content"
         app:layout_constraintBottom_toBottomOf="parent"
-        app:layout_constraintStart_toStartOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintTop_toTopOf="parent">
 
             <LinearLayout

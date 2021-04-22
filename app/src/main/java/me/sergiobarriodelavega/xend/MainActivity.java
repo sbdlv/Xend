@@ -2,6 +2,7 @@ package me.sergiobarriodelavega.xend;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 
@@ -17,6 +18,10 @@ import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
 import org.jivesoftware.smack.android.AndroidSmackInitializer;
+
+import java.util.List;
+
+import me.sergiobarriodelavega.xend.room.LastChattedUser;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -62,6 +67,12 @@ public class MainActivity extends AppCompatActivity {
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         return NavigationUI.navigateUp(navController, mAppBarConfiguration)
                 || super.onSupportNavigateUp();
+    }
+
+    public boolean openEditProfile(MenuItem item){
+        Intent i = new Intent(getApplicationContext(), ProfileEditActivity.class);
+        startActivity(i);
+        return true;
     }
 
 }

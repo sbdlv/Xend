@@ -37,9 +37,10 @@ import me.sergiobarriodelavega.xend.App;
 import me.sergiobarriodelavega.xend.ChatActivity;
 import me.sergiobarriodelavega.xend.R;
 import me.sergiobarriodelavega.xend.entities.XMPPUser;
+import me.sergiobarriodelavega.xend.listeners.StartChatListener;
 import me.sergiobarriodelavega.xend.recyclers.UserAdapter;
 
-public class UsersFragment extends Fragment implements View.OnClickListener , SwipeRefreshLayout.OnRefreshListener {
+public class UsersFragment extends Fragment implements SwipeRefreshLayout.OnRefreshListener {
     private RecyclerView recycler;
     private View view;
     private ProgressBar pbUsers;
@@ -61,17 +62,7 @@ public class UsersFragment extends Fragment implements View.OnClickListener , Sw
         tvNoUsersFound = view.findViewById(R.id.tvNoUsersFound);
         swRedreshUsers = view.findViewById(R.id.swRefreshUsers);
         swRedreshUsers.setOnRefreshListener(this);
-        onClickListener = this;
         new ScanUsersTask().execute();
-    }
-
-    @Override
-    public void onClick(View view) {
-        //Load chat
-        XMPPUser user = usersList.get(recycler.getChildAdapterPosition(view));
-        Intent i = new Intent(getContext(), ChatActivity.class);
-        i.putExtra("user", user);
-        startActivity(i);
     }
 
     @Override
@@ -127,11 +118,12 @@ public class UsersFragment extends Fragment implements View.OnClickListener , Sw
             if(usersList.size() == 0){
                 tvNoUsersFound.setVisibility(View.VISIBLE);
             } else {
+                tvNoUsersFound.setVisibility(View.GONE);
                 recycler = view.findViewById(R.id.recyclerUsers);
 
                 //Recycler
                 userAdapter = new UserAdapter(users);
-                userAdapter.setOnClickListener(onClickListener);
+                userAdapter.setOnClickListener(new StartChatListener(usersList,recycler, UsersFragment.this));
                 recycler.setAdapter(userAdapter);
                 recycler.setLayoutManager(new LinearLayoutManager(getContext()));
             }

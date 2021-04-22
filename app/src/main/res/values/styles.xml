@@ -29,7 +29,12 @@
         <item name="android:layout_marginBottom">@dimen/view_holder_message_text_margin_top_bottom</item>
         <item name="android:layout_marginTop">@dimen/view_holder_message_text_margin_top_bottom</item>
         <item name="android:layout_marginStart">@dimen/view_holder_message_text_margin_left_right</item>
+        <item name="android:layout_marginEnd">@dimen/view_holder_message_text_margin_left_right</item>
         <item name="cardCornerRadius">8dp</item>
+    </style>
+
+    <style name="MessageViewHolderCard.LocalMessage">
+        <item name="cardBackgroundColor">@color/localMessageBackground</item>
     </style>
 
     <style name="MessageViewHolderLinearLayout">

@@ -63,13 +63,23 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
         messages = new ArrayList<>();
 
         //Toolbar
-        getSupportActionBar().setTitle(user.getUserName()); //TODO Should load full name from vCard
-        getSupportActionBar().setSubtitle(user.getJid());
+        if(user.getUserName() == null){
+            getSupportActionBar().setTitle(user.getJid());
+        } else {
+            getSupportActionBar().setTitle(user.getUserName()); //TODO Should load full name from vCard
+            getSupportActionBar().setSubtitle(user.getJid());
+        }
+
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Temporal: For testing purposes
         Message msgTest = new Message();
         msgTest.setBody("Este es un mensaje local de prueba");
+        try {
+            msgTest.setFrom(JidCreate.from("sergio@xend"));
+        } catch (XmppStringprepException e) {
+            e.printStackTrace();
+        }
         messages.add(msgTest);
 
         //Find views
@@ -80,37 +90,42 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
         txtChat.setOnEditorActionListener(this);
 
         //Recycler
-        messageAdapter = new MessageAdapter(messages);
+        try {
+            messageAdapter = new MessageAdapter(messages, JidCreate.from(user.getJid()));
 
-        rvMessages.setAdapter(messageAdapter);
-        rvMessages.setLayoutManager(new LinearLayoutManager(this));
+            rvMessages.setAdapter(messageAdapter);
+            rvMessages.setLayoutManager(new LinearLayoutManager(this));
 
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                try  {
-                    //Chat
-                    ChatManager chatManager = ChatManager.getInstanceFor(App.getConnection());
-                    chatManager.addIncomingListener(incomingChatMessageListener);
+            runOnUiThread(new Runnable() {
+                @Override
+                public void run() {
+                    try  {
+                        //Chat
+                        ChatManager chatManager = ChatManager.getInstanceFor(App.getConnection());
+                        chatManager.addIncomingListener(incomingChatMessageListener);
 
-                    EntityBareJid jid = JidCreate.entityBareFrom(user.getJid());
-                    chat = chatManager.chatWith(jid);
+                        EntityBareJid jid = JidCreate.entityBareFrom(user.getJid());
+                        chat = chatManager.chatWith(jid);
 
-                } catch (SmackException.EndpointConnectionException | UnknownHostException | XmppStringprepException e) {
-                    Toast.makeText(getApplicationContext(), "No se pudo realizar la conexion", Toast.LENGTH_LONG).show();
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (SmackException e) {
-                    e.printStackTrace();
-                } catch (XMPPException e) {
-                    e.printStackTrace();
+                    } catch (SmackException.EndpointConnectionException | UnknownHostException | XmppStringprepException e) {
+                        Toast.makeText(getApplicationContext(), "No se pudo realizar la conexion", Toast.LENGTH_LONG).show();
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (SmackException e) {
+                        e.printStackTrace();
+                    } catch (XMPPException e) {
+                        e.printStackTrace();
+                    }
                 }
-            }
-        });
+            });
 
+        } catch (XmppStringprepException e) {
+            //Invalid Jid Format
+            e.printStackTrace();
+        }
 
     }
 
