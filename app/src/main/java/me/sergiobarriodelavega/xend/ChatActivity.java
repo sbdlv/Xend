@@ -29,7 +29,9 @@ import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.chat2.Chat;
 import org.jivesoftware.smack.chat2.ChatManager;
 import org.jivesoftware.smack.chat2.IncomingChatMessageListener;
+import org.jivesoftware.smack.chat2.OutgoingChatMessageListener;
 import org.jivesoftware.smack.packet.Message;
+import org.jivesoftware.smack.packet.MessageBuilder;
 import org.jxmpp.jid.EntityBareJid;
 import org.jxmpp.jid.impl.JidCreate;
 import org.jxmpp.stringprep.XmppStringprepException;
@@ -38,16 +40,16 @@ import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 
 import me.sergiobarriodelavega.xend.entities.XMPPUser;
 import me.sergiobarriodelavega.xend.recyclers.MessageAdapter;
 import me.sergiobarriodelavega.xend.room.LastChattedUser;
 
-public class ChatActivity extends AppCompatActivity implements IncomingChatMessageListener, TextView.OnEditorActionListener {
+public class ChatActivity extends AppCompatActivity implements IncomingChatMessageListener, OutgoingChatMessageListener, TextView.OnEditorActionListener {
 
     private ArrayList<Message> messages;
     private MessageAdapter messageAdapter;
-    private IncomingChatMessageListener incomingChatMessageListener;
     private EditText txtChat;
     private Chat chat;
     private XMPPUser user;
@@ -58,8 +60,6 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        incomingChatMessageListener = this;
-
         user = (XMPPUser) getIntent().getSerializableExtra("user");
 
         lastChattedInfo = new LastChattedUser(user.getJid());
@@ -69,23 +69,13 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
 
         //Toolbar
         if(user.getUserName() == null){
-            getSupportActionBar().setTitle(user.getJid());
+            Objects.requireNonNull(getSupportActionBar()).setTitle(user.getJid());
         } else {
-            getSupportActionBar().setTitle(user.getUserName()); //TODO Should load full name from vCard
+            Objects.requireNonNull(getSupportActionBar()).setTitle(user.getUserName()); //TODO Should load full name from vCard
             getSupportActionBar().setSubtitle(user.getJid());
         }
 
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        //Temporal: For testing purposes
-        Message msgTest = new Message();
-        msgTest.setBody("Este es un mensaje local de prueba");
-        try {
-            msgTest.setFrom(JidCreate.from("sergio@xend"));
-        } catch (XmppStringprepException e) {
-            e.printStackTrace();
-        }
-        messages.add(msgTest);
 
         //Find views
         txtChat = findViewById(R.id.txtChat);
@@ -107,7 +97,8 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
                     try  {
                         //Chat
                         ChatManager chatManager = ChatManager.getInstanceFor(App.getConnection());
-                        chatManager.addIncomingListener(incomingChatMessageListener);
+                        chatManager.addIncomingListener(ChatActivity.this);
+                        chatManager.addOutgoingListener(ChatActivity.this);
 
                         EntityBareJid jid = JidCreate.entityBareFrom(user.getJid());
                         chat = chatManager.chatWith(jid);
@@ -141,7 +132,13 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
             messageAdapter.notifyDataSetChanged();
             new Thread(() -> App.getDb(getApplicationContext()).lastChattedUsersDAO().insertUser(lastChattedInfo)).start();
         });
+    }
 
+    @Override
+    public void newOutgoingMessage(EntityBareJid to, MessageBuilder messageBuilder, Chat chat) {
+        Message n = messageBuilder.build();
+        messages.add(messageBuilder.build());
+        messageAdapter.notifyDataSetChanged();
     }
 
     @Override
@@ -153,28 +150,13 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
     }
 
     public void sendMessage(View view){
+
         try {
-            Message msg = App.getConnection()
-                    .getStanzaFactory()
-                    .buildMessageStanza()
-                    .ofType(Message.Type.chat)
-                    .setBody(txtChat.getText())
-                    .build();
-            chat.send(msg);
-            messages.add(msg);
-            messageAdapter.notifyDataSetChanged();
-
+            chat.send(txtChat.getText());
             new Thread(() -> App.getDb(getApplicationContext()).lastChattedUsersDAO().insertUser(lastChattedInfo)).start();
-
         } catch (SmackException.NotConnectedException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
-            e.printStackTrace();
-        } catch (XMPPException e) {
-            e.printStackTrace();
-        } catch (IOException e) {
-            e.printStackTrace();
-        } catch (SmackException e) {
             e.printStackTrace();
         }
     }

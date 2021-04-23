@@ -27,7 +27,7 @@ public class App {
             //TODO: Temporal connection
             XMPPTCPConnectionConfiguration config = XMPPTCPConnectionConfiguration.builder()
                     .setUsernameAndPassword("sergio", "usuario")
-                    .setHostAddress(InetAddress.getByName(""))
+                    .setHostAddress(InetAddress.getByName("45.91.64.21"))
                     .setXmppDomain("xend")
                     .setPort(5222)
                     .setSecurityMode(ConnectionConfiguration.SecurityMode.disabled)

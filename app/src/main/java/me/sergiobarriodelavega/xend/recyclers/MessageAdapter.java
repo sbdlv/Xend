@@ -28,11 +28,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Message msg = messages.get(viewType);
-        int layoutViewHolderResID = R.layout.viewholder_local_message;
+        int layoutViewHolderResID = R.layout.viewholder_message;
+
 
         // Create a new view, which defines the UI of the list item
-        if(msg.getFrom().equals(remoteUserJID)){
-            layoutViewHolderResID = R.layout.viewholder_message;
+        if(msg.getTo().toString().equals(remoteUserJID.toString())){
+            layoutViewHolderResID = R.layout.viewholder_local_message;
         }
 
         View view = LayoutInflater.from(parent.getContext())
