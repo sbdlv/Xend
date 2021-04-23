@@ -35,7 +35,7 @@ public class LastChattedUserAdapter extends RecyclerView.Adapter<LastChattedUser
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         XMPPUser user = users.get(position);
-        holder.tvUserName.setText(user.getUserName());
+        holder.tvUserName.setText(user.getJid());
     }
 
     @Override

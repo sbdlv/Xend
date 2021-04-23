@@ -37,9 +37,11 @@ import org.jxmpp.stringprep.XmppStringprepException;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
+import java.util.List;
 
 import me.sergiobarriodelavega.xend.entities.XMPPUser;
 import me.sergiobarriodelavega.xend.recyclers.MessageAdapter;
+import me.sergiobarriodelavega.xend.room.LastChattedUser;
 
 public class ChatActivity extends AppCompatActivity implements IncomingChatMessageListener, TextView.OnEditorActionListener {
 
@@ -49,6 +51,7 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
     private EditText txtChat;
     private Chat chat;
     private XMPPUser user;
+    private LastChattedUser lastChattedInfo;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -58,6 +61,8 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
         incomingChatMessageListener = this;
 
         user = (XMPPUser) getIntent().getSerializableExtra("user");
+
+        lastChattedInfo = new LastChattedUser(user.getJid());
 
         //TODO Old messages should be loaded if exists
         messages = new ArrayList<>();
@@ -131,12 +136,10 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
 
     @Override
     public void newIncomingMessage(EntityBareJid from, Message message, Chat chat) {
-        runOnUiThread(new Runnable() {
-            @Override
-            public void run() {
-                messages.add(message);
-                messageAdapter.notifyDataSetChanged();
-            }
+        runOnUiThread(() -> {
+            messages.add(message);
+            messageAdapter.notifyDataSetChanged();
+            new Thread(() -> App.getDb(getApplicationContext()).lastChattedUsersDAO().insertUser(lastChattedInfo)).start();
         });
 
     }
@@ -151,10 +154,27 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
 
     public void sendMessage(View view){
         try {
-            chat.send(txtChat.getText());
+            Message msg = App.getConnection()
+                    .getStanzaFactory()
+                    .buildMessageStanza()
+                    .ofType(Message.Type.chat)
+                    .setBody(txtChat.getText())
+                    .build();
+            chat.send(msg);
+            messages.add(msg);
+            messageAdapter.notifyDataSetChanged();
+
+            new Thread(() -> App.getDb(getApplicationContext()).lastChattedUsersDAO().insertUser(lastChattedInfo)).start();
+
         } catch (SmackException.NotConnectedException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (XMPPException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        } catch (SmackException e) {
             e.printStackTrace();
         }
     }

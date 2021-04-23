@@ -6,7 +6,6 @@ import android.view.ViewGroup;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
-import androidx.cardview.widget.CardView;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.jivesoftware.smack.packet.Message;
@@ -18,22 +17,22 @@ import me.sergiobarriodelavega.xend.R;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
     private ArrayList<Message> messages;
-    private Jid localUserJID;
+    private Jid remoteUserJID;
 
-    public MessageAdapter(ArrayList<Message> messages, Jid localUserJID) {
+    public MessageAdapter(ArrayList<Message> messages, Jid remoteUserJID) {
         this.messages = messages;
-        this.localUserJID = localUserJID;
+        this.remoteUserJID = remoteUserJID;
     }
 
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         Message msg = messages.get(viewType);
-        int layoutViewHolderResID = R.layout.viewholder_message;
+        int layoutViewHolderResID = R.layout.viewholder_local_message;
 
         // Create a new view, which defines the UI of the list item
-        if(msg.getFrom().equals(localUserJID)){
-            layoutViewHolderResID = R.layout.viewholder_local_message;
+        if(msg.getFrom().equals(remoteUserJID)){
+            layoutViewHolderResID = R.layout.viewholder_message;
         }
 
         View view = LayoutInflater.from(parent.getContext())

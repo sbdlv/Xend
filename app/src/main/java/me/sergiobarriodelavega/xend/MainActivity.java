@@ -2,9 +2,11 @@ package me.sergiobarriodelavega.xend;
 
 import android.content.Intent;
 import android.os.Bundle;
+import android.os.strictmode.NonSdkApiUsedViolation;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.TextView;
 
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
@@ -17,20 +19,27 @@ import androidx.drawerlayout.widget.DrawerLayout;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.appcompat.widget.Toolbar;
 
+import org.jivesoftware.smack.SmackException;
+import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.android.AndroidSmackInitializer;
 
+import java.io.IOException;
 import java.util.List;
 
 import me.sergiobarriodelavega.xend.room.LastChattedUser;
 
-public class MainActivity extends AppCompatActivity {
+public class MainActivity extends AppCompatActivity implements View.OnLayoutChangeListener {
 
     private AppBarConfiguration mAppBarConfiguration;
+    private NavigationView navigationView;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
+        navigationView = findViewById(R.id.nav_view);
+        navigationView.addOnLayoutChangeListener(this);
+
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
         FloatingActionButton fab = findViewById(R.id.fab);
@@ -75,4 +84,33 @@ public class MainActivity extends AppCompatActivity {
         return true;
     }
 
+    public boolean deleteRecentChats(MenuItem item){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                App.getDb(getApplicationContext()).lastChattedUsersDAO().deleteAll();
+            }
+        }).start();
+
+        return true;
+    }
+
+    @Override
+    public void onLayoutChange(View view, int i, int i1, int i2, int i3, int i4, int i5, int i6, int i7) {
+        TextView tvUserNameHeader = view.findViewById(R.id.tvUserNameHeader);
+        TextView tvUserJIDHeader = view.findViewById(R.id.tvUserJIDHeader);
+
+        try {
+            //TODO UserName loading too
+            tvUserJIDHeader.setText(App.getConnection().getUser().asBareJid().toString());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (XMPPException e) {
+            e.printStackTrace();
+        } catch (SmackException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+    }
 }

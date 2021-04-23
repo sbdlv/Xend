@@ -14,9 +14,12 @@ public interface LastChattedUsersDAO {
     @Query("SELECT jid FROM last_chatted_users")
         public List<String> getAllLastChattedUsers();
 
-    @Insert(onConflict = OnConflictStrategy.IGNORE)
+    @Insert(onConflict = OnConflictStrategy.REPLACE)
     public void insertUser(LastChattedUser user);
 
     @Delete
     public void deleteUser(LastChattedUser user);
+
+    @Query("DELETE FROM last_chatted_users")
+    public void deleteAll();
 }
