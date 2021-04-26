@@ -18,6 +18,7 @@ import me.sergiobarriodelavega.xend.R;
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
     private ArrayList<Message> messages;
     private Jid remoteUserJID;
+    private static final int LOCAL_MSG = 0, REMOTE_MSG = 1;
 
     public MessageAdapter(ArrayList<Message> messages, Jid remoteUserJID) {
         this.messages = messages;
@@ -27,12 +28,12 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     @NonNull
     @Override
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
-        Message msg = messages.get(viewType);
-        int layoutViewHolderResID = R.layout.viewholder_message;
-
+        int layoutViewHolderResID;
 
         // Create a new view, which defines the UI of the list item
-        if(msg.getTo().toString().equals(remoteUserJID.toString())){
+        if(viewType == LOCAL_MSG){
+            layoutViewHolderResID = R.layout.viewholder_message;
+        } else {
             layoutViewHolderResID = R.layout.viewholder_local_message;
         }
 
@@ -61,5 +62,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
             // Define click listener for the ViewHolder's View
             tvMessageText = view.findViewById(R.id.tvMessageText);
         }
+    }
+
+    @Override
+    public int getItemViewType(int position) {
+        if(messages.get(position).getTo().equals(remoteUserJID)){
+            return REMOTE_MSG;
+        }
+        return LOCAL_MSG;
     }
 }
