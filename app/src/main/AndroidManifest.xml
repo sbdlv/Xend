@@ -27,6 +27,7 @@
         <activity android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".ProfileEditActivity"></activity>
+        <activity android:name=".ui.settings.StartSettingsActivity"></activity>
     </application>
 
 </manifest>

@@ -1,4 +1,37 @@
 <?xml version="1.0" encoding="utf-8"?>
 <PreferenceScreen xmlns:android="http://schemas.android.com/apk/res/android">
 
+    <PreferenceCategory android:title="@string/server_configuration">
+
+        <EditTextPreference
+            android:key="xmpp_server_address"
+            android:selectAllOnFocus="true"
+            android:summary="@string/address_info"
+            android:title="@string/address"
+            android:singleLine="true"/>
+        <EditTextPreference
+            android:key="xmpp_user_name"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:summary="@string/user_name_info"
+            android:title="@string/user_name" />
+        <EditTextPreference
+            android:inputType="textPassword"
+            android:key="xmpp_password"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:summary="@string/password_info"
+            android:title="@string/password" />
+    </PreferenceCategory>
+    <PreferenceCategory android:title="@string/advanced_settings">
+
+        <EditTextPreference
+            android:defaultValue="5222"
+            android:inputType="number"
+            android:key="xmpp_port"
+            android:selectAllOnFocus="true"
+            android:singleLine="true"
+            android:summary="@string/port_info"
+            android:title="@string/port" />
+    </PreferenceCategory>
 </PreferenceScreen>

@@ -11,7 +11,10 @@ import android.widget.TextView;
 import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.annotation.NonNull;
+import androidx.annotation.Nullable;
 import androidx.navigation.NavController;
+import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -22,11 +25,13 @@ import androidx.appcompat.widget.Toolbar;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.android.AndroidSmackInitializer;
+import org.jivesoftware.smackx.vcardtemp.VCardManager;
 
 import java.io.IOException;
 import java.util.List;
 
 import me.sergiobarriodelavega.xend.room.LastChattedUser;
+import me.sergiobarriodelavega.xend.ui.settings.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity implements View.OnLayoutChangeListener {
 
@@ -42,18 +47,13 @@ public class MainActivity extends AppCompatActivity implements View.OnLayoutChan
 
         Toolbar toolbar = findViewById(R.id.toolbar);
         setSupportActionBar(toolbar);
-        FloatingActionButton fab = findViewById(R.id.fab);
-        fab.setOnClickListener(view -> {
-            Intent i = new Intent(getApplicationContext(), ProfileEditActivity.class);
-            startActivity(i);
-        });
 
         DrawerLayout drawer = findViewById(R.id.drawer_layout);
         NavigationView navigationView = findViewById(R.id.nav_view);
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_chats, R.id.nav_contacts)
+                R.id.nav_chats, R.id.nav_contacts, R.id.nav_settings)
                 .setDrawerLayout(drawer)
                 .build();
         NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);

@@ -15,5 +15,10 @@
         android:name="me.sergiobarriodelavega.xend.ui.users.UsersFragment"
         android:label="@string/menu_contacts"
         tools:layout="@layout/fragment_users" />
+    <activity
+        android:id="@+id/nav_settings"
+        android:label="@string/menu_contacts"
+        android:name="me.sergiobarriodelavega.xend.ui.settings.StartSettingsActivity"
+        />
 
 </navigation>

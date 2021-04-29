@@ -18,6 +18,17 @@
     <string name="select_a_picture">Selecciona una imagen</string>
     <string name="data_saved">Datos guardados</string>
     <string name="delete_recent_chats">Borrar chats recientes</string>
+    <string name="password">Contraseña</string>
+    <string name="server">Servidor</string>
+    <string name="address">Dirección</string>
+    <string name="address_info">Dirección IP o nombre del dominio del servidor</string>
+    <string name="server_configuration">Configuración del servidor</string>
+    <string name="user_name">Nombre de usuario</string>
+    <string name="user_name_info">Nombre de usuario para hacer login.</string>
+    <string name="password_info">La contraseña para el inicio de sesión</string>
+    <string name="advanced_settings">Configuración avanzada</string>
+    <string name="port">Puerto</string>
+    <string name="port_info">Puerto para la conexión con el servidor</string>
 
     <string name="menu_chats">Chats</string>
     <string name="menu_contacts">Contactos</string>
