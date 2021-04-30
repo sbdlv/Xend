@@ -1,18 +1,12 @@
 package me.sergiobarriodelavega.xend;
 
-import android.content.Context;
 import android.content.Intent;
-import android.content.SharedPreferences;
 import android.graphics.drawable.AnimatedVectorDrawable;
-import android.graphics.drawable.AnimationDrawable;
-import android.graphics.drawable.Drawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.preference.PreferenceManager;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -22,9 +16,6 @@ import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
 
 import java.io.IOException;
-import java.util.List;
-
-import me.sergiobarriodelavega.xend.entities.XMPPUser;
 
 public class SplashScreen extends AppCompatActivity {
 
@@ -37,10 +28,13 @@ public class SplashScreen extends AppCompatActivity {
         ivSplashLogo = findViewById(R.id.ivSplashLogo);
 
         LayerDrawable ld = (LayerDrawable) getWindow().getDecorView().getBackground();
-        AnimatedVectorDrawable ad = (AnimatedVectorDrawable) ld.findDrawableByLayerId(R.id.drawable_anim);
+        AnimatedVectorDrawable ad = (AnimatedVectorDrawable) ld.findDrawableByLayerId(R.id.splash_animated_vector_drawable);
         ad.start();
 
-        new MakeConnection().execute();
+        //new MakeConnection().execute();
+
+        Intent i = new Intent(this, SetupWizardServerActivity.class);
+        startActivity(i);
     }
 
     private class MakeConnection extends AsyncTask<Void, Void, Void> {

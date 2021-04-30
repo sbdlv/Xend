@@ -28,6 +28,8 @@
             android:theme="@style/AppTheme.NoActionBar"></activity>
         <activity android:name=".ProfileEditActivity"></activity>
         <activity android:name=".ui.settings.StartSettingsActivity"></activity>
+        <activity android:name=".SetupWizardServerActivity"
+            android:theme="@style/SetupWizardActivity"></activity>
     </application>
 
 </manifest>

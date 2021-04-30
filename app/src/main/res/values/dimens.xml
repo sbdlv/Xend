@@ -8,4 +8,11 @@
     <dimen name="view_holder_message_text_margin_top_bottom">8dp</dimen>
     <dimen name="view_holder_message_text_margin_left_right">16dp</dimen>
     <dimen name="font_size_chat_message">16sp</dimen>
+    <dimen name="setup_wizard_icon_size">128dp</dimen>
+    <dimen name="setup_wizard_icon_margin_vertical">64dp</dimen>
+    <dimen name="setup_wizard_form_margin_vertical">64dp</dimen>
+    <dimen name="setup_wizard_form_margin_horizontal">32dp</dimen>
+    <dimen name="setup_wizard_button_margin_vertical">32dp</dimen>
+    <dimen name="setup_wizard_button_margin_horizontal">32dp</dimen>
+    <dimen name="setup_wizard_button_width">256dp</dimen>
 </resources>

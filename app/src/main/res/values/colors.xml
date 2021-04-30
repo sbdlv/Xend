@@ -4,4 +4,6 @@
     <color name="colorPrimaryDark">#01477A</color>
     <color name="colorAccent">#49B2FD</color>
     <color name="localMessageBackground">#BDBEBF</color>
+    <color name="primaryButtonColor">#fff</color>
+    <color name="primaryIcon">#777</color>
 </resources>
