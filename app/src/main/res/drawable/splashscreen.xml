@@ -2,12 +2,11 @@
 <layer-list xmlns:android="http://schemas.android.com/apk/res/android">
     <item android:drawable="@color/colorPrimary"/>
 
-    <item android:drawable="@drawable/ic_xend_icon_white_no_bg"
+    <item android:drawable="@drawable/splash_anim"
         android:gravity="center"
         android:height="140dp"
         android:width="140dp"
-        android:duration="10000"
-        android:state_activated="true">
+        android:id="@+id/drawable_anim">
     </item>
 
 </layer-list>

@@ -2,20 +2,15 @@ package me.sergiobarriodelavega.xend;
 
 import android.content.Intent;
 import android.os.Bundle;
-import android.os.strictmode.NonSdkApiUsedViolation;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
 import android.widget.TextView;
 
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 import com.google.android.material.navigation.NavigationView;
 
-import androidx.annotation.NonNull;
-import androidx.annotation.Nullable;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
-import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
 import androidx.navigation.ui.AppBarConfiguration;
 import androidx.navigation.ui.NavigationUI;
@@ -26,13 +21,8 @@ import androidx.appcompat.widget.Toolbar;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.android.AndroidSmackInitializer;
-import org.jivesoftware.smackx.vcardtemp.VCardManager;
 
 import java.io.IOException;
-import java.util.List;
-
-import me.sergiobarriodelavega.xend.room.LastChattedUser;
-import me.sergiobarriodelavega.xend.ui.settings.SettingsFragment;
 
 public class MainActivity extends AppCompatActivity implements View.OnLayoutChangeListener {
 
@@ -93,7 +83,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLayoutChan
                 App.getDb(getApplicationContext()).lastChattedUsersDAO().deleteAll();
 
                 //Notify to ChatsFragment to update the recycler
-                Intent i = new Intent(LocalBroadcast.RECENT_CHATS_DELETED);
+                Intent i = new Intent(LocalBroadcastsEnum.RECENT_CHATS_DELETED);
                 LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
             }
         }).start();

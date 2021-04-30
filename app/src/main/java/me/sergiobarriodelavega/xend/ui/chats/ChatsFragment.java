@@ -22,7 +22,7 @@ import java.util.ArrayList;
 import java.util.List;
 
 import me.sergiobarriodelavega.xend.App;
-import me.sergiobarriodelavega.xend.LocalBroadcast;
+import me.sergiobarriodelavega.xend.LocalBroadcastsEnum;
 import me.sergiobarriodelavega.xend.R;
 import me.sergiobarriodelavega.xend.entities.XMPPUser;
 import me.sergiobarriodelavega.xend.listeners.StartChatListener;
@@ -90,7 +90,7 @@ public class ChatsFragment extends Fragment {
                 };
 
                 LocalBroadcastManager.getInstance(getContext()).registerReceiver(broadcastReceiverChatsDeleted,
-                        new IntentFilter(LocalBroadcast.RECENT_CHATS_DELETED));
+                        new IntentFilter(LocalBroadcastsEnum.RECENT_CHATS_DELETED));
             }
 
         }
