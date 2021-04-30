@@ -31,6 +31,7 @@
     <string name="port_info">Puerto para la conexión con el servidor</string>
     <string name="continue_text">Continuar</string>
     <string name="go_back">Volver</string>
+    <string name="preferences_xmpp_config">xmpp_config</string>
 
     <string name="menu_chats">Chats</string>
     <string name="menu_contacts">Contactos</string>

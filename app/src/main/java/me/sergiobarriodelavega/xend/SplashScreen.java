@@ -1,6 +1,7 @@
 package me.sergiobarriodelavega.xend;
 
 import android.content.Intent;
+import android.content.SharedPreferences;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.AsyncTask;
@@ -31,10 +32,14 @@ public class SplashScreen extends AppCompatActivity {
         AnimatedVectorDrawable ad = (AnimatedVectorDrawable) ld.findDrawableByLayerId(R.id.splash_animated_vector_drawable);
         ad.start();
 
-        //new MakeConnection().execute();
-
-        Intent i = new Intent(this, SetupWizardServerActivity.class);
-        startActivity(i);
+        SharedPreferences s = getApplicationContext().getSharedPreferences(getString(R.string.preferences_xmpp_config), MODE_PRIVATE);
+        if(s.getString("address",null) == null){
+            Intent i = new Intent(this, SetupWizardServerActivity.class);
+            startActivity(i);
+            finish();
+        }else {
+            new MakeConnection().execute();
+        }
     }
 
     private class MakeConnection extends AsyncTask<Void, Void, Void> {

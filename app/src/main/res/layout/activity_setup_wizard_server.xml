@@ -11,7 +11,7 @@
         android:layout_height="match_parent">
 
         <TextView
-            android:id="@+id/textView"
+            android:id="@+id/tvSectionTitle"
             style="@style/SetupWizardSectionTitle"
             android:layout_width="wrap_content"
             android:layout_height="wrap_content"
@@ -22,21 +22,21 @@
             app:layout_constraintTop_toTopOf="parent" />
 
         <ImageView
-            android:id="@+id/imageView2"
+            android:id="@+id/ivWizardIcon"
             style="@style/SetupWizzardIcon"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/textView"
-            app:srcCompat="@drawable/ic_at_sign" />
+            app:layout_constraintTop_toBottomOf="@+id/tvSectionTitle"
+            app:srcCompat="@drawable/ic_server" />
 
         <LinearLayout
-            android:id="@+id/linearLayout2"
+            android:id="@+id/llFormWrapper"
             style="@style/SetupWizardFormWrapper"
             android:orientation="vertical"
-            app:layout_constraintBottom_toTopOf="@+id/button2"
+            app:layout_constraintBottom_toTopOf="@+id/btnWizardNext"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
-            app:layout_constraintTop_toBottomOf="@+id/imageView2"
+            app:layout_constraintTop_toBottomOf="@+id/ivWizardIcon"
             app:layout_constraintVertical_bias="0.0">
 
             <com.google.android.material.textfield.TextInputLayout
@@ -51,7 +51,7 @@
         </LinearLayout>
 
         <Button
-            android:id="@+id/button"
+            android:id="@+id/btnWizardGoBack"
             style="@style/SetupWizardButton.Secondary"
             android:text="@string/go_back"
             app:layout_constraintBottom_toBottomOf="parent"
@@ -60,10 +60,10 @@
             app:layout_constraintStart_toStartOf="parent" />
 
         <Button
-            android:id="@+id/button2"
+            android:id="@+id/btnWizardNext"
             style="@style/SetupWizardButton.Primary"
             android:text="@string/continue_text"
-            app:layout_constraintBottom_toTopOf="@+id/button"
+            app:layout_constraintBottom_toTopOf="@+id/btnWizardGoBack"
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent" />
 
