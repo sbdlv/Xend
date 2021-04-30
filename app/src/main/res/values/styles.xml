@@ -181,6 +181,8 @@
         <item name="tint">@color/primaryIcon</item>
     </style>
     <style name="SetupWizardFormWrapper">
+        <item name="android:layout_marginTop">@dimen/setup_wizard_form_margin_vertical</item>
+        <item name="android:layout_marginBottom">@dimen/setup_wizard_form_margin_vertical</item>
         <item name="android:layout_marginLeft">@dimen/setup_wizard_form_margin_horizontal</item>
         <item name="android:layout_marginRight">@dimen/setup_wizard_form_margin_horizontal</item>
         <item name="android:layout_width">match_parent</item>
@@ -189,9 +191,9 @@
     </style>
 
     <style name="SetupWizardButton">
-        <item name="android:layout_marginBottom">@dimen/setup_wizard_button_margin_vertical</item>
         <item name="android:layout_width">@dimen/setup_wizard_button_width</item>
         <item name="android:layout_height">wrap_content</item>
+        <item name="android:layout_marginBottom">@dimen/setup_wizard_button_margin_vertical</item>
     </style>
 
     <style name="SetupWizardButton.Primary">
@@ -201,7 +203,7 @@
 
     <style name="SetupWizardButton.Secondary">
         <item name="android:textColor">@color/primaryButtonColor</item>
-        <item name="layout_constraintBottom_toBottomOf">parent</item>
+        <item name="android:layout_marginBottom">@dimen/setup_wizard_button_margin_vertical_secondary</item>
 
     </style>
 

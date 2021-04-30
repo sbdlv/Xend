@@ -12,7 +12,8 @@
     <dimen name="setup_wizard_icon_margin_vertical">64dp</dimen>
     <dimen name="setup_wizard_form_margin_vertical">64dp</dimen>
     <dimen name="setup_wizard_form_margin_horizontal">32dp</dimen>
-    <dimen name="setup_wizard_button_margin_vertical">32dp</dimen>
+    <dimen name="setup_wizard_button_margin_vertical">16dp</dimen>
+    <dimen name="setup_wizard_button_margin_vertical_secondary">32dp</dimen>
     <dimen name="setup_wizard_button_margin_horizontal">32dp</dimen>
     <dimen name="setup_wizard_button_width">256dp</dimen>
 </resources>
