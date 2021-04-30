@@ -13,6 +13,7 @@ import com.google.android.material.navigation.NavigationView;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
 import androidx.navigation.NavDestination;
 import androidx.navigation.Navigation;
@@ -88,7 +89,12 @@ public class MainActivity extends AppCompatActivity implements View.OnLayoutChan
         new Thread(new Runnable() {
             @Override
             public void run() {
+                //Delete from local DB
                 App.getDb(getApplicationContext()).lastChattedUsersDAO().deleteAll();
+
+                //Notify to ChatsFragment to update the recycler
+                Intent i = new Intent(LocalBroadcast.RECENT_CHATS_DELETED);
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(i);
             }
         }).start();
 

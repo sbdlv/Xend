@@ -56,4 +56,8 @@ public class LastChattedUserAdapter extends RecyclerView.Adapter<LastChattedUser
     public void setOnClickListener(View.OnClickListener onClickListener) {
         this.onClickListener = onClickListener;
     }
+
+    public void clear(){
+        users.clear();
+    }
 }
