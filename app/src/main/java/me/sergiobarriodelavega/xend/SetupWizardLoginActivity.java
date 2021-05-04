@@ -46,6 +46,7 @@ public class SetupWizardLoginActivity extends AppCompatActivity {
             Bundle b = getIntent().getExtras();
             b.putString("username", txtUsername.getText().toString());
             b.putString("password", txtPassword.getText().toString());
+            i.putExtras(b);
 
             startActivity(i);
         }

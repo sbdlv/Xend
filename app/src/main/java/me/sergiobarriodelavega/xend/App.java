@@ -47,7 +47,7 @@ public class App {
         domain = sharedPreferences.getString("domain",null);
         address = sharedPreferences.getString("address",null);
 
-       makeNewConnection(username,password,address,domain);
+        makeNewConnection(username,password,address,domain);
     }
 
     public static void makeNewConnection(String username, String password, String address, String domain) throws InterruptedException, XMPPException, SmackException, IOException {
