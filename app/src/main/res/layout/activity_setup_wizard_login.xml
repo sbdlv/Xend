@@ -1,10 +1,9 @@
 <?xml version="1.0" encoding="utf-8"?>
 <ScrollView xmlns:android="http://schemas.android.com/apk/res/android"
-    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:layout_width="match_parent"
     android:layout_height="match_parent"
+    xmlns:app="http://schemas.android.com/apk/res-auto"
     android:fillViewport="true">
-
     <androidx.constraintlayout.widget.ConstraintLayout
 
         android:layout_width="match_parent"
@@ -17,7 +16,7 @@
             android:layout_height="wrap_content"
             android:layout_marginStart="@dimen/activity_horizontal_margin"
             android:layout_marginTop="@dimen/activity_vertical_margin"
-            android:text="@string/server"
+            android:text="@string/login"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toTopOf="parent" />
 
@@ -27,7 +26,7 @@
             app:layout_constraintEnd_toEndOf="parent"
             app:layout_constraintStart_toStartOf="parent"
             app:layout_constraintTop_toBottomOf="@+id/tvSectionTitle"
-            app:srcCompat="@drawable/ic_server" />
+            app:srcCompat="@drawable/ic_log_in" />
 
         <LinearLayout
             android:id="@+id/llFormWrapper"
@@ -41,29 +40,28 @@
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:errorEnabled="true"
-                style="@style/SetupWizardTextEditWrapper">
+                android:layout_height="match_parent"
+                style="@style/SetupWizardTextEditWrapper"
+                >
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/txtServerAddress"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/address"
-                    android:singleLine="true" />
+                    android:hint="@string/user_name"
+                    android:singleLine="true"
+                    android:id="@+id/txtUserName"/>
             </com.google.android.material.textfield.TextInputLayout>
 
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
-                android:layout_height="wrap_content"
-                app:errorEnabled="true">
+                android:layout_height="match_parent">
 
                 <com.google.android.material.textfield.TextInputEditText
-                    android:id="@+id/txtDomain"
                     android:layout_width="match_parent"
                     android:layout_height="wrap_content"
-                    android:hint="@string/domain"
-                    android:singleLine="true" />
+                    android:hint="@string/password"
+                    android:singleLine="true"
+                    android:id="@+id/txtPassword"/>
             </com.google.android.material.textfield.TextInputLayout>
         </LinearLayout>
 
@@ -86,5 +84,6 @@
             app:layout_constraintStart_toStartOf="parent" />
 
     </androidx.constraintlayout.widget.ConstraintLayout>
+
 
 </ScrollView>

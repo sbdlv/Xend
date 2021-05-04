@@ -28,17 +28,20 @@ public class SplashScreen extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         ivSplashLogo = findViewById(R.id.ivSplashLogo);
 
+        //Utils start
+        App.init(getApplicationContext());
+
         LayerDrawable ld = (LayerDrawable) getWindow().getDecorView().getBackground();
         AnimatedVectorDrawable ad = (AnimatedVectorDrawable) ld.findDrawableByLayerId(R.id.splash_animated_vector_drawable);
         ad.start();
 
         SharedPreferences s = getApplicationContext().getSharedPreferences(getString(R.string.preferences_xmpp_config), MODE_PRIVATE);
-        if(s.getString("address",null) == null){
+        if(s.getBoolean("hasSetup", false)){
+            new MakeConnection().execute();
+        }else {
             Intent i = new Intent(this, SetupWizardServerActivity.class);
             startActivity(i);
             finish();
-        }else {
-            new MakeConnection().execute();
         }
     }
 

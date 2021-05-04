@@ -7,5 +7,6 @@
         android:icon="@drawable/ic_info"
         android:onClick="showProfileInfo"
         android:title="Item"
+        android:iconTint="@color/appBarIcon"
         app:showAsAction="always" />
 </menu>

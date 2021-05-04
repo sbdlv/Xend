@@ -16,4 +16,7 @@
     <dimen name="setup_wizard_button_margin_vertical_secondary">32dp</dimen>
     <dimen name="setup_wizard_button_margin_horizontal">32dp</dimen>
     <dimen name="setup_wizard_button_width">256dp</dimen>
+    <dimen name="setup_wizard_edit_text_wrapper_margin_vertical">8dp</dimen>
+    <dimen name="setup_wizard_connection_drawable_size">164dp</dimen>
+    <dimen name="setup_wizard_connection_drawable_margin_vertical">64dp</dimen>
 </resources>

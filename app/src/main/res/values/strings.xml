@@ -32,6 +32,14 @@
     <string name="continue_text">Continuar</string>
     <string name="go_back">Volver</string>
     <string name="preferences_xmpp_config">xmpp_config</string>
+    <string name="login">Inicio de sesión</string>
+    <string name="domain">Dominio</string>
+    <string name="connecting">Conectando</string>
+
+    <!-- Setup Wizard related -->
+    <string name="invalid_format">Formato invalido</string>
+    <string name="obligatory_field">Campo obligatorio</string>
+    <string name="field_with_spaces_error_msg">Este campo no puede tener espacios</string>
 
     <string name="menu_chats">Chats</string>
     <string name="menu_contacts">Contactos</string>

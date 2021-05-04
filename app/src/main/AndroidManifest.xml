@@ -22,14 +22,22 @@
                 <category android:name="android.intent.category.LAUNCHER" />
             </intent-filter>
         </activity>
-        <activity android:name=".ChatActivity"></activity>
-        <activity android:name=".ProfileInfoActivity"></activity>
-        <activity android:name=".MainActivity"
-            android:theme="@style/AppTheme.NoActionBar"></activity>
-        <activity android:name=".ProfileEditActivity"></activity>
-        <activity android:name=".ui.settings.StartSettingsActivity"></activity>
-        <activity android:name=".SetupWizardServerActivity"
-            android:theme="@style/SetupWizardActivity"></activity>
+        <activity android:name=".ChatActivity" />
+        <activity android:name=".ProfileInfoActivity" />
+        <activity
+            android:name=".MainActivity"
+            android:theme="@style/AppTheme.NoActionBar" />
+        <activity android:name=".ProfileEditActivity" />
+        <activity android:name=".ui.settings.StartSettingsActivity" />
+        <activity
+            android:name=".SetupWizardServerActivity"
+            android:theme="@style/SetupWizardActivity" />
+        <activity
+            android:name=".SetupWizardLoginActivity"
+            android:theme="@style/SetupWizardActivity" />
+        <activity
+            android:name=".SetupWizardMakeConnectionActivity"
+            android:theme="@style/SetupWizardActivity" />
     </application>
 
 </manifest>

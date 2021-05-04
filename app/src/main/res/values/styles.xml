@@ -204,7 +204,17 @@
     <style name="SetupWizardButton.Secondary">
         <item name="android:textColor">@color/primaryButtonColor</item>
         <item name="android:layout_marginBottom">@dimen/setup_wizard_button_margin_vertical_secondary</item>
+    </style>
 
+    <style name="SetupWizardTextEditWrapper">
+        <item name="android:layout_marginBottom">@dimen/setup_wizard_edit_text_wrapper_margin_vertical</item>
+    </style>
+
+    <style name="SetupWizardConnectionDrawable">
+        <item name="android:layout_height">@dimen/setup_wizard_connection_drawable_size</item>
+        <item name="android:layout_width">@dimen/setup_wizard_connection_drawable_size</item>
+        <item name="tint">@color/primaryIcon</item>
+        <item name="android:layout_marginBottom">@dimen/setup_wizard_connection_drawable_margin_vertical</item>
     </style>
 
 
