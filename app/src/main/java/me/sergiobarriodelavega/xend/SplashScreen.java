@@ -52,6 +52,7 @@ public class SplashScreen extends AppCompatActivity {
                 App.getConnection();
                 Intent i = new Intent(SplashScreen.this, MainActivity.class);
                 startActivity(i);
+                finish();
             } catch (InterruptedException e) {
                 e.printStackTrace();
             } catch (XMPPException e) {

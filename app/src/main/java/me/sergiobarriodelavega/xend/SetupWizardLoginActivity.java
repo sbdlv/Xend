@@ -11,6 +11,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 public class SetupWizardLoginActivity extends AppCompatActivity {
     private TextInputEditText txtUsername, txtPassword;
+    public static int MAKE_CONNECTION = 10;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -48,8 +49,12 @@ public class SetupWizardLoginActivity extends AppCompatActivity {
             b.putString("password", txtPassword.getText().toString());
             i.putExtras(b);
 
-            startActivity(i);
+            startActivityForResult(i, MAKE_CONNECTION);
         }
+    }
+
+    public void goBack(View view){
+        finish();
     }
 
     private boolean isNotValidUserName(){
@@ -58,5 +63,15 @@ public class SetupWizardLoginActivity extends AppCompatActivity {
 
     private boolean isNotValidPassword(){
         return Utils.isEmpty(txtPassword) || Utils.hasSpaces(txtPassword);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == SetupWizardMakeConnectionActivity.SUCCESSFUL_CONNECTION){
+            setResult(resultCode);
+            finish();
+        }
     }
 }

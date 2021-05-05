@@ -1,10 +1,12 @@
 package me.sergiobarriodelavega.xend;
 
+import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.AnimatedVectorDrawable;
 import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
+import android.util.Log;
 import android.widget.ImageView;
 import android.widget.Toast;
 
@@ -17,9 +19,12 @@ import org.jivesoftware.smack.XMPPException;
 
 import java.io.IOException;
 import java.util.List;
+import java.util.logging.Logger;
 
 public class SetupWizardMakeConnectionActivity extends AppCompatActivity {
     private ImageView ivConnectionAnim;
+    public static final int ERROR_CONNECTION = 500, SUCCESSFUL_CONNECTION = 200;
+
 
     @RequiresApi(api = Build.VERSION_CODES.LOLLIPOP)
     @Override
@@ -39,27 +44,22 @@ public class SetupWizardMakeConnectionActivity extends AppCompatActivity {
 
 
         //Make new connection
-        runOnUiThread(new Thread(new Runnable() {
+        new Thread(new Runnable() {
             @Override
             public void run() {
                 try {
                     App.makeNewConnection(username, password, address, domain);
-                    Toast.makeText(SetupWizardMakeConnectionActivity.this, "Connection OK", Toast.LENGTH_LONG).show();
-                    //If successful connection, save preferences
+
+                    //All ok, start Main Activity
                     Intent i = new Intent(SetupWizardMakeConnectionActivity.this, MainActivity.class);
                     startActivity(i);
+                    setResult(SUCCESSFUL_CONNECTION);
                     finish();
-                    System.exit(0);
-                } catch (InterruptedException e) {
-                    e.printStackTrace();
-                } catch (XMPPException e) {
-                    e.printStackTrace();
-                } catch (SmackException e) {
-                    e.printStackTrace();
-                } catch (IOException e) {
-                    e.printStackTrace();
+                } catch (Exception e) {
+                    setResult(ERROR_CONNECTION);
+                    finish();
                 }
             }
-        }));
+        }).start();
     }
 }

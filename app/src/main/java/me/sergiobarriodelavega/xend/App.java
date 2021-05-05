@@ -51,6 +51,7 @@ public class App {
     }
 
     public static void makeNewConnection(String username, String password, String address, String domain) throws InterruptedException, XMPPException, SmackException, IOException {
+        AbstractXMPPConnection temporalConnection;
         XMPPTCPConnectionConfiguration config = XMPPTCPConnectionConfiguration.builder()
                 .setUsernameAndPassword(username, password)
                 .setHostAddress(InetAddress.getByName(address))
@@ -59,8 +60,24 @@ public class App {
                 .setSecurityMode(ConnectionConfiguration.SecurityMode.disabled)
                 .build();
 
-        connection = new XMPPTCPConnection(config);
-        connection.connect().login();
+        temporalConnection = new XMPPTCPConnection(config);
+        temporalConnection.connect().login();
+
+        //If all went well
+        if (connection != null)
+        connection.disconnect();
+
+        connection = temporalConnection;
+
+        //If successful connection, save preferences
+        SharedPreferences sharedPreferences = context.getSharedPreferences(context.getString(R.string.preferences_xmpp_config), Context.MODE_PRIVATE);
+        SharedPreferences.Editor editor = sharedPreferences.edit();
+        editor.putString("username",username);
+        editor.putString("password",password);
+        editor.putString("domain",domain);
+        editor.putString("address",address);
+        editor.putBoolean("hasSetup", true);
+        editor.commit();
     }
 
     public static XendDatabase getDb(Context context) {

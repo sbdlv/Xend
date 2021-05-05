@@ -11,7 +11,7 @@ import com.google.android.material.textfield.TextInputEditText;
 
 public class SetupWizardServerActivity extends AppCompatActivity {
     private TextInputEditText textServerAddress, txtDomain;
-
+    private static int CONTINUE_SETUP = 10;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -38,7 +38,6 @@ public class SetupWizardServerActivity extends AppCompatActivity {
 
     }
 
-
     public void continueSetup(View view){
         //Check formats
         if(!isNotValidAddressField() && !isNotValidDomain()){
@@ -47,8 +46,12 @@ public class SetupWizardServerActivity extends AppCompatActivity {
             i.putExtra("address", textServerAddress.getText().toString());
             i.putExtra("domain", txtDomain.getText().toString());
 
-            startActivity(i);
+            startActivityForResult(i, CONTINUE_SETUP);
         }
+    }
+
+    public void goBack(View view){
+        finish();
     }
 
     /**
@@ -65,5 +68,14 @@ public class SetupWizardServerActivity extends AppCompatActivity {
      */
     private boolean isNotValidDomain(){
         return Utils.isEmpty(txtDomain) || Utils.hasSpaces(txtDomain);
+    }
+
+    @Override
+    protected void onActivityResult(int requestCode, int resultCode, @Nullable Intent data) {
+        super.onActivityResult(requestCode, resultCode, data);
+
+        if(resultCode == SetupWizardMakeConnectionActivity.SUCCESSFUL_CONNECTION){
+            finish();
+        }
     }
 }
