@@ -3,6 +3,8 @@ package me.sergiobarriodelavega.xend;
 import android.app.Application;
 import android.content.Context;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
@@ -116,5 +118,20 @@ public class App {
         VCard vCard = getvCardManager().loadVCard(JidCreate.entityBareFrom(jid));
         users.put(jid, vCard);
         return vCard;
+    }
+
+    /**
+     * Converts the byte[] from vcard´s getAvatar() to a Bitmap
+     * @param vCard
+     * @return
+     */
+    public static Bitmap avatarToBitmap(VCard vCard){
+        byte[] userPictureRaw = vCard.getAvatar();
+
+        if(userPictureRaw != null){
+            return BitmapFactory.decodeByteArray(userPictureRaw, 0, userPictureRaw.length);
+        }
+
+        return null;
     }
 }

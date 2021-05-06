@@ -1,15 +1,24 @@
 package me.sergiobarriodelavega.xend.recyclers;
 
+import android.graphics.Bitmap;
+import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.jivesoftware.smack.SmackException;
+import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smackx.vcardtemp.packet.VCard;
+
+import java.io.IOException;
 import java.util.List;
 
+import me.sergiobarriodelavega.xend.App;
 import me.sergiobarriodelavega.xend.R;
 import me.sergiobarriodelavega.xend.room.RecentChatUser;
 
@@ -36,6 +45,24 @@ public class RecentChatUserAdapter extends RecyclerView.Adapter<RecentChatUserAd
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         RecentChatUser user = users.get(position);
         holder.tvUserName.setText(user.jid);
+
+        //Set User Picture
+        try {
+            VCard vCard = App.getXMPPUser(user.jid);
+            Bitmap userPicture = App.avatarToBitmap(vCard);
+            if (userPicture != null){
+                holder.ivUserPicture.setImageBitmap(userPicture);
+            }
+
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (XMPPException e) {
+            e.printStackTrace();
+        } catch (SmackException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
     }
 
     @Override
@@ -45,11 +72,13 @@ public class RecentChatUserAdapter extends RecyclerView.Adapter<RecentChatUserAd
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
         private final TextView tvUserName;
+        private final ImageView ivUserPicture;
 
         public ViewHolder(View view) {
             super(view);
             // Define click listener for the ViewHolder's View
             tvUserName = view.findViewById(R.id.tvUserName);
+            ivUserPicture = view.findViewById(R.id.ivUserPicture);
         }
     }
 

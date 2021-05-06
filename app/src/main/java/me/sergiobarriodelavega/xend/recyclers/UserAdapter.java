@@ -59,10 +59,9 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
             holder.tvUserJID.setText(jid);
 
             //Picture
-            byte[] userPictureRaw = user.getAvatar();
-            if (userPictureRaw != null){
-                Bitmap bmp = BitmapFactory.decodeByteArray(userPictureRaw, 0, userPictureRaw.length);
-                holder.ivUserPicture.setImageBitmap(bmp);
+            Bitmap userPicture = App.avatarToBitmap(user);
+            if (userPicture != null){
+                holder.ivUserPicture.setImageBitmap(userPicture);
             }
 
         } catch (InterruptedException e) {

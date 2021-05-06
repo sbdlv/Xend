@@ -1,10 +1,12 @@
 package me.sergiobarriodelavega.xend;
 
 import android.content.Intent;
+import android.graphics.Bitmap;
 import android.os.Bundle;
 import android.view.MenuItem;
 import android.view.View;
 import android.view.Menu;
+import android.widget.ImageView;
 import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
@@ -21,6 +23,7 @@ import androidx.appcompat.widget.Toolbar;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.android.AndroidSmackInitializer;
+import org.jivesoftware.smackx.vcardtemp.packet.VCard;
 
 import java.io.IOException;
 
@@ -96,10 +99,19 @@ public class MainActivity extends AppCompatActivity implements View.OnLayoutChan
     public void onLayoutChange(View view, int i, int i1, int i2, int i3, int i4, int i5, int i6, int i7) {
         TextView tvUserNameHeader = view.findViewById(R.id.tvUserNameHeader);
         TextView tvUserJIDHeader = view.findViewById(R.id.tvUserJIDHeader);
+        ImageView ivUserPicture = view.findViewById(R.id.ivUserPicture);
 
+        //Set user data on the header
         try {
-            //TODO UserName loading too
-            tvUserJIDHeader.setText(App.getConnection().getUser().asBareJid().toString());
+            String jid = App.getConnection().getUser().asBareJid().toString();
+
+            VCard vCard = App.getXMPPUser(jid);
+            tvUserJIDHeader.setText(jid);
+
+            Bitmap userPicture = App.avatarToBitmap(vCard);
+            if (userPicture != null) {
+                ivUserPicture.setImageBitmap(userPicture);
+            }
         } catch (InterruptedException e) {
             e.printStackTrace();
         } catch (XMPPException e) {
