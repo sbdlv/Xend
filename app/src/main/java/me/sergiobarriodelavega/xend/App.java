@@ -13,16 +13,23 @@ import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
+import org.jivesoftware.smackx.vcardtemp.VCardManager;
+import org.jivesoftware.smackx.vcardtemp.packet.VCard;
+import org.jxmpp.jid.impl.JidCreate;
 
 import java.io.IOException;
 import java.net.InetAddress;
+import java.util.HashMap;
 
+import me.sergiobarriodelavega.xend.entities.XMPPUser;
 import me.sergiobarriodelavega.xend.room.XendDatabase;
 
 public class App {
     private static AbstractXMPPConnection connection;
     private static XendDatabase db;
     private static Context context;
+    private static HashMap<String, VCard> users = new HashMap<>();
+    private static VCardManager vCardManager;
 
     public static void init(Context context){
         App.context = context;
@@ -80,11 +87,34 @@ public class App {
         editor.commit();
     }
 
+    private static VCardManager getvCardManager() throws InterruptedException, IOException, SmackException, XMPPException {
+        if(vCardManager == null){
+            vCardManager = VCardManager.getInstanceFor(getConnection());
+        }
+        return vCardManager;
+    }
+
     public static XendDatabase getDb(Context context) {
         if(db == null){
             db = Room.databaseBuilder(context,
                     XendDatabase.class, "xend").build();
         }
         return db;
+    }
+
+    /**
+     * Gets a VCard by JID
+     * @param jid
+     * @return
+     */
+    public static VCard getXMPPUser(String jid) throws InterruptedException, XMPPException, SmackException, IOException {
+        //If user is not saved on the map, make query
+        if(users.containsKey(jid)){
+            return users.get(jid);
+        }
+
+        VCard vCard = getvCardManager().loadVCard(JidCreate.entityBareFrom(jid));
+        users.put(jid, vCard);
+        return vCard;
     }
 }

@@ -56,40 +56,43 @@
                 app:drawableLeftCompat="@drawable/ic_user" />
 
             <TextView
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            tools:text="@string/first_name" />
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/first_name" />
 
             <EditText
                 android:id="@+id/txtFirstName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                style="@style/ProfileEditEditText"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="@string/middel_name" />
+                android:text="@string/middel_name" />
 
             <EditText
                 android:id="@+id/txtMiddleName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                style="@style/ProfileEditEditText"/>
 
             <TextView
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                tools:text="@string/last_name" />
+                android:text="@string/last_name" />
 
             <EditText
                 android:id="@+id/txtLastName"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 android:ems="10"
-                android:inputType="textPersonName" />
+                android:inputType="textPersonName"
+                />
 
 
         </LinearLayout>

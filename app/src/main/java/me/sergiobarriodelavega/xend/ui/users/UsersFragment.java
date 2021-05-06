@@ -30,7 +30,6 @@ import java.util.List;
 
 import me.sergiobarriodelavega.xend.App;
 import me.sergiobarriodelavega.xend.R;
-import me.sergiobarriodelavega.xend.entities.XMPPUser;
 import me.sergiobarriodelavega.xend.listeners.StartChatListener;
 import me.sergiobarriodelavega.xend.recyclers.UserAdapter;
 
@@ -39,7 +38,6 @@ public class UsersFragment extends Fragment implements SwipeRefreshLayout.OnRefr
     private View view;
     private ProgressBar pbUsers;
     private UserAdapter userAdapter;
-    private ArrayList<XMPPUser> usersList;
     private TextView tvNoUsersFound;
     private SwipeRefreshLayout swRefreshUsers;
 
@@ -63,13 +61,13 @@ public class UsersFragment extends Fragment implements SwipeRefreshLayout.OnRefr
         new ScanUsersTask().execute();
     }
 
-    private class ScanUsersTask extends AsyncTask<Void, Void, List<XMPPUser>>{
+    private class ScanUsersTask extends AsyncTask<Void, Void, ArrayList<String>>{
 
         @Override
-        protected List<XMPPUser> doInBackground(Void... voids) {
+        protected ArrayList<String> doInBackground(Void... voids) {
             //XMPP Users query
             //TODO Better search form structure and better managing of Exceptions (Warning messages)
-            ArrayList<XMPPUser> users = new ArrayList<>();
+            ArrayList<String> jids = new ArrayList<>();
             UserSearchManager userSearchManager;
             try {
 
@@ -88,7 +86,7 @@ public class UsersFragment extends Fragment implements SwipeRefreshLayout.OnRefr
                     userName = row.getValues("Username").toString();
                     userName = userName.substring(1, userName.length() - 1);
 
-                    users.add(new XMPPUser(userName,jid));
+                    jids.add(jid);
                 }
             } catch (InterruptedException e) {
                 e.printStackTrace();
@@ -101,22 +99,21 @@ public class UsersFragment extends Fragment implements SwipeRefreshLayout.OnRefr
             } catch (Exception e){
                 e.printStackTrace();
             }
-            return users;
+            return jids;
         }
 
         @Override
-        protected void onPostExecute(List<XMPPUser> users) {
-            usersList = (ArrayList<XMPPUser>) users;
-
-            if(usersList.size() == 0){
+        protected void onPostExecute(ArrayList<String> jids) {
+            if(jids.size() == 0){
                 tvNoUsersFound.setVisibility(View.VISIBLE);
             } else {
                 tvNoUsersFound.setVisibility(View.GONE);
                 recycler = view.findViewById(R.id.recyclerUsers);
 
                 //Recycler
-                userAdapter = new UserAdapter(users);
-                userAdapter.setOnClickListener(new StartChatListener(usersList,recycler, UsersFragment.this));
+                StartChatListener startChatListener = new StartChatListener(jids ,recycler, UsersFragment.this);
+                userAdapter = new UserAdapter(jids);
+                userAdapter.setOnClickListener(startChatListener);
                 recycler.setAdapter(userAdapter);
                 recycler.setLayoutManager(new LinearLayoutManager(getContext()));
             }

@@ -9,6 +9,7 @@ import android.os.Bundle;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
+import android.widget.LinearLayout;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -27,12 +28,14 @@ import me.sergiobarriodelavega.xend.R;
 import me.sergiobarriodelavega.xend.entities.XMPPUser;
 import me.sergiobarriodelavega.xend.listeners.StartChatListener;
 import me.sergiobarriodelavega.xend.recyclers.LastChattedUserAdapter;
+import me.sergiobarriodelavega.xend.room.LastChattedUser;
 
 public class ChatsFragment extends Fragment {
     private LastChattedUserAdapter userAdapter;
     private RecyclerView recycler;
     private View view;
     private BroadcastReceiver broadcastReceiverChatsDeleted;
+    private LinearLayout llNoRecentChats;
 
     public View onCreateView(@NonNull LayoutInflater inflater,
                              ViewGroup container, Bundle savedInstanceState) {
@@ -52,31 +55,32 @@ public class ChatsFragment extends Fragment {
         super.onDestroy();
     }
 
-    private class LoadLastUsers extends AsyncTask<Void, Void, List<String>> {
+    private class LoadLastUsers extends AsyncTask<Void, Void, Void> {
 
         @Override
-        protected List<String> doInBackground(Void... voids) {
-            return  App.getDb(getContext()).lastChattedUsersDAO().getAllLastChattedUsers();
-        }
+        protected Void doInBackground(Void... voids) {
+            List<LastChattedUser> lastChattedUsers = App.getDb(getContext()).lastChattedUsersDAO().getAllLastChattedUsers();
 
-        @Override
-        protected void onPostExecute(List<String> usersJIDs) {
-            List<XMPPUser> usersList;
+            llNoRecentChats = view.findViewById(R.id.llNoRecentChats);
 
-            if(usersJIDs == null ||usersJIDs.size() == 0){
-                Toast.makeText(getContext(), "No recent chats", Toast.LENGTH_SHORT);
+            if(lastChattedUsers == null ||lastChattedUsers.size() == 0){
+                llNoRecentChats.setVisibility(View.VISIBLE);
             } else {
-                usersList = new ArrayList<>();
-
-                for(String jid : usersJIDs){
-                    usersList.add(new XMPPUser(jid));
-                }
-
                 recycler = view.findViewById(R.id.recylcerLastChattedUsers);
 
+                //Extract JIDs
+                ArrayList<String> jids = new ArrayList<>();
+
+                for(LastChattedUser user: lastChattedUsers){
+                    jids.add(user.jid);
+                }
+
+                //Listener
+                StartChatListener startChatListener = new StartChatListener(jids, recycler, ChatsFragment.this);
+
                 //Recycler
-                userAdapter = new LastChattedUserAdapter(usersList);
-                userAdapter.setOnClickListener(new StartChatListener(usersList, recycler, ChatsFragment.this));
+                userAdapter = new LastChattedUserAdapter(lastChattedUsers);
+                userAdapter.setOnClickListener(startChatListener);
                 recycler.setAdapter(userAdapter);
                 recycler.setLayoutManager(new LinearLayoutManager(getContext()));
 
@@ -86,6 +90,7 @@ public class ChatsFragment extends Fragment {
                     public void onReceive(Context context, Intent intent) {
                         userAdapter.clear();
                         userAdapter.notifyDataSetChanged();
+                        llNoRecentChats.setVisibility(View.VISIBLE);
                     }
                 };
 
@@ -93,6 +98,7 @@ public class ChatsFragment extends Fragment {
                         new IntentFilter(LocalBroadcastsEnum.RECENT_CHATS_DELETED));
             }
 
+            return null;
         }
     }
 }

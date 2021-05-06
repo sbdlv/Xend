@@ -125,7 +125,6 @@ public class ProfileEditActivity extends AppCompatActivity {
                     ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
                     bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
                     vCard.setAvatar(byteArrayOutputStream.toByteArray());
-
                 } catch (Exception e) {
                     e.printStackTrace();
                     Toast.makeText(this, "Error while changing picture", Toast.LENGTH_SHORT).show();

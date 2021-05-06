@@ -28,6 +28,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLayoutChan
 
     private AppBarConfiguration mAppBarConfiguration;
     private NavigationView navigationView;
+    private NavController navController;
 
     @Override
     protected void onCreate(Bundle savedInstanceState) {
@@ -47,7 +48,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLayoutChan
                 R.id.nav_chats, R.id.nav_contacts, R.id.nav_settings)
                 .setDrawerLayout(drawer)
                 .build();
-        NavController navController = Navigation.findNavController(this, R.id.nav_host_fragment);
+        navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
 
@@ -108,5 +109,9 @@ public class MainActivity extends AppCompatActivity implements View.OnLayoutChan
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    public void startChatting(View view){
+        navController.navigate(R.id.nav_contacts);
     }
 }

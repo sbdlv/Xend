@@ -12,13 +12,14 @@ import java.util.List;
 
 import me.sergiobarriodelavega.xend.R;
 import me.sergiobarriodelavega.xend.entities.XMPPUser;
+import me.sergiobarriodelavega.xend.room.LastChattedUser;
 
 public class LastChattedUserAdapter extends RecyclerView.Adapter<LastChattedUserAdapter.ViewHolder>{
 
-    private List<XMPPUser> users;
+    private List<LastChattedUser> users;
     private View.OnClickListener onClickListener;
 
-    public LastChattedUserAdapter(List<XMPPUser> users) {
+    public LastChattedUserAdapter(List<LastChattedUser> users) {
         this.users = users;
     }
 
@@ -34,8 +35,8 @@ public class LastChattedUserAdapter extends RecyclerView.Adapter<LastChattedUser
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        XMPPUser user = users.get(position);
-        holder.tvUserName.setText(user.getJid());
+        LastChattedUser user = users.get(position);
+        holder.tvUserName.setText(user.jid);
     }
 
     @Override

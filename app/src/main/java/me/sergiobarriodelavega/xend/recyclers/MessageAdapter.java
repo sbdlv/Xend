@@ -21,8 +21,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     private static final int LOCAL_MSG = 0, REMOTE_MSG = 1;
 
     public MessageAdapter(ArrayList<Message> messages, Jid remoteUserJID) {
-        this.messages = messages;
         this.remoteUserJID = remoteUserJID;
+        this.messages = messages;
     }
 
     @NonNull
@@ -32,9 +32,9 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
         // Create a new view, which defines the UI of the list item
         if(viewType == LOCAL_MSG){
-            layoutViewHolderResID = R.layout.viewholder_message;
-        } else {
             layoutViewHolderResID = R.layout.viewholder_local_message;
+        } else {
+            layoutViewHolderResID = R.layout.viewholder_message;
         }
 
         View view = LayoutInflater.from(parent.getContext())
@@ -66,9 +66,10 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
     @Override
     public int getItemViewType(int position) {
-        if(messages.get(position).getTo().equals(remoteUserJID)){
-            return REMOTE_MSG;
+        //Check BareJIDs to specify the message type
+        if(messages.get(position).getTo().asBareJid().equals(remoteUserJID)){
+            return LOCAL_MSG;
         }
-        return LOCAL_MSG;
+        return REMOTE_MSG;
     }
 }

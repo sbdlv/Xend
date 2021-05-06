@@ -20,7 +20,6 @@ import org.jivesoftware.smackx.vcardtemp.packet.VCard;
 import org.jxmpp.jid.impl.JidCreate;
 
 import java.io.IOException;
-import java.util.List;
 
 import me.sergiobarriodelavega.xend.entities.XMPPUser;
 
@@ -28,7 +27,7 @@ public class ProfileInfoActivity extends AppCompatActivity {
     private TextView tvProfileUserName, tvProfileName;
     private ImageView ivProfileImage;
 
-    private XMPPUser user;
+    private String userJID;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -37,10 +36,11 @@ public class ProfileInfoActivity extends AppCompatActivity {
         setContentView(R.layout.activity_profile_info);
 
         //Bundle
-        user = (XMPPUser) getIntent().getExtras().getSerializable("user");
+        userJID = getIntent().getExtras().getString("user");
 
         //Toolbar
-        getSupportActionBar().setTitle(user.getJid());
+        //user = App.getXMPPUser(userJID);
+        getSupportActionBar().setTitle(userJID);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
         //Views
@@ -61,7 +61,7 @@ public class ProfileInfoActivity extends AppCompatActivity {
 
             try {
                 vCardManager = VCardManager.getInstanceFor(App.getConnection());
-                vCard = vCardManager.loadVCard(JidCreate.entityBareFrom(user.getJid()));
+                vCard = vCardManager.loadVCard(JidCreate.entityBareFrom(userJID));
 
                 return vCard;
             } catch (InterruptedException e) {
@@ -84,14 +84,10 @@ public class ProfileInfoActivity extends AppCompatActivity {
             }
 
             //Show data
-            tvProfileUserName.setText(user.getJid());
+            tvProfileUserName.setText(userJID);
             //If user has no VCard set, use the named used during registration, if not, use undefined name string resource
             if(getFullName(vCard) == null){
-                if(user.getUserName() == null){
-                    tvProfileName.setText(R.string.user_no_name);
-                } else {
-                    tvProfileName.setText(user.getUserName());
-                }
+                tvProfileName.setText(userJID);
             } else {
                 tvProfileName.setText(getFullName(vCard));
             }

@@ -1,6 +1,5 @@
 package me.sergiobarriodelavega.xend;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.os.Bundle;
 import android.view.KeyEvent;
@@ -16,13 +15,8 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.appcompat.view.menu.ActionMenuItem;
-import androidx.appcompat.view.menu.ActionMenuItemView;
-import androidx.appcompat.widget.Toolbar;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
-
-import com.google.android.material.floatingactionbutton.FloatingActionButton;
 
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
@@ -32,6 +26,7 @@ import org.jivesoftware.smack.chat2.IncomingChatMessageListener;
 import org.jivesoftware.smack.chat2.OutgoingChatMessageListener;
 import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.packet.MessageBuilder;
+import org.jivesoftware.smackx.vcardtemp.packet.VCard;
 import org.jxmpp.jid.EntityBareJid;
 import org.jxmpp.jid.impl.JidCreate;
 import org.jxmpp.stringprep.XmppStringprepException;
@@ -39,7 +34,7 @@ import org.jxmpp.stringprep.XmppStringprepException;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.List;
+import java.util.Date;
 import java.util.Objects;
 
 import me.sergiobarriodelavega.xend.entities.XMPPUser;
@@ -52,75 +47,83 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
     private MessageAdapter messageAdapter;
     private EditText txtChat;
     private Chat chat;
-    private XMPPUser user;
+    private String userJID;
     private LastChattedUser lastChattedInfo;
+    private VCard remoteUser;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        user = (XMPPUser) getIntent().getSerializableExtra("user");
+        userJID = getIntent().getStringExtra("user");
 
-        lastChattedInfo = new LastChattedUser(user.getJid());
+        lastChattedInfo = new LastChattedUser(userJID);
 
         //TODO Old messages should be loaded if exists
         messages = new ArrayList<>();
 
         //Toolbar
-        if(user.getUserName() == null){
-            Objects.requireNonNull(getSupportActionBar()).setTitle(user.getJid());
-        } else {
-            Objects.requireNonNull(getSupportActionBar()).setTitle(user.getUserName()); //TODO Should load full name from vCard
-            getSupportActionBar().setSubtitle(user.getJid());
-        }
-
-        getSupportActionBar().setDisplayHomeAsUpEnabled(true);
-
-        //Find views
-        txtChat = findViewById(R.id.txtChat);
-        RecyclerView rvMessages = findViewById(R.id.rvMessages);
-
-        //Chat message
-        txtChat.setOnEditorActionListener(this);
-
-        //Recycler
         try {
-            messageAdapter = new MessageAdapter(messages, JidCreate.from(user.getJid()));
+            remoteUser = App.getXMPPUser(userJID);
 
-            rvMessages.setAdapter(messageAdapter);
-            rvMessages.setLayoutManager(new LinearLayoutManager(this));
+            if(remoteUser.getFirstName() == null){
+                Objects.requireNonNull(getSupportActionBar()).setTitle(userJID);
+            } else {
+                Objects.requireNonNull(getSupportActionBar()).setTitle(remoteUser.getFirstName()); //TODO Should load full name from vCard
+                getSupportActionBar().setSubtitle(userJID);
+            }
 
-            runOnUiThread(new Runnable() {
-                @Override
-                public void run() {
-                    try  {
-                        //Chat
-                        ChatManager chatManager = ChatManager.getInstanceFor(App.getConnection());
-                        chatManager.addIncomingListener(ChatActivity.this);
-                        chatManager.addOutgoingListener(ChatActivity.this);
+            getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
-                        EntityBareJid jid = JidCreate.entityBareFrom(user.getJid());
-                        chat = chatManager.chatWith(jid);
+            //Find views
+            txtChat = findViewById(R.id.txtChat);
+            RecyclerView rvMessages = findViewById(R.id.rvMessages);
 
-                    } catch (SmackException.EndpointConnectionException | UnknownHostException | XmppStringprepException e) {
-                        Toast.makeText(getApplicationContext(), "No se pudo realizar la conexion", Toast.LENGTH_LONG).show();
-                        e.printStackTrace();
-                    } catch (IOException e) {
-                        e.printStackTrace();
-                    } catch (InterruptedException e) {
-                        e.printStackTrace();
-                    } catch (SmackException e) {
-                        e.printStackTrace();
-                    } catch (XMPPException e) {
-                        e.printStackTrace();
+            //Chat message
+            txtChat.setOnEditorActionListener(this);
+
+            //Recycler
+            try {
+                messageAdapter = new MessageAdapter(messages, JidCreate.bareFrom(userJID));
+
+                rvMessages.setAdapter(messageAdapter);
+                rvMessages.setLayoutManager(new LinearLayoutManager(this));
+
+                runOnUiThread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try  {
+                            //Chat
+                            ChatManager chatManager = ChatManager.getInstanceFor(App.getConnection());
+                            chatManager.addIncomingListener(ChatActivity.this);
+                            chatManager.addOutgoingListener(ChatActivity.this);
+
+                            EntityBareJid jid = JidCreate.entityBareFrom(userJID);
+                            chat = chatManager.chatWith(jid);
+
+                        } catch (SmackException.EndpointConnectionException | UnknownHostException | XmppStringprepException e) {
+                            Toast.makeText(getApplicationContext(), "No se pudo realizar la conexion", Toast.LENGTH_LONG).show();
+                            e.printStackTrace();
+                        } catch (IOException e) {
+                            e.printStackTrace();
+                        } catch (InterruptedException e) {
+                            e.printStackTrace();
+                        } catch (SmackException e) {
+                            e.printStackTrace();
+                        } catch (XMPPException e) {
+                            e.printStackTrace();
+                        }
                     }
-                }
-            });
+                });
 
-        } catch (XmppStringprepException e) {
-            //Invalid Jid Format
-            e.printStackTrace();
+            } catch (XmppStringprepException e) {
+                //Invalid Jid Format
+                e.printStackTrace();
+            }
+
+        } catch (Exception e){
+
         }
 
     }
@@ -130,7 +133,6 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
         runOnUiThread(() -> {
             messages.add(message);
             messageAdapter.notifyDataSetChanged();
-            new Thread(() -> App.getDb(getApplicationContext()).lastChattedUsersDAO().insertUser(lastChattedInfo)).start();
         });
     }
 
@@ -153,6 +155,10 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
 
         try {
             chat.send(txtChat.getText());
+
+            //Set msg and date
+            lastChattedInfo.date = new Date();
+            lastChattedInfo.lastMsg = txtChat.getText().toString();
             new Thread(() -> App.getDb(getApplicationContext()).lastChattedUsersDAO().insertUser(lastChattedInfo)).start();
         } catch (SmackException.NotConnectedException e) {
             e.printStackTrace();
@@ -163,7 +169,7 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
 
     public boolean showProfileInfo(MenuItem item){
         Intent i = new Intent(getApplicationContext(), ProfileInfoActivity.class);
-        i.putExtra("user", user);
+        i.putExtra("user", userJID);
         startActivity(i);
         return true;
     }

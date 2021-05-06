@@ -8,18 +8,24 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
+import org.jivesoftware.smack.SmackException;
+import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smackx.vcardtemp.packet.VCard;
+
+import java.io.IOException;
 import java.util.List;
 
+import me.sergiobarriodelavega.xend.App;
 import me.sergiobarriodelavega.xend.R;
 import me.sergiobarriodelavega.xend.entities.XMPPUser;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
 
-    private List<XMPPUser> users;
+    private List<String> users;
     private View.OnClickListener onClickListener;
 
-    public UserAdapter(List<XMPPUser> users) {
-        this.users = users;
+    public UserAdapter(List<String> jids) {
+        this.users = jids;
     }
 
     @NonNull
@@ -34,9 +40,30 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        XMPPUser user = users.get(position);
-        holder.tvUserName.setText(user.getUserName());
-        holder.tvUserJID.setText(user.getJid());
+        String jid = users.get(position);
+        VCard user;
+
+        try {
+            //Put values on labels
+            user = App.getXMPPUser(jid);
+
+            if(user.getFirstName() == null || user.getFirstName().isEmpty()){
+                holder.tvUserName.setText(jid);
+            } else {
+                holder.tvUserName.setText(user.getFirstName());
+            }
+            holder.tvUserJID.setText(jid);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (XMPPException e) {
+            e.printStackTrace();
+        } catch (SmackException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
+
+
     }
 
     @Override

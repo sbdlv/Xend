@@ -11,8 +11,8 @@ import java.util.List;
 @Dao
 public interface LastChattedUsersDAO {
 
-    @Query("SELECT jid FROM last_chatted_users")
-        public List<String> getAllLastChattedUsers();
+    @Query("SELECT * FROM last_chatted_users ORDER BY date DESC")
+    public List<LastChattedUser> getAllLastChattedUsers();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
     public void insertUser(LastChattedUser user);
