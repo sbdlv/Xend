@@ -11,15 +11,14 @@ import androidx.recyclerview.widget.RecyclerView;
 import java.util.List;
 
 import me.sergiobarriodelavega.xend.R;
-import me.sergiobarriodelavega.xend.entities.XMPPUser;
-import me.sergiobarriodelavega.xend.room.LastChattedUser;
+import me.sergiobarriodelavega.xend.room.RecentChatUser;
 
-public class LastChattedUserAdapter extends RecyclerView.Adapter<LastChattedUserAdapter.ViewHolder>{
+public class RecentChatUserAdapter extends RecyclerView.Adapter<RecentChatUserAdapter.ViewHolder>{
 
-    private List<LastChattedUser> users;
+    private List<RecentChatUser> users;
     private View.OnClickListener onClickListener;
 
-    public LastChattedUserAdapter(List<LastChattedUser> users) {
+    public RecentChatUserAdapter(List<RecentChatUser> users) {
         this.users = users;
     }
 
@@ -28,14 +27,14 @@ public class LastChattedUserAdapter extends RecyclerView.Adapter<LastChattedUser
     public ViewHolder onCreateViewHolder(@NonNull ViewGroup parent, int viewType) {
         // Create a new view, which defines the UI of the list item
         View view = LayoutInflater.from(parent.getContext())
-                .inflate(R.layout.viewholder_last_chatted_user, parent, false);
+                .inflate(R.layout.viewholder_recent_chat_user, parent, false);
         view.setOnClickListener(onClickListener);
         return new ViewHolder(view);
     }
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        LastChattedUser user = users.get(position);
+        RecentChatUser user = users.get(position);
         holder.tvUserName.setText(user.jid);
     }
 

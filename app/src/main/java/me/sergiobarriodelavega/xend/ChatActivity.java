@@ -37,9 +37,8 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.Objects;
 
-import me.sergiobarriodelavega.xend.entities.XMPPUser;
 import me.sergiobarriodelavega.xend.recyclers.MessageAdapter;
-import me.sergiobarriodelavega.xend.room.LastChattedUser;
+import me.sergiobarriodelavega.xend.room.RecentChatUser;
 
 public class ChatActivity extends AppCompatActivity implements IncomingChatMessageListener, OutgoingChatMessageListener, TextView.OnEditorActionListener {
 
@@ -48,7 +47,7 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
     private EditText txtChat;
     private Chat chat;
     private String userJID;
-    private LastChattedUser lastChattedInfo;
+    private RecentChatUser recentChatUser;
     private VCard remoteUser;
 
     @Override
@@ -58,7 +57,7 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
 
         userJID = getIntent().getStringExtra("user");
 
-        lastChattedInfo = new LastChattedUser(userJID);
+        recentChatUser = new RecentChatUser(userJID);
 
         //TODO Old messages should be loaded if exists
         messages = new ArrayList<>();
@@ -157,9 +156,9 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
             chat.send(txtChat.getText());
 
             //Set msg and date
-            lastChattedInfo.date = new Date();
-            lastChattedInfo.lastMsg = txtChat.getText().toString();
-            new Thread(() -> App.getDb(getApplicationContext()).lastChattedUsersDAO().insertUser(lastChattedInfo)).start();
+            recentChatUser.date = new Date();
+            recentChatUser.lastMsg = txtChat.getText().toString();
+            new Thread(() -> App.getDb(getApplicationContext()).lastChattedUsersDAO().insertUser(recentChatUser)).start();
         } catch (SmackException.NotConnectedException e) {
             e.printStackTrace();
         } catch (InterruptedException e) {

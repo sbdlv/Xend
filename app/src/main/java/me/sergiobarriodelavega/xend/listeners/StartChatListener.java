@@ -1,7 +1,5 @@
 package me.sergiobarriodelavega.xend.listeners;
 
-import android.app.Activity;
-import android.content.Context;
 import android.content.Intent;
 import android.view.View;
 
@@ -9,11 +7,8 @@ import androidx.fragment.app.Fragment;
 import androidx.recyclerview.widget.RecyclerView;
 
 import java.util.ArrayList;
-import java.util.List;
 
 import me.sergiobarriodelavega.xend.ChatActivity;
-import me.sergiobarriodelavega.xend.entities.XMPPUser;
-import me.sergiobarriodelavega.xend.room.LastChattedUser;
 
 public class StartChatListener implements View.OnClickListener {
     private ArrayList<String> jids;

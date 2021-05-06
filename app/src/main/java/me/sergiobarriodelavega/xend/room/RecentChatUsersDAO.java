@@ -9,17 +9,17 @@ import androidx.room.Query;
 import java.util.List;
 
 @Dao
-public interface LastChattedUsersDAO {
+public interface RecentChatUsersDAO {
 
-    @Query("SELECT * FROM last_chatted_users ORDER BY date DESC")
-    public List<LastChattedUser> getAllLastChattedUsers();
+    @Query("SELECT * FROM recent_chat_users ORDER BY date DESC")
+    public List<RecentChatUser> getAllLastChattedUsers();
 
     @Insert(onConflict = OnConflictStrategy.REPLACE)
-    public void insertUser(LastChattedUser user);
+    public void insertUser(RecentChatUser user);
 
     @Delete
-    public void deleteUser(LastChattedUser user);
+    public void deleteUser(RecentChatUser user);
 
-    @Query("DELETE FROM last_chatted_users")
+    @Query("DELETE FROM recent_chat_users")
     public void deleteAll();
 }

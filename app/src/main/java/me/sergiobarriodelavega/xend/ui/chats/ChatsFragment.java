@@ -10,7 +10,6 @@ import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
 import android.widget.LinearLayout;
-import android.widget.Toast;
 
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
@@ -25,13 +24,12 @@ import java.util.List;
 import me.sergiobarriodelavega.xend.App;
 import me.sergiobarriodelavega.xend.LocalBroadcastsEnum;
 import me.sergiobarriodelavega.xend.R;
-import me.sergiobarriodelavega.xend.entities.XMPPUser;
 import me.sergiobarriodelavega.xend.listeners.StartChatListener;
-import me.sergiobarriodelavega.xend.recyclers.LastChattedUserAdapter;
-import me.sergiobarriodelavega.xend.room.LastChattedUser;
+import me.sergiobarriodelavega.xend.recyclers.RecentChatUserAdapter;
+import me.sergiobarriodelavega.xend.room.RecentChatUser;
 
 public class ChatsFragment extends Fragment {
-    private LastChattedUserAdapter userAdapter;
+    private RecentChatUserAdapter userAdapter;
     private RecyclerView recycler;
     private View view;
     private BroadcastReceiver broadcastReceiverChatsDeleted;
@@ -59,11 +57,11 @@ public class ChatsFragment extends Fragment {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            List<LastChattedUser> lastChattedUsers = App.getDb(getContext()).lastChattedUsersDAO().getAllLastChattedUsers();
+            List<RecentChatUser> recentChatUsers = App.getDb(getContext()).lastChattedUsersDAO().getAllLastChattedUsers();
 
             llNoRecentChats = view.findViewById(R.id.llNoRecentChats);
 
-            if(lastChattedUsers == null ||lastChattedUsers.size() == 0){
+            if(recentChatUsers == null || recentChatUsers.size() == 0){
                 llNoRecentChats.setVisibility(View.VISIBLE);
             } else {
                 recycler = view.findViewById(R.id.recylcerLastChattedUsers);
@@ -71,7 +69,7 @@ public class ChatsFragment extends Fragment {
                 //Extract JIDs
                 ArrayList<String> jids = new ArrayList<>();
 
-                for(LastChattedUser user: lastChattedUsers){
+                for(RecentChatUser user: recentChatUsers){
                     jids.add(user.jid);
                 }
 
@@ -79,7 +77,7 @@ public class ChatsFragment extends Fragment {
                 StartChatListener startChatListener = new StartChatListener(jids, recycler, ChatsFragment.this);
 
                 //Recycler
-                userAdapter = new LastChattedUserAdapter(lastChattedUsers);
+                userAdapter = new RecentChatUserAdapter(recentChatUsers);
                 userAdapter.setOnClickListener(startChatListener);
                 recycler.setAdapter(userAdapter);
                 recycler.setLayoutManager(new LinearLayoutManager(getContext()));

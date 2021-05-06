@@ -7,15 +7,15 @@ import androidx.room.PrimaryKey;
 
 import java.util.Date;
 
-@Entity(tableName = "last_chatted_users")
-public class LastChattedUser {
+@Entity(tableName = "recent_chat_users")
+public class RecentChatUser {
 
     @Ignore
-    public LastChattedUser(@NonNull String jid) {
+    public RecentChatUser(@NonNull String jid) {
         this.jid = jid;
     }
 
-    public LastChattedUser(@NonNull String jid, String lastMsg, @NonNull Date date) {
+    public RecentChatUser(@NonNull String jid, String lastMsg, @NonNull Date date) {
         this.jid = jid;
         this.lastMsg = lastMsg;
         this.date = date;
