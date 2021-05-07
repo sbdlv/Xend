@@ -1,7 +1,6 @@
 package me.sergiobarriodelavega.xend.recyclers;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -21,7 +20,6 @@ import java.util.List;
 
 import me.sergiobarriodelavega.xend.App;
 import me.sergiobarriodelavega.xend.R;
-import me.sergiobarriodelavega.xend.entities.XMPPUser;
 
 public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
 
@@ -49,7 +47,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
 
         try {
             //Put values on labels
-            user = App.getXMPPUser(jid);
+            user = App.getUserVCard(jid);
 
             //Name and JID
             if(user.getFirstName() == null || user.getFirstName().isEmpty()){

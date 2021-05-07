@@ -64,7 +64,7 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
 
         //Toolbar
         try {
-            remoteUser = App.getXMPPUser(userJID);
+            remoteUser = App.getUserVCard(userJID);
 
             if(remoteUser.getFirstName() == null){
                 Objects.requireNonNull(getSupportActionBar()).setTitle(userJID);

@@ -1,7 +1,6 @@
 package me.sergiobarriodelavega.xend.recyclers;
 
 import android.graphics.Bitmap;
-import android.graphics.BitmapFactory;
 import android.view.LayoutInflater;
 import android.view.View;
 import android.view.ViewGroup;
@@ -49,7 +48,7 @@ public class RecentChatUserAdapter extends RecyclerView.Adapter<RecentChatUserAd
 
         //Set User Picture
         try {
-            VCard vCard = App.getXMPPUser(user.jid);
+            VCard vCard = App.getUserVCard(user.jid);
             Bitmap userPicture = App.avatarToBitmap(vCard);
             if (userPicture != null){
                 ImageViewCompat.setImageTintList(holder.ivUserPicture, null); //Remove tint

@@ -109,7 +109,7 @@ public class App {
      * @param jid
      * @return
      */
-    public static VCard getXMPPUser(String jid) throws InterruptedException, XMPPException, SmackException, IOException {
+    public static VCard getUserVCard(String jid) throws InterruptedException, XMPPException, SmackException, IOException {
         //If user is not saved on the map, make query
         if(users.containsKey(jid)){
             return users.get(jid);

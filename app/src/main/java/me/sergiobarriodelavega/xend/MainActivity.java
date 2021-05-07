@@ -106,7 +106,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLayoutChan
         try {
             String jid = App.getConnection().getUser().asBareJid().toString();
 
-            VCard vCard = App.getXMPPUser(jid);
+            VCard vCard = App.getUserVCard(jid);
             tvUserJIDHeader.setText(jid);
 
             //User Name
