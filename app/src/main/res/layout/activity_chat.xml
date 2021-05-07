@@ -10,11 +10,15 @@
         android:id="@+id/rvMessages"
         style="@style/ChatMessagesRecycler"
         android:layout_width="match_parent"
-        android:layout_height="wrap_content"
+        android:layout_height="0dp"
+        android:scrollbarStyle="insideOverlay"
+        android:scrollbarThumbVertical="@drawable/scrollbar"
+        android:scrollbars="vertical"
+        app:layout_constraintBottom_toTopOf="@+id/txtChat"
         app:layout_constraintEnd_toEndOf="parent"
         app:layout_constraintStart_toStartOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        tools:itemCount="4"
+        tools:itemCount="1"
         tools:listitem="@layout/viewholder_message">
 
     </androidx.recyclerview.widget.RecyclerView>
@@ -25,7 +29,7 @@
         android:layout_width="0dp"
         android:layout_height="wrap_content"
         android:ems="10"
-        android:hint="Xend something..."
+        android:hint="@string/start_chatting_hint"
         android:imeOptions="actionDone"
         android:importantForAutofill="no"
         android:inputType="textPersonName"

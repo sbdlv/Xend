@@ -37,6 +37,7 @@
     <string name="connecting">Conectando</string>
     <string name="no_recent_chats">No hay chats recientes</string>
     <string name="view_contacts">Ver contactos</string>
+    <string name="start_chatting_hint">Escribe un mensaje</string>
 
     <!-- Setup Wizard related -->
     <string name="invalid_format">Formato invalido</string>
