@@ -4,9 +4,9 @@ import android.content.Intent;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
 import android.net.Uri;
+import android.os.AsyncTask;
 import android.os.Bundle;
 import android.provider.MediaStore;
-import android.view.ContextMenu;
 import android.view.Menu;
 import android.view.MenuInflater;
 import android.view.MenuItem;
@@ -18,7 +18,6 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
-import androidx.core.app.NavUtils;
 
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
@@ -26,10 +25,7 @@ import org.jivesoftware.smackx.vcardtemp.VCardManager;
 import org.jivesoftware.smackx.vcardtemp.packet.VCard;
 
 import java.io.ByteArrayOutputStream;
-import java.io.FileNotFoundException;
 import java.io.IOException;
-import java.net.MalformedURLException;
-import java.net.URL;
 
 public class ProfileEditActivity extends AppCompatActivity {
     private VCard vCard;
@@ -53,6 +49,7 @@ public class ProfileEditActivity extends AppCompatActivity {
         getSupportActionBar().setTitle(R.string.edit_profile);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
 
+        //Load data
         try {
             vCardManager = VCardManager.getInstanceFor(App.getConnection());
             vCard = vCardManager.loadVCard();
@@ -88,20 +85,8 @@ public class ProfileEditActivity extends AppCompatActivity {
         vCard.setLastName(txtLastName.getText().toString());
 
         //Save VCard
-        try {
-            vCardManager.saveVCard(vCard);
-
-            Toast.makeText(this, R.string.data_saved, Toast.LENGTH_SHORT).show();
-            return true;
-        } catch (SmackException.NoResponseException e) {
-            e.printStackTrace();
-        } catch (XMPPException.XMPPErrorException e) {
-            e.printStackTrace();
-        } catch (SmackException.NotConnectedException e) {
-            e.printStackTrace();
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+        Toast.makeText(this, R.string.saving_changes, Toast.LENGTH_LONG).show();
+        new SaveVCard().execute();
 
         return false;
     }
@@ -118,16 +103,19 @@ public class ProfileEditActivity extends AppCompatActivity {
         super.onActivityResult(requestCode, resultCode, data);
         switch (requestCode){
             case PICTURE_SELECT:
-                Uri image = data.getData();
-                try {
-                    Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image);
-                    ivProfileImage.setImageBitmap(bitmap);
-                    ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                    bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
-                    vCard.setAvatar(byteArrayOutputStream.toByteArray());
-                } catch (Exception e) {
-                    e.printStackTrace();
-                    Toast.makeText(this, "Error while changing picture", Toast.LENGTH_SHORT).show();
+                //If the user didn't cancel the action
+                if(data != null){
+                    Uri image = data.getData();
+                    try {
+                        Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image);
+                        ivProfileImage.setImageBitmap(bitmap);
+                        ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
+                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                        vCard.setAvatar(byteArrayOutputStream.toByteArray());
+                    } catch (Exception e) {
+                        e.printStackTrace();
+                        Toast.makeText(this, "Error while changing picture", Toast.LENGTH_SHORT).show();
+                    }
                 }
                 break;
         }
@@ -148,6 +136,37 @@ public class ProfileEditActivity extends AppCompatActivity {
                 return true;
             default:
                 return super.onOptionsItemSelected(item);
+        }
+    }
+
+    private class SaveVCard extends AsyncTask<Void, Void, Boolean> {
+
+        @Override
+        protected Boolean doInBackground(Void... voids) {
+            try {
+                vCardManager.saveVCard(vCard);
+                return true;
+            } catch (SmackException.NoResponseException e) {
+                e.printStackTrace();
+            } catch (XMPPException.XMPPErrorException e) {
+                e.printStackTrace();
+            } catch (SmackException.NotConnectedException e) {
+                e.printStackTrace();
+            } catch (InterruptedException e) {
+                e.printStackTrace();
+            }
+            return false;
+        }
+
+        @Override
+        protected void onPostExecute(Boolean successful) {
+            super.onPostExecute(successful);
+            if(successful){
+                Toast.makeText(ProfileEditActivity.this, R.string.data_saved, Toast.LENGTH_SHORT).show();
+            } else {
+                Toast.makeText(ProfileEditActivity.this, R.string.error_on_saving, Toast.LENGTH_SHORT).show();
+            }
+
         }
     }
 }

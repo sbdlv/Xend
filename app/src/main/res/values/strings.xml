@@ -38,6 +38,8 @@
     <string name="no_recent_chats">No hay chats recientes</string>
     <string name="view_contacts">Ver contactos</string>
     <string name="start_chatting_hint">Escribe un mensaje</string>
+    <string name="saving_changes">Guardando cambios...</string>
+    <string name="error_on_saving">Error al guardar</string>
 
     <!-- Setup Wizard related -->
     <string name="invalid_format">Formato invalido</string>
