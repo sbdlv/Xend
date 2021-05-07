@@ -26,14 +26,6 @@
         </androidx.cardview.widget.CardView>
 
         <TextView
-            android:id="@+id/tvProfileName"
-            android:layout_width="match_parent"
-            android:layout_height="wrap_content"
-            android:gravity="center"
-            android:textAppearance="@style/TextAppearance.AppCompat.Title"
-            tools:text="User Name" />
-
-        <TextView
             android:id="@+id/tvProfileUserName"
             android:layout_width="match_parent"
             android:layout_height="wrap_content"

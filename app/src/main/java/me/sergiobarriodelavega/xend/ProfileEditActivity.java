@@ -13,6 +13,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.widget.EditText;
 import android.widget.ImageView;
+import android.widget.TextView;
 import android.widget.Toast;
 
 import androidx.annotation.NonNull;
@@ -31,6 +32,7 @@ public class ProfileEditActivity extends AppCompatActivity {
     private VCard vCard;
     private VCardManager vCardManager;
     private EditText txtFirstName, txtMiddleName, txtLastName;
+    private TextView tvProfileUserName;
     private ImageView ivProfileImage;
     private static final int PICTURE_SELECT = 0;
 
@@ -44,10 +46,23 @@ public class ProfileEditActivity extends AppCompatActivity {
         txtFirstName = findViewById(R.id.txtFirstName);
         txtMiddleName = findViewById(R.id.txtMiddleName);
         txtLastName = findViewById(R.id.txtLastName);
+        tvProfileUserName = findViewById(R.id.tvProfileUserName);
 
         //Toolbar
         getSupportActionBar().setTitle(R.string.edit_profile);
         getSupportActionBar().setDisplayHomeAsUpEnabled(true);
+
+        try {
+            tvProfileUserName.setText(App.getConnection().getUser().asBareJid().toString());
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        } catch (XMPPException e) {
+            e.printStackTrace();
+        } catch (SmackException e) {
+            e.printStackTrace();
+        } catch (IOException e) {
+            e.printStackTrace();
+        }
 
         //Load data
         try {
