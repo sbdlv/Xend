@@ -109,6 +109,14 @@ public class MainActivity extends AppCompatActivity implements View.OnLayoutChan
             VCard vCard = App.getXMPPUser(jid);
             tvUserJIDHeader.setText(jid);
 
+            //User Name
+            if(vCard.getFirstName() == null || vCard.getFirstName().isEmpty()){
+                tvUserNameHeader.setText(jid);
+            } else {
+                tvUserNameHeader.setText(vCard.getFirstName());
+            }
+
+            //User Picture
             Bitmap userPicture = App.avatarToBitmap(vCard);
             if (userPicture != null) {
                 ImageViewCompat.setImageTintList(ivUserPicture, null); //Remove tint

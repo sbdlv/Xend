@@ -4,6 +4,9 @@ import java.io.Serializable;
 
 /**
  * Stores data from a XMPPUser
+ * @deprecated Should not be used anymore since the users info now is picked from their respective
+ * VCard
+ * @see me.sergiobarriodelavega.xend.App
  */
 public class XMPPUser implements Serializable {
     private String userName, jid;
@@ -15,8 +18,6 @@ public class XMPPUser implements Serializable {
 
     public XMPPUser(String jid) {
         this.jid = jid;
-
-        //TODO VCard loading etc
     }
 
     public String getUserName() {
@@ -27,7 +28,6 @@ public class XMPPUser implements Serializable {
         this.userName = userName;
     }
 
-    //TODO For optimization it could be possible to save only the domain String and concatenate 'username + @ + domain' on getJid
     public String getJid() {
         return jid;
     }

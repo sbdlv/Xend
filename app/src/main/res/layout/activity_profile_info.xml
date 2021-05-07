@@ -8,7 +8,7 @@
     android:orientation="vertical">
 
     <androidx.cardview.widget.CardView
-        style="@style/ProfileEditCardViewPorfilePicture">
+        style="@style/ProfileEditCardViewProfilePicture">
 
         <ImageView
             android:id="@+id/ivProfileImage"
