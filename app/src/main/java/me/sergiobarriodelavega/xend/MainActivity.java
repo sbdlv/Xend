@@ -11,6 +11,7 @@ import android.widget.TextView;
 
 import com.google.android.material.navigation.NavigationView;
 
+import androidx.core.widget.ImageViewCompat;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.navigation.NavController;
 import androidx.navigation.Navigation;
@@ -110,6 +111,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLayoutChan
 
             Bitmap userPicture = App.avatarToBitmap(vCard);
             if (userPicture != null) {
+                ImageViewCompat.setImageTintList(ivUserPicture, null); //Remove tint
                 ivUserPicture.setImageBitmap(userPicture);
             }
         } catch (InterruptedException e) {

@@ -19,4 +19,5 @@
     <dimen name="setup_wizard_edit_text_wrapper_margin_vertical">8dp</dimen>
     <dimen name="setup_wizard_connection_drawable_size">164dp</dimen>
     <dimen name="setup_wizard_connection_drawable_margin_vertical">64dp</dimen>
+    <dimen name="card_user_picture_radius">32dp</dimen>
 </resources>

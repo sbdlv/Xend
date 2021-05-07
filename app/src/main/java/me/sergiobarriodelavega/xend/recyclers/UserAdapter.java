@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.widget.ImageViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.jivesoftware.smack.SmackException;
@@ -61,6 +62,7 @@ public class UserAdapter extends RecyclerView.Adapter<UserAdapter.ViewHolder>{
             //Picture
             Bitmap userPicture = App.avatarToBitmap(user);
             if (userPicture != null){
+                ImageViewCompat.setImageTintList(holder.ivUserPicture, null); //Remove tint
                 holder.ivUserPicture.setImageBitmap(userPicture);
             }
 

@@ -7,4 +7,6 @@
     <color name="primaryButtonColor">#fff</color>
     <color name="primaryIcon">#777</color>
     <color name="appBarIcon">#fff</color>
+    <color name="namHeaderBackground">#EDEDED</color>
+    <color name="user_picture_background">#D8D8D8</color>
 </resources>

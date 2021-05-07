@@ -87,6 +87,7 @@
     <style name="UserPictureViewHolder">
         <item name="android:layout_height">64dp</item>
         <item name="android:layout_width">64dp</item>
+        <item name="tint">@color/appBarIcon</item>
     </style>
 
     <style name="UserInfoLinearLayoutViewHolder">
@@ -94,8 +95,9 @@
     </style>
 
     <style name="UserPictureCardViewHolder">
-        <item name="cardCornerRadius">32dp</item>
+        <item name="cardCornerRadius">@dimen/card_user_picture_radius</item>
         <item name="cardElevation">0dp</item>
+        <item name="cardBackgroundColor">@color/user_picture_background</item>
     </style>
 
     <style name="UserNameViewHolder">

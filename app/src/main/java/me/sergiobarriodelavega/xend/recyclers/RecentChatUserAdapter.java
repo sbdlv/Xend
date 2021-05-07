@@ -9,6 +9,7 @@ import android.widget.ImageView;
 import android.widget.TextView;
 
 import androidx.annotation.NonNull;
+import androidx.core.widget.ImageViewCompat;
 import androidx.recyclerview.widget.RecyclerView;
 
 import org.jivesoftware.smack.SmackException;
@@ -51,6 +52,7 @@ public class RecentChatUserAdapter extends RecyclerView.Adapter<RecentChatUserAd
             VCard vCard = App.getXMPPUser(user.jid);
             Bitmap userPicture = App.avatarToBitmap(vCard);
             if (userPicture != null){
+                ImageViewCompat.setImageTintList(holder.ivUserPicture, null); //Remove tint
                 holder.ivUserPicture.setImageBitmap(userPicture);
             }
 
