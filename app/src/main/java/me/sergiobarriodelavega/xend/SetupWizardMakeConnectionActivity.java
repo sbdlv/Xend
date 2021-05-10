@@ -48,11 +48,12 @@ public class SetupWizardMakeConnectionActivity extends AppCompatActivity {
             @Override
             public void run() {
                 try {
-                    App.makeNewConnection(username, password, address, domain);
+                    App.tryNewConnection(username, password, address, domain);
 
                     //All ok, start Main Activity
                     Intent i = new Intent(SetupWizardMakeConnectionActivity.this, MainActivity.class);
                     startActivity(i);
+
                     setResult(SUCCESSFUL_CONNECTION);
                     finish();
                 } catch (Exception e) {

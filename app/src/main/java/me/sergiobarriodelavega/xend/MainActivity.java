@@ -55,9 +55,6 @@ public class MainActivity extends AppCompatActivity implements View.OnLayoutChan
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);
         NavigationUI.setupActionBarWithNavController(this, navController, mAppBarConfiguration);
         NavigationUI.setupWithNavController(navigationView, navController);
-
-        //Smack
-        AndroidSmackInitializer.initialize(this);
     }
 
     @Override

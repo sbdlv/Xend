@@ -1,11 +1,21 @@
 package me.sergiobarriodelavega.xend;
 
+import android.app.AlertDialog;
 import android.app.Application;
+import android.app.NotificationChannel;
+import android.app.NotificationManager;
+import android.content.ComponentName;
 import android.content.Context;
+import android.content.Intent;
+import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.os.Build;
+import android.os.IBinder;
+import android.util.Log;
 
+import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.room.Room;
 import androidx.room.RoomDatabase;
 
@@ -13,6 +23,7 @@ import org.jivesoftware.smack.AbstractXMPPConnection;
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smack.android.AndroidSmackInitializer;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 import org.jivesoftware.smackx.vcardtemp.VCardManager;
@@ -24,69 +35,112 @@ import java.net.InetAddress;
 import java.util.HashMap;
 
 import me.sergiobarriodelavega.xend.entities.XMPPUser;
+import me.sergiobarriodelavega.xend.room.Converters;
 import me.sergiobarriodelavega.xend.room.XendDatabase;
 
-public class App {
-    private static AbstractXMPPConnection connection;
+public class App extends Application{
     private static XendDatabase db;
-    private static Context context;
     private static HashMap<String, VCard> users = new HashMap<>();
     private static VCardManager vCardManager;
+    private static final String TAG = "XEND_APP";
+    public static final String CHANNEL_ID = "xendServiceChannel";
 
-    public static void init(Context context){
-        App.context = context;
+    //Bound service
+    private static XendService xendService;
+    private static boolean bound;
+
+    /** Defines callbacks for service binding, passed to bindService() */
+    private ServiceConnection connection = new ServiceConnection() {
+
+        @Override
+        public void onServiceConnected(ComponentName className,
+                                       IBinder service) {
+            Log.d(TAG, "Service bounded");
+
+            //We've bound to LocalService, cast the IBinder and get LocalService instance
+            XendService.XendBinder binder = (XendService.XendBinder) service;
+            xendService = binder.getService();
+            bound = true;
+
+            //Check if a setup is configured
+            SharedPreferences s = getApplicationContext().getSharedPreferences(getString(R.string.preferences_xmpp_config), MODE_PRIVATE);
+
+            if(s.getBoolean("hasSetup", false)){
+                //Thread in order to not freeze the Splash Screen
+                new Thread(new Runnable() {
+                    @Override
+                    public void run() {
+                        try {
+                            //Make connection. Once its made, launch Main Activity
+                            xendService.makeConnectionFromConfig();
+                        } catch (Exception e){
+                            e.printStackTrace();
+                            //TODO: Manage reconnect dialog
+                            //new AlertDialog.Builder(getApplicationContext()).setMessage("Error XMPP Connection").create().show();
+                        }
+
+                    }
+                }).start();
+
+            } else {
+                //Notify Splash to launch the SetupWizard
+                Intent startWizard = new Intent(LocalBroadcastsEnum.START_SETUP_WIZARD);
+                LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(startWizard);
+            }
+
+        }
+
+        @Override
+        public void onServiceDisconnected(ComponentName arg0) {
+            bound = false;
+        }
+    };
+
+
+    @Override
+    public void onCreate() {
+        super.onCreate();
+
+        //Smack
+        AndroidSmackInitializer.initialize(getApplicationContext());
+
+        //Service Notification
+        createNotificationChannel();
+        Intent i = new Intent(this, XendService.class);
+
+        if(!isBound()){
+            startService(i);
+            bindService(i, connection, BIND_AUTO_CREATE);
+        }
+
+        Utils.context = getApplicationContext();
+
+        Log.d(TAG,"App created");
     }
 
-    public static Context getContext() {
-        return context;
+    private void createNotificationChannel() {
+        if(Build.VERSION.SDK_INT >= Build.VERSION_CODES.O){
+            NotificationChannel serviceChannel = new NotificationChannel(
+                    CHANNEL_ID,
+                    "XEND Service Channel",
+                    NotificationManager.IMPORTANCE_DEFAULT
+            );
+
+            NotificationManager manager = getSystemService(NotificationManager.class);
+            manager.createNotificationChannel(serviceChannel);
+        }
+    }
+
+    public static boolean isBound() {
+        return bound;
+    }
+
+    public static void tryNewConnection(String username, String password, String address, String domain) throws IOException, InterruptedException, XMPPException, SmackException{
+        xendService.tryNewConnection(username,password,address,domain);
     }
 
     public static AbstractXMPPConnection getConnection() throws InterruptedException, XMPPException, SmackException, IOException {
-        if(connection == null || !connection.isAuthenticated()){
-            makeNewConnection();
-        }
-        return connection;
-    }
-
-    public static void makeNewConnection() throws InterruptedException, XMPPException, SmackException, IOException {
-        String username, password, address, domain;
-        SharedPreferences sharedPreferences = context.getSharedPreferences(context.getString(R.string.preferences_xmpp_config), Context.MODE_PRIVATE);
-        username = sharedPreferences.getString("username",null);
-        password = sharedPreferences.getString("password",null);
-        domain = sharedPreferences.getString("domain",null);
-        address = sharedPreferences.getString("address",null);
-
-        makeNewConnection(username,password,address,domain);
-    }
-
-    public static void makeNewConnection(String username, String password, String address, String domain) throws InterruptedException, XMPPException, SmackException, IOException {
-        AbstractXMPPConnection temporalConnection;
-        XMPPTCPConnectionConfiguration config = XMPPTCPConnectionConfiguration.builder()
-                .setUsernameAndPassword(username, password)
-                .setHostAddress(InetAddress.getByName(address))
-                .setXmppDomain(domain)
-                .setPort(5222)
-                .setSecurityMode(ConnectionConfiguration.SecurityMode.disabled)
-                .build();
-
-        temporalConnection = new XMPPTCPConnection(config);
-        temporalConnection.connect().login();
-
-        //If all went well
-        if (connection != null)
-        connection.disconnect();
-
-        connection = temporalConnection;
-
-        //If successful connection, save preferences
-        SharedPreferences sharedPreferences = context.getSharedPreferences(context.getString(R.string.preferences_xmpp_config), Context.MODE_PRIVATE);
-        SharedPreferences.Editor editor = sharedPreferences.edit();
-        editor.putString("username",username);
-        editor.putString("password",password);
-        editor.putString("domain",domain);
-        editor.putString("address",address);
-        editor.putBoolean("hasSetup", true);
-        editor.commit();
+        return xendService.getAbstractXMPPConnection();
     }
 
     private static VCardManager getvCardManager() throws InterruptedException, IOException, SmackException, XMPPException {
