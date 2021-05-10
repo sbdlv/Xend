@@ -2,6 +2,7 @@ package me.sergiobarriodelavega.xend;
 
 import android.app.IntentService;
 import android.app.Notification;
+import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
@@ -15,25 +16,38 @@ import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
+import androidx.core.app.NotificationManagerCompat;
+import androidx.core.app.TaskStackBuilder;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 import org.jivesoftware.smack.AbstractXMPPConnection;
 import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
+import org.jivesoftware.smack.chat2.Chat;
+import org.jivesoftware.smack.chat2.ChatManager;
+import org.jivesoftware.smack.chat2.IncomingChatMessageListener;
+import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
+import org.jxmpp.jid.EntityBareJid;
 import org.jxmpp.stringprep.XmppStringprepException;
 
 import java.io.IOException;
 import java.net.InetAddress;
 import java.net.UnknownHostException;
+import java.util.Date;
 
 public class XendService extends Service {
     private static final String TAG ="XEND_SERVICE";
     private IBinder mBinder = new XendBinder();
     private Handler mHandler;
     private AbstractXMPPConnection abstractXMPPConnection;
+
+    //Incoming chat notifications
+    private IncomingChatMessageListener incomingChatMessageListener;
+    private ChatManager chatManager;
+    private NotificationManagerCompat notificationManagerCompat;
 
     @Nullable
     @Override
@@ -55,8 +69,9 @@ public class XendService extends Service {
         PendingIntent pendingIntent = PendingIntent.getActivity(this,
                 0, notificationIntent, 0);
         Notification notification = new NotificationCompat.Builder(this, App.CHANNEL_ID)
-                .setContentTitle("Example Service")
+                .setContentTitle("XEND Service")
                 .setContentText(null)
+                .setSmallIcon(R.drawable.ic_xend_icon_white_no_bg)
                 .setContentIntent(pendingIntent)
                 .build();
         startForeground(1, notification);
@@ -104,6 +119,8 @@ public class XendService extends Service {
 
         Log.d(TAG, "XMPP Connection successful");
 
+        createChatManager();
+
         //Notify Connection to Splash
         Intent notifyConnection = new Intent(LocalBroadcastsEnum.SUCCESSFUL_CONNECTION);
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(notifyConnection);
@@ -143,6 +160,8 @@ public class XendService extends Service {
 
         abstractXMPPConnection = temporalConnection;
 
+        createChatManager();
+
         //Save new Config
         SharedPreferences sharedPreferences = getApplicationContext().getSharedPreferences(getApplicationContext().getString(R.string.preferences_xmpp_config), Context.MODE_PRIVATE);
         SharedPreferences.Editor editor = sharedPreferences.edit();
@@ -153,5 +172,69 @@ public class XendService extends Service {
         editor.putString("address",address);
         editor.putBoolean("hasSetup", true);
         editor.commit();
+    }
+
+    /**
+     * Creates the Chat Manager for the actual connection. Also removes any old listener in case they exist
+     */
+    private void createChatManager(){
+        //Remove old listener if exists
+        if(incomingChatMessageListener != null){
+            chatManager.removeIncomingListener(incomingChatMessageListener);
+        }
+
+        //Create listener for incoming chats
+        chatManager = ChatManager.getInstanceFor(abstractXMPPConnection);
+        notificationManagerCompat = NotificationManagerCompat.from(this);
+        incomingChatMessageListener = new IncomingChatMessageListener() {
+            @Override
+            public void newIncomingMessage(EntityBareJid from, Message message, Chat chat) {
+                int notificationID;
+                //Check if the user is already chatting with the person in order to not show a notification
+                if(App.onChatWith == null || !App.onChatWith.equals(from.asEntityBareJidString())) {
+                    notificationID = getNotificationIDFromJID(from);
+
+                    //Create intent to open ChatActivity
+                    Intent i = new Intent(getApplicationContext(), ChatActivity.class);
+                    i.putExtra("user", from.toString());
+                    i.putExtra("notificationID", notificationID);
+
+                    // Create the TaskStackBuilder and add the intent, which inflates the back stack
+                    TaskStackBuilder stackBuilder = TaskStackBuilder.create(getApplicationContext());
+                    stackBuilder.addNextIntentWithParentStack(i);
+                    // Get the PendingIntent containing the entire back stack
+                    PendingIntent resultPendingIntent =
+                            stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
+
+                    //Notification build
+                    NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), App.CHANNEL_ID)
+                            .setSmallIcon(R.drawable.ic_xend_icon_white_no_bg)
+                            .setContentTitle(from)
+                            .setContentText(message.getBody())
+                            .setPriority(NotificationCompat.PRIORITY_DEFAULT)
+                            .setContentIntent(resultPendingIntent);
+
+                    notificationManagerCompat.notify(notificationID, builder.build());
+                }
+            }
+        };
+
+        chatManager.addIncomingListener(incomingChatMessageListener);
+    }
+
+
+    /**
+     * Generates an int from the users JID. Used for notifications id
+     * @param jid The user JID
+     * @return int value generated from the user JID characters
+     */
+    private int getNotificationIDFromJID(EntityBareJid jid){
+        int id = 0;
+        char[] chars = jid.toString().toCharArray();
+
+        for (int i = 0; i< chars.length; i++){
+            id += i + chars[i];
+        }
+        return id;
     }
 }

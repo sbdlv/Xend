@@ -44,6 +44,7 @@ public class App extends Application{
     private static VCardManager vCardManager;
     private static final String TAG = "XEND_APP";
     public static final String CHANNEL_ID = "xendServiceChannel";
+    public static String onChatWith;
 
     //Bound service
     private static XendService xendService;

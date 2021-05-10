@@ -15,6 +15,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
@@ -56,6 +57,15 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
         setContentView(R.layout.activity_chat);
 
         userJID = getIntent().getStringExtra("user");
+
+        //Prevent showing chat notifications for this user
+        App.onChatWith = userJID;
+
+        //If the activity has been started from a notification, close the notification
+        int notificationID = getIntent().getIntExtra("notificationID", -1);
+        if(notificationID != -1){
+            NotificationManagerCompat.from(this).cancel(notificationID);
+        }
 
         recentChatUser = new RecentChatUser(userJID);
 
@@ -189,5 +199,11 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
             default:
                 return super.onOptionsItemSelected(item);
         }
+    }
+
+    @Override
+    protected void onDestroy() {
+        super.onDestroy();
+        App.onChatWith = null;
     }
 }
