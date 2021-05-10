@@ -1,8 +1,6 @@
 package me.sergiobarriodelavega.xend;
 
-import android.app.IntentService;
 import android.app.Notification;
-import android.app.NotificationManager;
 import android.app.PendingIntent;
 import android.app.Service;
 import android.content.Context;
@@ -12,7 +10,6 @@ import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.core.app.NotificationCompat;
@@ -31,18 +28,20 @@ import org.jivesoftware.smack.packet.Message;
 import org.jivesoftware.smack.tcp.XMPPTCPConnection;
 import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 import org.jxmpp.jid.EntityBareJid;
-import org.jxmpp.stringprep.XmppStringprepException;
 
 import java.io.IOException;
 import java.net.InetAddress;
-import java.net.UnknownHostException;
-import java.util.Date;
+
+import me.sergiobarriodelavega.xend.room.ChatLog;
+import me.sergiobarriodelavega.xend.room.ChatLogDAO;
+
 
 public class XendService extends Service {
     private static final String TAG ="XEND_SERVICE";
     private IBinder mBinder = new XendBinder();
-    private Handler mHandler;
     private AbstractXMPPConnection abstractXMPPConnection;
+    private ChatLogDAO chatLogDAO;
+
 
     //Incoming chat notifications
     private IncomingChatMessageListener incomingChatMessageListener;
@@ -75,6 +74,8 @@ public class XendService extends Service {
                 .setContentIntent(pendingIntent)
                 .build();
         startForeground(1, notification);
+
+        chatLogDAO = App.getDb(getApplicationContext()).chatLogDAO();
 
         return START_STICKY;
     }
@@ -206,6 +207,9 @@ public class XendService extends Service {
                     PendingIntent resultPendingIntent =
                             stackBuilder.getPendingIntent(0, PendingIntent.FLAG_UPDATE_CURRENT);
 
+                    //Save message to DB
+                    saveIncomingMessageToDB(message, from);
+
                     //Notification build
                     NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), App.CHANNEL_ID)
                             .setSmallIcon(R.drawable.ic_xend_icon_white_no_bg)
@@ -236,5 +240,20 @@ public class XendService extends Service {
             id += i + chars[i];
         }
         return id;
+    }
+
+    /**
+     * Saves a incoming message to the DB, since the {@link ChatActivity} is not running and saving it
+     * @param message The incoming message
+     * @param from BareJID from the sender, cannot be local user
+     */
+    private void saveIncomingMessageToDB(Message message, EntityBareJid from){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                ChatLog chatLog = ChatLog.fromString(message.getBody(), from.asEntityBareJidString(), false);
+                chatLogDAO.insert(chatLog);
+            }
+        }).start();
     }
 }

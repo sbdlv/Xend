@@ -82,7 +82,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLayoutChan
             @Override
             public void run() {
                 //Delete from local DB
-                App.getDb(getApplicationContext()).lastChattedUsersDAO().deleteAll();
+                App.getDb(getApplicationContext()).chatLogDAO().deleteAll();
 
                 //Notify to ChatsFragment to update the recycler
                 Intent i = new Intent(LocalBroadcastsEnum.RECENT_CHATS_DELETED);

@@ -20,14 +20,14 @@ import java.util.List;
 
 import me.sergiobarriodelavega.xend.App;
 import me.sergiobarriodelavega.xend.R;
-import me.sergiobarriodelavega.xend.room.RecentChatUser;
+import me.sergiobarriodelavega.xend.room.ChatLog;
 
 public class RecentChatUserAdapter extends RecyclerView.Adapter<RecentChatUserAdapter.ViewHolder>{
 
-    private List<RecentChatUser> users;
+    private List<ChatLog> users;
     private View.OnClickListener onClickListener;
 
-    public RecentChatUserAdapter(List<RecentChatUser> users) {
+    public RecentChatUserAdapter(List<ChatLog> users) {
         this.users = users;
     }
 
@@ -43,12 +43,12 @@ public class RecentChatUserAdapter extends RecyclerView.Adapter<RecentChatUserAd
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        RecentChatUser user = users.get(position);
-        holder.tvUserName.setText(user.jid);
+        ChatLog chatLog = users.get(position);
+        holder.tvUserName.setText(chatLog.remoteJID);
 
         //Set User Picture
         try {
-            VCard vCard = App.getUserVCard(user.jid);
+            VCard vCard = App.getUserVCard(chatLog.remoteJID);
             Bitmap userPicture = App.avatarToBitmap(vCard);
             if (userPicture != null){
                 ImageViewCompat.setImageTintList(holder.ivUserPicture, null); //Remove tint

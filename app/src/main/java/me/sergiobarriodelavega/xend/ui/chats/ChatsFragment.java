@@ -4,6 +4,7 @@ import android.content.BroadcastReceiver;
 import android.content.Context;
 import android.content.Intent;
 import android.content.IntentFilter;
+import android.content.SharedPreferences;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.LayoutInflater;
@@ -26,7 +27,7 @@ import me.sergiobarriodelavega.xend.LocalBroadcastsEnum;
 import me.sergiobarriodelavega.xend.R;
 import me.sergiobarriodelavega.xend.listeners.StartChatListener;
 import me.sergiobarriodelavega.xend.recyclers.RecentChatUserAdapter;
-import me.sergiobarriodelavega.xend.room.RecentChatUser;
+import me.sergiobarriodelavega.xend.room.ChatLog;
 
 public class ChatsFragment extends Fragment {
     private RecentChatUserAdapter userAdapter;
@@ -57,7 +58,14 @@ public class ChatsFragment extends Fragment {
 
         @Override
         protected Void doInBackground(Void... voids) {
-            List<RecentChatUser> recentChatUsers = App.getDb(getContext()).lastChattedUsersDAO().getAllLastChattedUsers();
+            //Get domain in order to get all recent chats for this XMPP domain
+            SharedPreferences s = getContext().getSharedPreferences(getString(R.string.preferences_xmpp_config), Context.MODE_PRIVATE);
+            String domainLike =  "%";
+            domainLike += s.getString("domain","");
+            domainLike += "%";
+
+            //Query
+            List<ChatLog> recentChatUsers = App.getDb(getContext()).chatLogDAO().getAllLastLogs(domainLike);
 
             llNoRecentChats = view.findViewById(R.id.llNoRecentChats);
 
@@ -69,8 +77,8 @@ public class ChatsFragment extends Fragment {
                 //Extract JIDs
                 ArrayList<String> jids = new ArrayList<>();
 
-                for(RecentChatUser user: recentChatUsers){
-                    jids.add(user.jid);
+                for(ChatLog chatLog: recentChatUsers){
+                    jids.add(chatLog.remoteJID);
                 }
 
                 //Listener
@@ -95,7 +103,6 @@ public class ChatsFragment extends Fragment {
                 LocalBroadcastManager.getInstance(getContext()).registerReceiver(broadcastReceiverChatsDeleted,
                         new IntentFilter(LocalBroadcastsEnum.RECENT_CHATS_DELETED));
             }
-
             return null;
         }
     }

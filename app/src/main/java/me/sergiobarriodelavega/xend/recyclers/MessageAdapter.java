@@ -14,13 +14,14 @@ import org.jxmpp.jid.Jid;
 import java.util.ArrayList;
 
 import me.sergiobarriodelavega.xend.R;
+import me.sergiobarriodelavega.xend.room.ChatLog;
 
 public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHolder> {
-    private ArrayList<Message> messages;
+    private ArrayList<ChatLog> messages;
     private Jid remoteUserJID;
     private static final int LOCAL_MSG = 0, REMOTE_MSG = 1;
 
-    public MessageAdapter(ArrayList<Message> messages, Jid remoteUserJID) {
+    public MessageAdapter(ArrayList<ChatLog> messages, Jid remoteUserJID) {
         this.remoteUserJID = remoteUserJID;
         this.messages = messages;
     }
@@ -45,8 +46,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
 
     @Override
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
-        Message msg = messages.get(position);
-        holder.tvMessageText.setText(msg.getBody());
+        ChatLog chatLog = messages.get(position);
+        holder.tvMessageText.setText(chatLog.msg);
     }
 
     @Override
@@ -67,7 +68,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     @Override
     public int getItemViewType(int position) {
         //Check BareJIDs to specify the message type
-        if(messages.get(position).getTo().asBareJid().equals(remoteUserJID)){
+        if(messages.get(position).isFromLocalUser){
             return LOCAL_MSG;
         }
         return REMOTE_MSG;
