@@ -93,6 +93,7 @@
 
     <style name="UserInfoLinearLayoutViewHolder">
         <item name="android:layout_marginStart">16dp</item>
+        <item name="android:layout_marginEnd">16dp</item>
     </style>
 
     <style name="UserPictureCardViewHolder">
@@ -104,7 +105,11 @@
     <style name="UserNameViewHolder">
         <item name="android:textStyle">bold</item>
         <item name="android:layout_marginBottom">2dp</item>
+    </style>
 
+    <style name="LastMessage">
+        <item name="android:singleLine">true</item>
+        <item name="android:gravity">center_vertical</item>
     </style>
 
     <!-- Users Fragment -->

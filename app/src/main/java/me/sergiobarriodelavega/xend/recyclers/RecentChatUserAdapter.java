@@ -45,6 +45,7 @@ public class RecentChatUserAdapter extends RecyclerView.Adapter<RecentChatUserAd
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ChatLog chatLog = users.get(position);
         holder.tvUserName.setText(chatLog.remoteJID);
+        holder.tvLastMessage.setText(chatLog.msg);
 
         //Set User Picture
         try {
@@ -72,13 +73,14 @@ public class RecentChatUserAdapter extends RecyclerView.Adapter<RecentChatUserAd
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView tvUserName;
+        private final TextView tvUserName, tvLastMessage;
         private final ImageView ivUserPicture;
 
         public ViewHolder(View view) {
             super(view);
             // Define click listener for the ViewHolder's View
             tvUserName = view.findViewById(R.id.tvUserName);
+            tvLastMessage = view.findViewById(R.id.tvLastMessage);
             ivUserPicture = view.findViewById(R.id.ivUserPicture);
         }
     }
