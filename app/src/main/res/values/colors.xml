@@ -10,4 +10,5 @@
     <color name="namHeaderBackground">#EDEDED</color>
     <color name="user_picture_background">#D8D8D8</color>
     <color name="scrollbar">#A049B2FD</color>
+    <color name="messageTime">#E1E1E1</color>
 </resources>

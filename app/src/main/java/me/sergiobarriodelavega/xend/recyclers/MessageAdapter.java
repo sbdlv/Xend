@@ -8,9 +8,9 @@ import android.widget.TextView;
 import androidx.annotation.NonNull;
 import androidx.recyclerview.widget.RecyclerView;
 
-import org.jivesoftware.smack.packet.Message;
 import org.jxmpp.jid.Jid;
 
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 
 import me.sergiobarriodelavega.xend.R;
@@ -20,6 +20,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     private ArrayList<ChatLog> messages;
     private Jid remoteUserJID;
     private static final int LOCAL_MSG = 0, REMOTE_MSG = 1;
+    private static final SimpleDateFormat formatTime = new SimpleDateFormat("H:mm");
 
     public MessageAdapter(ArrayList<ChatLog> messages, Jid remoteUserJID) {
         this.remoteUserJID = remoteUserJID;
@@ -48,6 +49,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     public void onBindViewHolder(@NonNull ViewHolder holder, int position) {
         ChatLog chatLog = messages.get(position);
         holder.tvMessageText.setText(chatLog.msg);
+        holder.tvMessageTime.setText(formatTime.format(chatLog.date));
     }
 
     @Override
@@ -56,12 +58,13 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     }
 
     public static class ViewHolder extends RecyclerView.ViewHolder {
-        private final TextView tvMessageText;
+        private final TextView tvMessageText, tvMessageTime;
 
         public ViewHolder(View view) {
             super(view);
             // Define click listener for the ViewHolder's View
             tvMessageText = view.findViewById(R.id.tvMessageText);
+            tvMessageTime = view.findViewById(R.id.tvMessageTime);
         }
     }
 

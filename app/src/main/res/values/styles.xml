@@ -42,7 +42,10 @@
     </style>
 
     <style name="MessageViewHolderLinearLayout">
-        <item name="android:padding">8dp</item>
+        <item name="android:paddingTop">@dimen/view_holder_message_text_ll_margin_general</item>
+        <item name="android:paddingStart">@dimen/view_holder_message_text_ll_margin_general</item>
+        <item name="android:paddingEnd">@dimen/view_holder_message_text_ll_margin_general</item>
+        <item name="android:paddingBottom">@dimen/view_holder_message_text_ll_margin_bottom</item>
     </style>
 
     <style name="MessageViewHolderMessageText">
@@ -50,9 +53,15 @@
         <item name="android:textSize">@dimen/font_size_chat_message</item>
     </style>
 
+    <style name="MessageViewHolderTime">
+        <item name="android:gravity">right|center_vertical</item>
+        <item name="android:textSize">12sp</item>
+        <item name="android:textColor">@color/messageTime</item>
+        <item name="android:layout_marginTop">4dp</item>
+    </style>
+
     <!-- Chat layout -->
     <style name="ChatMessagesRecycler">
-        <item name="android:paddingTop">@dimen/view_holder_message_text_margin_top_bottom</item>
         <item name="android:paddingBottom">@dimen/view_holder_message_text_margin_top_bottom</item>
         <item name="android:paddingRight">4dp</item>
     </style>

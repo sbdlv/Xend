@@ -11,6 +11,7 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
+import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -96,16 +97,19 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
 
     @Override
     public void newIncomingMessage(EntityBareJid from, Message message, Chat chat) {
-        new Thread(() -> {
-            //Generate ChatLog obj
-            ChatLog chatLog = ChatLog.fromMessage(message, userJID);
+        //Generate ChatLog obj
+        ChatLog chatLog = ChatLog.fromMessage(message, userJID);
 
-            //Refresh Recycler
-            messages.add(chatLog);
-            messageAdapter.notifyDataSetChanged();
+        //Refresh Recycler
+        messages.add(chatLog);
+        messageAdapter.notifyDataSetChanged();
 
-            //Save on local DB
-            chatLogDAO.insert(chatLog);
+        //Save on local DB
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                chatLogDAO.insert(chatLog);
+            }
         }).start();
     }
 
@@ -197,7 +201,9 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
                 messageAdapter = new MessageAdapter(messages, JidCreate.bareFrom(userJID));
 
                 rvMessages.setAdapter(messageAdapter);
-                rvMessages.setLayoutManager(new LinearLayoutManager(ChatActivity.this));
+                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ChatActivity.this);
+                linearLayoutManager.setStackFromEnd(true);
+                rvMessages.setLayoutManager(linearLayoutManager);
 
                 runOnUiThread(new Runnable() {
                     @Override

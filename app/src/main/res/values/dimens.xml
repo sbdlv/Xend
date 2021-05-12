@@ -7,6 +7,8 @@
     <dimen name="fab_margin">16dp</dimen>
     <dimen name="view_holder_message_text_margin_top_bottom">8dp</dimen>
     <dimen name="view_holder_message_text_margin_left_right">16dp</dimen>
+    <dimen name="view_holder_message_text_ll_margin_general">8dp</dimen>
+    <dimen name="view_holder_message_text_ll_margin_bottom">4dp</dimen>
     <dimen name="font_size_chat_message">16sp</dimen>
     <dimen name="setup_wizard_icon_size">128dp</dimen>
     <dimen name="setup_wizard_icon_margin_vertical">64dp</dimen>

@@ -6,6 +6,7 @@ import android.app.Service;
 import android.content.Context;
 import android.content.Intent;
 import android.content.SharedPreferences;
+import android.graphics.Bitmap;
 import android.os.Binder;
 import android.os.Handler;
 import android.os.IBinder;
@@ -154,13 +155,13 @@ public class XendService extends Service {
         temporalConnection.connect().login();
 
         //If connections is OK, then replace the old one for the new one
-        //TODO: Remove chat listener and create new one
         if(abstractXMPPConnection != null){
             abstractXMPPConnection.disconnect();
         }
 
         abstractXMPPConnection = temporalConnection;
 
+        //Remove old Chat Manager and create a new one
         createChatManager();
 
         //Save new Config
@@ -211,12 +212,26 @@ public class XendService extends Service {
                     saveIncomingMessageToDB(message, from);
 
                     //Notification build
+                    Bitmap userPicture = null;
+                    try {
+                        userPicture = App.avatarToBitmap(App.getUserVCard(from.toString()));
+                    } catch (InterruptedException e) {
+                        e.printStackTrace();
+                    } catch (XMPPException e) {
+                        e.printStackTrace();
+                    } catch (SmackException e) {
+                        e.printStackTrace();
+                    } catch (IOException e) {
+                        e.printStackTrace();
+                    }
+
                     NotificationCompat.Builder builder = new NotificationCompat.Builder(getApplicationContext(), App.CHANNEL_ID)
                             .setSmallIcon(R.drawable.ic_xend_icon_white_no_bg)
                             .setContentTitle(from)
                             .setContentText(message.getBody())
                             .setPriority(NotificationCompat.PRIORITY_DEFAULT)
-                            .setContentIntent(resultPendingIntent);
+                            .setContentIntent(resultPendingIntent)
+                            .setLargeIcon(userPicture);
 
                     notificationManagerCompat.notify(notificationID, builder.build());
                 }
