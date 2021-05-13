@@ -125,7 +125,7 @@ public class ProfileEditActivity extends AppCompatActivity {
                         Bitmap bitmap = MediaStore.Images.Media.getBitmap(this.getContentResolver(), image);
                         ivProfileImage.setImageBitmap(bitmap);
                         ByteArrayOutputStream byteArrayOutputStream = new ByteArrayOutputStream();
-                        bitmap.compress(Bitmap.CompressFormat.PNG, 100, byteArrayOutputStream);
+                        bitmap.compress(Bitmap.CompressFormat.JPEG, 100, byteArrayOutputStream);
                         vCard.setAvatar(byteArrayOutputStream.toByteArray());
                     } catch (Exception e) {
                         e.printStackTrace();

@@ -133,4 +133,8 @@ public class MainActivity extends AppCompatActivity implements View.OnLayoutChan
     public void startChatting(View view){
         navController.navigate(R.id.nav_contacts);
     }
+
+    public void startProfileEdit(View view){
+        startActivity(new Intent(this, ProfileEditActivity.class));
+    }
 }

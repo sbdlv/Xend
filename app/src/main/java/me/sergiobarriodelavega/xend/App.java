@@ -1,6 +1,5 @@
 package me.sergiobarriodelavega.xend;
 
-import android.app.AlertDialog;
 import android.app.Application;
 import android.app.NotificationChannel;
 import android.app.NotificationManager;
@@ -17,30 +16,21 @@ import android.util.Log;
 
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 import androidx.room.Room;
-import androidx.room.RoomDatabase;
 
 import org.jivesoftware.smack.AbstractXMPPConnection;
-import org.jivesoftware.smack.ConnectionConfiguration;
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.android.AndroidSmackInitializer;
-import org.jivesoftware.smack.tcp.XMPPTCPConnection;
-import org.jivesoftware.smack.tcp.XMPPTCPConnectionConfiguration;
 import org.jivesoftware.smackx.vcardtemp.VCardManager;
 import org.jivesoftware.smackx.vcardtemp.packet.VCard;
 import org.jxmpp.jid.impl.JidCreate;
 
 import java.io.IOException;
-import java.net.InetAddress;
-import java.util.HashMap;
 
-import me.sergiobarriodelavega.xend.entities.XMPPUser;
-import me.sergiobarriodelavega.xend.room.Converters;
 import me.sergiobarriodelavega.xend.room.XendDatabase;
 
 public class App extends Application{
     private static XendDatabase db;
-    private static HashMap<String, VCard> users = new HashMap<>();
     private static VCardManager vCardManager;
     private static final String TAG = "XEND_APP";
     public static final String CHANNEL_ID = "xendServiceChannel";
@@ -165,14 +155,7 @@ public class App extends Application{
      * @return
      */
     public static VCard getUserVCard(String jid) throws InterruptedException, XMPPException, SmackException, IOException {
-        //If user is not saved on the map, make query
-        if(users.containsKey(jid)){
-            return users.get(jid);
-        }
-
-        VCard vCard = getvCardManager().loadVCard(JidCreate.entityBareFrom(jid));
-        users.put(jid, vCard);
-        return vCard;
+        return getvCardManager().loadVCard(JidCreate.entityBareFrom(jid));
     }
 
     /**
