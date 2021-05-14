@@ -21,8 +21,6 @@ import org.jxmpp.jid.impl.JidCreate;
 
 import java.io.IOException;
 
-import me.sergiobarriodelavega.xend.entities.XMPPUser;
-
 public class ProfileInfoActivity extends AppCompatActivity {
     private TextView tvProfileUserName, tvProfileName;
     private ImageView ivProfileImage;

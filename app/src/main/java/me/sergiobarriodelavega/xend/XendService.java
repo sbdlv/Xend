@@ -8,7 +8,6 @@ import android.content.Intent;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.os.Binder;
-import android.os.Handler;
 import android.os.IBinder;
 import android.util.Log;
 
@@ -215,6 +214,7 @@ public class XendService extends Service {
                     Bitmap userPicture = null;
                     try {
                         userPicture = App.avatarToBitmap(App.getUserVCard(from.toString()));
+                        userPicture = App.getCircleBitmap(userPicture);
                     } catch (InterruptedException e) {
                         e.printStackTrace();
                     } catch (XMPPException e) {
@@ -266,7 +266,7 @@ public class XendService extends Service {
         new Thread(new Runnable() {
             @Override
             public void run() {
-                ChatLog chatLog = ChatLog.fromString(message.getBody(), from.asEntityBareJidString(), false);
+                ChatLog chatLog = ChatLog.create(message.getBody(), from.asEntityBareJidString(), App.localJID, false);
                 chatLogDAO.insert(chatLog);
             }
         }).start();

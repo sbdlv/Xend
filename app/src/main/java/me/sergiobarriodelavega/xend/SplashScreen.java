@@ -16,11 +16,6 @@ import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
 import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
-import org.jivesoftware.smack.SmackException;
-import org.jivesoftware.smack.XMPPException;
-
-import java.io.IOException;
-
 public class SplashScreen extends AppCompatActivity {
 
     private ImageView ivSplashLogo;

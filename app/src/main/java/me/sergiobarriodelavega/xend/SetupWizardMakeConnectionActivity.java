@@ -1,25 +1,14 @@
 package me.sergiobarriodelavega.xend;
 
-import android.app.Activity;
 import android.content.Intent;
 import android.graphics.drawable.AnimatedVectorDrawable;
-import android.os.AsyncTask;
 import android.os.Build;
 import android.os.Bundle;
-import android.util.Log;
 import android.widget.ImageView;
-import android.widget.Toast;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
 import androidx.appcompat.app.AppCompatActivity;
-
-import org.jivesoftware.smack.SmackException;
-import org.jivesoftware.smack.XMPPException;
-
-import java.io.IOException;
-import java.util.List;
-import java.util.logging.Logger;
 
 public class SetupWizardMakeConnectionActivity extends AppCompatActivity {
     private ImageView ivConnectionAnim;

@@ -11,7 +11,6 @@ import android.view.MenuItem;
 import android.view.View;
 import android.view.inputmethod.EditorInfo;
 import android.widget.EditText;
-import android.widget.LinearLayout;
 import android.widget.TextView;
 import android.widget.Toast;
 
@@ -36,7 +35,6 @@ import org.jxmpp.stringprep.XmppStringprepException;
 import java.io.IOException;
 import java.net.UnknownHostException;
 import java.util.ArrayList;
-import java.util.List;
 import java.util.Objects;
 
 import me.sergiobarriodelavega.xend.recyclers.MessageAdapter;
@@ -50,7 +48,7 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
     private MessageAdapter messageAdapter;
     private EditText txtChat;
     private Chat chat;
-    private String userJID;
+    private String remoteJID;
     private VCard remoteUser;
     private ChatLogDAO chatLogDAO;
 
@@ -59,10 +57,10 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
 
-        userJID = getIntent().getStringExtra("user");
+        remoteJID = getIntent().getStringExtra("user");
 
         //Prevent showing chat notifications for this user
-        App.onChatWith = userJID;
+        App.onChatWith = remoteJID;
 
         //If the activity has been started from a notification, close the notification
         int notificationID = getIntent().getIntExtra("notificationID", -1);
@@ -72,12 +70,12 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
 
         //Toolbar
         try {
-            remoteUser = App.getUserVCard(userJID);
+            remoteUser = App.getUserVCard(remoteJID);
             if(remoteUser.getFirstName() == null){
-                Objects.requireNonNull(getSupportActionBar()).setTitle(userJID);
+                Objects.requireNonNull(getSupportActionBar()).setTitle(remoteJID);
             } else {
                 Objects.requireNonNull(getSupportActionBar()).setTitle(remoteUser.getFirstName()); //TODO Should load full name from vCard
-                getSupportActionBar().setSubtitle(userJID);
+                getSupportActionBar().setSubtitle(remoteJID);
             }
         } catch (InterruptedException e) {
             e.printStackTrace();
@@ -98,7 +96,7 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
     @Override
     public void newIncomingMessage(EntityBareJid from, Message message, Chat chat) {
         //Generate ChatLog obj
-        ChatLog chatLog = ChatLog.fromMessage(message, userJID);
+        ChatLog chatLog = ChatLog.create(message.getBody(), remoteJID, App.localJID, false);
 
         //Refresh Recycler
         messages.add(chatLog);
@@ -127,7 +125,7 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
             chat.send(txtChat.getText());
 
             //Generate ChatLog
-            ChatLog chatLog = ChatLog.fromString(txtChat.getText().toString(), userJID, true);
+            ChatLog chatLog = ChatLog.create(txtChat.getText().toString(), remoteJID,App.localJID, true);
 
             //Refresh recycler
             messages.add(chatLog);
@@ -148,7 +146,7 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
 
     public boolean showProfileInfo(MenuItem item){
         Intent i = new Intent(getApplicationContext(), ProfileInfoActivity.class);
-        i.putExtra("user", userJID);
+        i.putExtra("user", remoteJID);
         startActivity(i);
         return true;
     }
@@ -187,7 +185,7 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
         protected Void doInBackground(Void... voids) {
             //Load old messages
             chatLogDAO = App.getDb(ChatActivity.this).chatLogDAO();
-            messages = (ArrayList<ChatLog>) chatLogDAO.getLogForRemoteUser(userJID);
+            messages = (ArrayList<ChatLog>) chatLogDAO.getLogForRemoteUser(remoteJID,App.localJID);
 
             //Find views
             txtChat = findViewById(R.id.txtChat);
@@ -198,7 +196,7 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
 
             //Recycler
             try {
-                messageAdapter = new MessageAdapter(messages, JidCreate.bareFrom(userJID));
+                messageAdapter = new MessageAdapter(messages, JidCreate.bareFrom(remoteJID));
 
                 rvMessages.setAdapter(messageAdapter);
                 LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ChatActivity.this);
@@ -213,7 +211,7 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
                             ChatManager chatManager = ChatManager.getInstanceFor(App.getConnection());
                             chatManager.addIncomingListener(ChatActivity.this);
 
-                            EntityBareJid jid = JidCreate.entityBareFrom(userJID);
+                            EntityBareJid jid = JidCreate.entityBareFrom(remoteJID);
                             chat = chatManager.chatWith(jid);
 
                         } catch (SmackException.EndpointConnectionException | UnknownHostException | XmppStringprepException e) {

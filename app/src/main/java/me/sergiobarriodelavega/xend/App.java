@@ -10,6 +10,11 @@ import android.content.ServiceConnection;
 import android.content.SharedPreferences;
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.Canvas;
+import android.graphics.Paint;
+import android.graphics.PorterDuff;
+import android.graphics.PorterDuffXfermode;
+import android.graphics.Rect;
 import android.os.Build;
 import android.os.IBinder;
 import android.util.Log;
@@ -35,6 +40,7 @@ public class App extends Application{
     private static final String TAG = "XEND_APP";
     public static final String CHANNEL_ID = "xendServiceChannel";
     public static String onChatWith;
+    public static String localJID;
 
     //Bound service
     private static XendService xendService;
@@ -64,6 +70,8 @@ public class App extends Application{
                         try {
                             //Make connection. Once its made, launch Main Activity
                             xendService.makeConnectionFromConfig();
+
+                            localJID = xendService.getAbstractXMPPConnection().getUser().asBareJid().toString();
                         } catch (Exception e){
                             e.printStackTrace();
                             //TODO: Manage reconnect dialog
@@ -171,5 +179,51 @@ public class App extends Application{
         }
 
         return null;
+    }
+
+    /**
+     * Generate circular bitmap
+     * @param bitmap
+     * @return
+     * @see <a href="https://stackoverflow.com/a/43497974">https://stackoverflow.com/a/43497974</a>
+     */
+    public static Bitmap getCircleBitmap(Bitmap bitmap) {
+        Bitmap output;
+        Rect srcRect, dstRect;
+        float r;
+        final int width = bitmap.getWidth();
+        final int height = bitmap.getHeight();
+
+        if (width > height){
+            output = Bitmap.createBitmap(height, height, Bitmap.Config.ARGB_8888);
+            int left = (width - height) / 2;
+            int right = left + height;
+            srcRect = new Rect(left, 0, right, height);
+            dstRect = new Rect(0, 0, height, height);
+            r = height / 2;
+        }else{
+            output = Bitmap.createBitmap(width, width, Bitmap.Config.ARGB_8888);
+            int top = (height - width)/2;
+            int bottom = top + width;
+            srcRect = new Rect(0, top, width, bottom);
+            dstRect = new Rect(0, 0, width, width);
+            r = width / 2;
+        }
+
+        Canvas canvas = new Canvas(output);
+
+        final int color = 0xff424242;
+        final Paint paint = new Paint();
+
+        paint.setAntiAlias(true);
+        canvas.drawARGB(0, 0, 0, 0);
+        paint.setColor(color);
+        canvas.drawCircle(r, r, r, paint);
+        paint.setXfermode(new PorterDuffXfermode(PorterDuff.Mode.SRC_IN));
+        canvas.drawBitmap(bitmap, srcRect, dstRect, paint);
+
+        bitmap.recycle();
+
+        return output;
     }
 }

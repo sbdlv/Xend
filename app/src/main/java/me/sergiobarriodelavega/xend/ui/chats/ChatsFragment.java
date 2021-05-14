@@ -65,7 +65,7 @@ public class ChatsFragment extends Fragment {
             domainLike += "%";
 
             //Query
-            List<ChatLog> recentChatUsers = App.getDb(getContext()).chatLogDAO().getAllLastLogs(domainLike);
+            List<ChatLog> recentChatUsers = App.getDb(getContext()).chatLogDAO().getAllLastLogs(domainLike, App.localJID);
 
             llNoRecentChats = view.findViewById(R.id.llNoRecentChats);
 
