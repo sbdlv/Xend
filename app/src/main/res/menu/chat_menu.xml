@@ -9,4 +9,9 @@
         android:title="Item"
         android:iconTint="@color/appBarIcon"
         app:showAsAction="always" />
+    <item
+        android:id="@+id/miDeleteChat"
+        android:onClick="deleteChat"
+        android:title="@string/deleta_chat"
+        app:showAsAction="never" />
 </menu>

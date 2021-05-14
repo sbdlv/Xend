@@ -76,4 +76,8 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
         }
         return REMOTE_MSG;
     }
+
+    public void clearMessages(){
+        messages.clear();
+    }
 }

@@ -24,4 +24,7 @@ public interface ChatLogDAO {
 
     @Query("DELETE FROM ChatLog")
     public void deleteAll();
+
+    @Query("DELETE FROM ChatLog WHERE remoteJID = :remoteJID AND localJID = :localJID")
+    public void deleteChatWith(String remoteJID, String localJID);
 }

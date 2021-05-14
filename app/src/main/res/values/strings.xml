@@ -43,6 +43,7 @@
     <string name="contact_info">Información de contacto</string>
     <string name="email">Email</string>
     <string name="personal_address">Dirección personal</string>
+    <string name="deleta_chat">Borrar conversación</string>
 
     <!-- Setup Wizard related -->
     <string name="invalid_format">Formato invalido</string>

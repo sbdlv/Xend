@@ -151,6 +151,18 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
         return true;
     }
 
+    public boolean deleteChat(MenuItem item){
+        new Thread(new Runnable() {
+            @Override
+            public void run() {
+                chatLogDAO.deleteChatWith(remoteJID, App.localJID);
+            }
+        }).start();
+        messageAdapter.clearMessages();
+        messageAdapter.notifyDataSetChanged();
+        return true;
+    }
+
     @Override
     public boolean onCreateOptionsMenu(Menu menu) {
         MenuInflater inflater = getMenuInflater();
