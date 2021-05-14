@@ -48,6 +48,6 @@
 
     <string name="menu_chats">Chats</string>
     <string name="menu_contacts">Contactos</string>
-    <string name="menu_servers">Servidores</string>
+    <string name="menu_server">Servidor</string>
     <string name="menu_settings">Ajustes</string>
 </resources>

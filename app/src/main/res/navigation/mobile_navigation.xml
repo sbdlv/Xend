@@ -16,9 +16,10 @@
         android:label="@string/menu_contacts"
         tools:layout="@layout/fragment_users" />
     <activity
-        android:id="@+id/nav_settings"
-        android:label="@string/menu_contacts"
-        android:name="me.sergiobarriodelavega.xend.ui.settings.StartSettingsActivity"
+        android:id="@+id/nav_server"
+        android:label="@string/menu_server"
+        android:name="me.sergiobarriodelavega.xend.SetupWizardServerActivity"
+        tools:layout="@layout/activity_setup_wizard_server"
         />
 
 </navigation>

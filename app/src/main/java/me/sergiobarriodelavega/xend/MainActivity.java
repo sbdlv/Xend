@@ -49,7 +49,7 @@ public class MainActivity extends AppCompatActivity implements View.OnLayoutChan
         // Passing each menu ID as a set of Ids because each
         // menu should be considered as top level destinations.
         mAppBarConfiguration = new AppBarConfiguration.Builder(
-                R.id.nav_chats, R.id.nav_contacts, R.id.nav_settings)
+                R.id.nav_chats, R.id.nav_contacts, R.id.nav_server)
                 .setDrawerLayout(drawer)
                 .build();
         navController = Navigation.findNavController(this, R.id.nav_host_fragment);

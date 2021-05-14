@@ -20,7 +20,7 @@ public class MessageAdapter extends RecyclerView.Adapter<MessageAdapter.ViewHold
     private ArrayList<ChatLog> messages;
     private Jid remoteUserJID;
     private static final int LOCAL_MSG = 0, REMOTE_MSG = 1;
-    private static final SimpleDateFormat formatTime = new SimpleDateFormat("H:mm");
+    private static final SimpleDateFormat formatTime = new SimpleDateFormat("HH:mm");
 
     public MessageAdapter(ArrayList<ChatLog> messages, Jid remoteUserJID) {
         this.remoteUserJID = remoteUserJID;

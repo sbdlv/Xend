@@ -32,7 +32,6 @@
             android:name=".MainActivity"
             android:theme="@style/AppTheme.NoActionBar" />
         <activity android:name=".ProfileEditActivity" />
-        <activity android:name=".ui.settings.StartSettingsActivity" />
         <activity
             android:name=".SetupWizardServerActivity"
             android:theme="@style/SetupWizardActivity" />
