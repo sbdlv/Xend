@@ -60,9 +60,8 @@ public class ChatsFragment extends Fragment {
         protected Void doInBackground(Void... voids) {
             //Get domain in order to get all recent chats for this XMPP domain
             SharedPreferences s = getContext().getSharedPreferences(getString(R.string.preferences_xmpp_config), Context.MODE_PRIVATE);
-            String domainLike =  "%";
+            String domainLike =  "%@";
             domainLike += s.getString("domain","");
-            domainLike += "%";
 
             //Query
             List<ChatLog> recentChatUsers = App.getDb(getContext()).chatLogDAO().getAllLastLogs(domainLike, App.localJID);
