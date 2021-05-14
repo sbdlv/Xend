@@ -2,6 +2,7 @@ package me.sergiobarriodelavega.xend;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
+import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -22,7 +23,7 @@ import org.jxmpp.jid.impl.JidCreate;
 import java.io.IOException;
 
 public class ProfileInfoActivity extends AppCompatActivity {
-    private TextView tvProfileUserName, tvProfileName;
+    private TextView tvProfileUserName, tvProfileName, tvEmail, tvPersonalAddress;
     private ImageView ivProfileImage;
 
     private String userJID;
@@ -45,6 +46,8 @@ public class ProfileInfoActivity extends AppCompatActivity {
         tvProfileName = findViewById(R.id.tvProfileName);
         tvProfileUserName= findViewById(R.id.tvProfileUserName);
         ivProfileImage = findViewById(R.id.ivProfileImage);
+        tvEmail = findViewById(R.id.tvEmail);
+        tvPersonalAddress = findViewById(R.id.tvPersonalAddress);
 
         new LoadVCard().execute();
 
@@ -89,6 +92,9 @@ public class ProfileInfoActivity extends AppCompatActivity {
             } else {
                 tvProfileName.setText(getFullName(vCard));
             }
+
+            tvEmail.setText(vCard.getEmailHome());
+            tvPersonalAddress.setText(vCard.getAddressFieldHome("STREET"));
 
             //Image
             if(vCard.getAvatar() != null){

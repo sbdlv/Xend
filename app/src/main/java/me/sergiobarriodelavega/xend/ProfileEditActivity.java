@@ -31,7 +31,7 @@ import java.io.IOException;
 public class ProfileEditActivity extends AppCompatActivity {
     private VCard vCard;
     private VCardManager vCardManager;
-    private EditText txtFirstName, txtMiddleName, txtLastName;
+    private EditText txtFirstName, txtMiddleName, txtLastName, txtEmail, txtPersonalAddress;
     private TextView tvProfileUserName;
     private ImageView ivProfileImage;
     private static final int PICTURE_SELECT = 0;
@@ -47,6 +47,8 @@ public class ProfileEditActivity extends AppCompatActivity {
         txtMiddleName = findViewById(R.id.txtMiddleName);
         txtLastName = findViewById(R.id.txtLastName);
         tvProfileUserName = findViewById(R.id.tvProfileUserName);
+        txtEmail = findViewById(R.id.txtEmail);
+        txtPersonalAddress = findViewById(R.id.txtPersonalAddress);
 
         //Toolbar
         getSupportActionBar().setTitle(R.string.edit_profile);
@@ -98,6 +100,9 @@ public class ProfileEditActivity extends AppCompatActivity {
         vCard.setFirstName(txtFirstName.getText().toString());
         vCard.setMiddleName(txtMiddleName.getText().toString());
         vCard.setLastName(txtLastName.getText().toString());
+        vCard.setAddressFieldHome("STREET", txtPersonalAddress.getText().toString());
+        vCard.setEmailHome(txtEmail.getText().toString());
+
 
         //Save VCard
         Toast.makeText(this, R.string.saving_changes, Toast.LENGTH_LONG).show();

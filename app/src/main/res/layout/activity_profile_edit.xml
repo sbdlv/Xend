@@ -41,7 +41,6 @@
             android:orientation="vertical">
 
             <TextView
-                android:id="@+id/textView5"
                 style="@style/ProfileEditCardSectionTitle"
                 android:layout_width="wrap_content"
                 android:layout_height="wrap_content"
@@ -86,6 +85,48 @@
                 android:ems="10"
                 android:inputType="textPersonName"
                 />
+
+
+        </LinearLayout>
+
+        <LinearLayout
+            style="@style/ProfileEditLinearLayoutSection"
+            android:layout_width="match_parent"
+            android:layout_height="wrap_content"
+            android:orientation="vertical">
+
+            <TextView
+                style="@style/ProfileEditCardSectionTitle"
+                android:layout_width="wrap_content"
+                android:layout_height="wrap_content"
+                android:text="@string/contact_info"
+                app:drawableLeftCompat="@drawable/ic_book" />
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/email" />
+
+            <EditText
+                android:id="@+id/txtEmail"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="textEmailAddress"
+                style="@style/ProfileEditEditText"/>
+
+            <TextView
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:text="@string/personal_address" />
+
+            <EditText
+                android:id="@+id/txtPersonalAddress"
+                android:layout_width="match_parent"
+                android:layout_height="wrap_content"
+                android:ems="10"
+                android:inputType="text"
+                style="@style/ProfileEditEditText"/>
 
 
         </LinearLayout>

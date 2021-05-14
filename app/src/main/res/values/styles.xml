@@ -156,11 +156,13 @@
 
     <style name="ProfileEditCardViewSection">
         <item name="cardCornerRadius">8dp</item>
-        <item name="cardElevation">0dp</item>
+        <item name="cardElevation">2dp</item>
+        <item name="android:layout_margin">4dp</item>
     </style>
 
     <style name="ProfileEditLinearLayoutSection">
         <item name="android:padding">16dp</item>
+        <item name="android:layout_margin">4dp</item>
     </style>
 
     <style name="ProfileEditIconSection">
@@ -175,10 +177,18 @@
         <item name="android:layout_marginBottom">16dp</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:drawablePadding">8dp</item>
+        <item name="drawableTint">@color/primaryIcon</item>
     </style>
 
     <style name="ProfileEditEditText">
         <item name="android:layout_marginBottom">16dp</item>
+    </style>
+
+    <!-- Profile Info -->
+    <style name="ProfileInfoProperty">
+        <item name="drawableTint">@color/primaryIcon</item>
+        <item name="android:gravity">center_vertical</item>
+        <item name="android:drawablePadding">8dp</item>
     </style>
 
     <!-- View Holder String -->

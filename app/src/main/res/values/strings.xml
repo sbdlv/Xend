@@ -40,6 +40,9 @@
     <string name="start_chatting_hint">Escribe un mensaje</string>
     <string name="saving_changes">Guardando cambios...</string>
     <string name="error_on_saving">Error al guardar</string>
+    <string name="contact_info">Información de contacto</string>
+    <string name="email">Email</string>
+    <string name="personal_address">Dirección personal</string>
 
     <!-- Setup Wizard related -->
     <string name="invalid_format">Formato invalido</string>
