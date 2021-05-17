@@ -40,10 +40,11 @@
             app:layout_constraintVertical_bias="0.0">
 
             <com.google.android.material.textfield.TextInputLayout
+                android:theme="@style/SetupWizardTextEditWrapper"
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:errorEnabled="true"
-                style="@style/SetupWizardTextEditWrapper">
+                style="@style/SetupWizardTextEditWrapper.First">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/txtServerAddress"
@@ -56,7 +57,8 @@
             <com.google.android.material.textfield.TextInputLayout
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
-                app:errorEnabled="true">
+                app:errorEnabled="true"
+                android:theme="@style/SetupWizardTextEditWrapper">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/txtDomain"

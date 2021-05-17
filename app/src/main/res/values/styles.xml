@@ -239,6 +239,11 @@
     </style>
 
     <style name="SetupWizardTextEditWrapper">
+        <item name="colorControlActivated">@color/colorPrimary</item>
+        <item name="colorControlHighlight">@color/colorAccent</item>
+    </style>
+
+    <style name="SetupWizardTextEditWrapper.First">
         <item name="android:layout_marginBottom">@dimen/setup_wizard_edit_text_wrapper_margin_vertical</item>
     </style>
 

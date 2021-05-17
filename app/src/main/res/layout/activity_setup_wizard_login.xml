@@ -42,7 +42,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:errorEnabled="true"
-                style="@style/SetupWizardTextEditWrapper"
+                android:theme="@style/SetupWizardTextEditWrapper"
+                style="@style/SetupWizardTextEditWrapper.First"
                 >
 
                 <com.google.android.material.textfield.TextInputEditText
@@ -57,7 +58,8 @@
                 android:layout_width="match_parent"
                 android:layout_height="wrap_content"
                 app:errorEnabled="true"
-                app:endIconMode="password_toggle">
+                app:endIconMode="password_toggle"
+                android:theme="@style/SetupWizardTextEditWrapper">
 
                 <com.google.android.material.textfield.TextInputEditText
                     android:id="@+id/txtPassword"
