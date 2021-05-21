@@ -6,6 +6,7 @@ import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MenuItem;
+import android.view.View;
 import android.widget.ImageView;
 import android.widget.TextView;
 import android.widget.Toast;
@@ -80,6 +81,8 @@ public class ProfileInfoActivity extends AppCompatActivity {
 
         @Override
         protected void onPostExecute(VCard vCard) {
+            String emailHome, personalAddress;
+
             if(vCard == null){
                 Toast.makeText(getApplicationContext(),"Error loading profile", Toast.LENGTH_SHORT).show();
             }
@@ -93,8 +96,19 @@ public class ProfileInfoActivity extends AppCompatActivity {
                 tvProfileName.setText(getFullName(vCard));
             }
 
-            tvEmail.setText(vCard.getEmailHome());
-            tvPersonalAddress.setText(vCard.getAddressFieldHome("STREET"));
+            emailHome =vCard.getEmailHome() ;
+            if(emailHome  == null || emailHome.isEmpty()){
+                tvEmail.setVisibility(View.GONE);
+            } else {
+                tvEmail.setText(vCard.getEmailHome());
+            }
+
+            personalAddress = vCard.getAddressFieldHome("STREET");
+            if(personalAddress  == null || personalAddress.isEmpty()){
+                tvPersonalAddress.setVisibility(View.GONE);
+            } else {
+                tvPersonalAddress.setText(personalAddress);
+            }
 
             //Image
             if(vCard.getAvatar() != null){
@@ -119,7 +133,6 @@ public class ProfileInfoActivity extends AppCompatActivity {
         fullName = new StringBuilder(vCard.getFirstName());
 
         if(vCard.getMiddleName() != null){
-            fullName.append(" ");
             fullName.append(vCard.getMiddleName());
         }
 

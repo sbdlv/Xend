@@ -34,6 +34,7 @@
     <string name="preferences_xmpp_config">xmpp_config</string>
     <string name="login">Inicio de sesión</string>
     <string name="domain">Dominio</string>
+    <string name="xmpp_domain">Dominio XMPP</string>
     <string name="connecting">Conectando</string>
     <string name="no_recent_chats">No hay chats recientes</string>
     <string name="view_contacts">Ver contactos</string>
