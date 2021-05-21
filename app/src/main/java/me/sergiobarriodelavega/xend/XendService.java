@@ -41,6 +41,7 @@ public class XendService extends Service {
     private IBinder mBinder = new XendBinder();
     private AbstractXMPPConnection abstractXMPPConnection;
     private ChatLogDAO chatLogDAO;
+    private XendConnectionListener xendConnectionListener;
 
 
     //Incoming chat notifications
@@ -84,6 +85,7 @@ public class XendService extends Service {
     public void onCreate() {
         super.onCreate();
         Log.d(TAG, "Created XEND SERVICE");
+        xendConnectionListener = new XendConnectionListener();
     }
 
     @Override
@@ -113,8 +115,8 @@ public class XendService extends Service {
                     .setSecurityMode(ConnectionConfiguration.SecurityMode.disabled)
                     .build();
 
-
             abstractXMPPConnection = new XMPPTCPConnection(config);
+            abstractXMPPConnection.addConnectionListener(xendConnectionListener);
             abstractXMPPConnection.connect().login();
 
 
@@ -156,9 +158,11 @@ public class XendService extends Service {
         //If connections is OK, then replace the old one for the new one
         if(abstractXMPPConnection != null){
             abstractXMPPConnection.disconnect();
+            abstractXMPPConnection.removeConnectionListener(xendConnectionListener);
         }
 
         abstractXMPPConnection = temporalConnection;
+        abstractXMPPConnection.addConnectionListener(xendConnectionListener);
 
         //Remove old Chat Manager and create a new one
         createChatManager();
