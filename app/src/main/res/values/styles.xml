@@ -39,6 +39,7 @@
 
     <style name="MessageViewHolderCard.LocalMessage">
         <item name="cardBackgroundColor">@color/localMessageBackground</item>
+        <item name="android:layout_gravity">right</item>
     </style>
 
     <style name="MessageViewHolderLinearLayout">
@@ -61,6 +62,11 @@
         <item name="android:layout_gravity">right</item>
         <item name="android:textSize">12sp</item>
         <item name="android:textColor">@color/messageTime</item>
+        <item name="android:layout_marginTop">4dp</item>
+    </style>
+
+    <style name="MessageViewHolderCardDate">
+        <item name="android:gravity">center</item>
         <item name="android:layout_marginTop">4dp</item>
     </style>
 
