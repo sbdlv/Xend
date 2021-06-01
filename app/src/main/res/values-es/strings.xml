@@ -1,0 +1,59 @@
+<resources>
+    <string name="app_name">Xend</string>
+    <string name="navigation_drawer_open">Abrir el menú lateral</string>
+    <string name="navigation_drawer_close">Cerrar el menú lateral</string>
+    <string name="nav_header_title">Nombre Usuario</string>
+    <string name="nav_header_subtitle">usuario@xend</string>
+    <string name="nav_header_desc">Navigation header</string>
+    <string name="action_settings">Ajustes</string>
+
+    <string name="no_users_found">No se han ecnontrado usuarios</string>
+    <string name="user_no_name">Sin nombre</string>
+    <string name="name">Nombre</string>
+    <string name="first_name">Nombre</string>
+    <string name="middel_name">Segundo nombre</string>
+    <string name="last_name">Apellido</string>
+    <string name="edit_profile">Editar perfil</string>
+    <string name="save">Guardar</string>
+    <string name="select_a_picture">Selecciona una imagen</string>
+    <string name="data_saved">Datos guardados</string>
+    <string name="delete_recent_chats">Borrar chats recientes</string>
+    <string name="password">Contraseña</string>
+    <string name="server">Servidor</string>
+    <string name="address">Dirección</string>
+    <string name="address_info">Dirección IP o nombre del dominio del servidor</string>
+    <string name="server_configuration">Configuración del servidor</string>
+    <string name="user_name">Nombre de usuario</string>
+    <string name="user_name_info">Nombre de usuario para hacer login.</string>
+    <string name="password_info">La contraseña para el inicio de sesión</string>
+    <string name="advanced_settings">Configuración avanzada</string>
+    <string name="port">Puerto</string>
+    <string name="port_info">Puerto para la conexión con el servidor</string>
+    <string name="continue_text">Continuar</string>
+    <string name="go_back">Volver</string>
+    <string name="login">Inicio de sesión</string>
+    <string name="domain">Dominio</string>
+    <string name="xmpp_domain">Dominio XMPP</string>
+    <string name="connecting">Conectando</string>
+    <string name="no_recent_chats">No hay chats recientes</string>
+    <string name="view_contacts">Ver contactos</string>
+    <string name="start_chatting_hint">Escribe un mensaje</string>
+    <string name="saving_changes">Guardando cambios...</string>
+    <string name="error_on_saving">Error al guardar</string>
+    <string name="contact_info">Información de contacto</string>
+    <string name="email">Email</string>
+    <string name="personal_address">Dirección personal</string>
+    <string name="deleta_chat">Borrar conversación</string>
+
+    <!-- Setup Wizard related -->
+    <string name="invalid_format">Formato invalido</string>
+    <string name="obligatory_field">Campo obligatorio</string>
+    <string name="field_with_spaces_error_msg">Este campo no puede tener espacios</string>
+    <string name="connection_error_msg">Error al realizar la conexión</string>
+    <string name="retry">Reintentar</string>
+
+    <string name="menu_chats">Chats</string>
+    <string name="menu_contacts">Contactos</string>
+    <string name="menu_server">Servidor</string>
+    <string name="menu_settings">Ajustes</string>
+</resources>

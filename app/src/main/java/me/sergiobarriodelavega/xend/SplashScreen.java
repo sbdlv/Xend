@@ -30,6 +30,7 @@ public class SplashScreen extends AppCompatActivity {
 
         //Splash Animation
         LayerDrawable ld = (LayerDrawable) getWindow().getDecorView().getBackground();
+        ld.findDrawableByLayerId(R.id.splash_static).setAlpha(0);
         AnimatedVectorDrawable ad = (AnimatedVectorDrawable) ld.findDrawableByLayerId(R.id.splash_animated_vector_drawable);
         ad.start();
 
