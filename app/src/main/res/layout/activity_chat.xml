@@ -45,5 +45,16 @@
         android:onClick="sendMessage"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintEnd_toEndOf="parent"
-        app:srcCompat="@drawable/ic_send" />
+        app:srcCompat="@drawable/ic_send"
+        android:focusable="true" />
+    <com.google.android.material.floatingactionbutton.FloatingActionButton
+        android:id="@+id/btnGoToBottom"
+        style="@style/ButtonGoToBottom"
+        android:clickable="true"
+        android:onClick="goToBottom"
+        app:layout_constraintBottom_toTopOf="@+id/btnSendMessage"
+        app:layout_constraintEnd_toEndOf="@+id/btnSendMessage"
+        app:layout_constraintStart_toStartOf="@+id/btnSendMessage"
+        app:srcCompat="@drawable/ic_chevrons_down"
+        android:focusable="true" />
 </androidx.constraintlayout.widget.ConstraintLayout>

@@ -9,8 +9,7 @@
     <color name="appBarIcon">#fff</color>
     <color name="namHeaderBackground">#EDEDED</color>
     <color name="user_picture_background">#D8D8D8</color>
-    <color name="scrollbar">#A049B2FD</color>
-    <color name="messageTime">#E1E1E1</color>
     <color name="chatTextFieldBG">#333</color>
     <color name="chatTextFieldBorder">#232323</color>
+    <color name="goToBottomBackground">#A1A1A1</color>
 </resources>

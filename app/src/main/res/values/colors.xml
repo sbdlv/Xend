@@ -13,4 +13,5 @@
     <color name="messageTime">#E1E1E1</color>
     <color name="chatTextFieldBG">#fff</color>
     <color name="chatTextFieldBorder">#E0E0E0</color>
+    <color name="goToBottomBackground">#F1F1F1</color>
 </resources>

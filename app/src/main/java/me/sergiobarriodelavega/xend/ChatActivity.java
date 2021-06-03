@@ -21,6 +21,8 @@ import androidx.core.app.NotificationManagerCompat;
 import androidx.recyclerview.widget.LinearLayoutManager;
 import androidx.recyclerview.widget.RecyclerView;
 
+import com.google.android.material.floatingactionbutton.FloatingActionButton;
+
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
 import org.jivesoftware.smack.chat2.Chat;
@@ -42,7 +44,7 @@ import me.sergiobarriodelavega.xend.recyclers.MessageAdapter;
 import me.sergiobarriodelavega.xend.room.ChatLog;
 import me.sergiobarriodelavega.xend.room.ChatLogDAO;
 
-public class ChatActivity extends AppCompatActivity implements IncomingChatMessageListener, TextView.OnEditorActionListener {
+public class ChatActivity extends AppCompatActivity implements IncomingChatMessageListener, TextView.OnEditorActionListener{
     private static final String TAG = "XEND_CHAT_ACTIVITY";
 
     private ArrayList<ChatLog> messages;
@@ -56,12 +58,15 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
     private ChatRecyclerListener chatRecyclerListener;
     private RecyclerView rvMessages;
     private LinearLayoutManager linearLayoutManager;
+    private FloatingActionButton btnGoToBottom;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
         rvMessages = findViewById(R.id.rvMessages);
+        btnGoToBottom = findViewById(R.id.btnGoToBottom);
+        btnGoToBottom.setVisibility(View.INVISIBLE);
 
         remoteJID = getIntent().getStringExtra("user");
 
@@ -234,7 +239,7 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
                 linearLayoutManager = new LinearLayoutManager(ChatActivity.this);
                 linearLayoutManager.setStackFromEnd(true);
                 rvMessages.setLayoutManager(linearLayoutManager);
-                chatRecyclerListener = new ChatRecyclerListener();
+                chatRecyclerListener = new ChatRecyclerListener(linearLayoutManager, btnGoToBottom);
                 rvMessages.addOnScrollListener(chatRecyclerListener);
 
                 try  {
@@ -264,5 +269,9 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
             }
 
         }
+    }
+
+    public void goToBottom(View view){
+        rvMessages.smoothScrollToPosition(messageAdapter.getItemCount() - 1);
     }
 }
