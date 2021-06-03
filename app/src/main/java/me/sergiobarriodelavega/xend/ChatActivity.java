@@ -37,6 +37,7 @@ import java.net.UnknownHostException;
 import java.util.ArrayList;
 import java.util.Objects;
 
+import me.sergiobarriodelavega.xend.listeners.ChatRecyclerListener;
 import me.sergiobarriodelavega.xend.recyclers.MessageAdapter;
 import me.sergiobarriodelavega.xend.room.ChatLog;
 import me.sergiobarriodelavega.xend.room.ChatLogDAO;
@@ -52,11 +53,15 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
     private VCard remoteUser;
     private ChatLogDAO chatLogDAO;
     private ChatManager chatManager;
+    private ChatRecyclerListener chatRecyclerListener;
+    private RecyclerView rvMessages;
+    private LinearLayoutManager linearLayoutManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_chat);
+        rvMessages = findViewById(R.id.rvMessages);
 
         remoteJID = getIntent().getStringExtra("user");
 
@@ -103,15 +108,15 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
 
         //Refresh Recycler
         messages.add(chatLog);
-        messageAdapter.notifyDataSetChanged();
+
+        runOnUiThread(() -> {
+                messageAdapter.notifyDataSetChanged();
+                if(chatRecyclerListener.scrollToBottom())
+                rvMessages.scrollToPosition(messageAdapter.getItemCount() - 1);
+        });
 
         //Save on local DB
-        new Thread(new Runnable() {
-            @Override
-            public void run() {
-                chatLogDAO.insert(chatLog);
-            }
-        }).start();
+        new Thread(() -> chatLogDAO.insert(chatLog)).start();
     }
 
     @Override
@@ -133,6 +138,7 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
             //Refresh recycler
             messages.add(chatLog);
             messageAdapter.notifyDataSetChanged();
+            rvMessages.scrollToPosition(messageAdapter.getItemCount() - 1);
 
             //Save on local DB
             Log.d(TAG, "Sending & saving new msg: " + txtChat.getText().toString());
@@ -202,10 +208,15 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
             //Load old messages
             chatLogDAO = App.getDb(ChatActivity.this).chatLogDAO();
             messages = (ArrayList<ChatLog>) chatLogDAO.getLogForRemoteUser(remoteJID,App.localJID);
+            return null;
+        }
+
+        @Override
+        protected void onPostExecute(Void aVoid) {
+            super.onPostExecute(aVoid);
 
             //Find views
             txtChat = findViewById(R.id.txtChat);
-            RecyclerView rvMessages = findViewById(R.id.rvMessages);
 
             //Chat message
             txtChat.setOnEditorActionListener(ChatActivity.this);
@@ -215,41 +226,38 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
                 messageAdapter = new MessageAdapter(messages, JidCreate.bareFrom(remoteJID));
 
                 rvMessages.setAdapter(messageAdapter);
-                LinearLayoutManager linearLayoutManager = new LinearLayoutManager(ChatActivity.this);
+                linearLayoutManager = new LinearLayoutManager(ChatActivity.this);
                 linearLayoutManager.setStackFromEnd(true);
                 rvMessages.setLayoutManager(linearLayoutManager);
+                chatRecyclerListener = new ChatRecyclerListener();
+                rvMessages.addOnScrollListener(chatRecyclerListener);
 
-                runOnUiThread(new Runnable() {
-                    @Override
-                    public void run() {
-                        try  {
-                            //Chat
-                            chatManager = ChatManager.getInstanceFor(App.getConnection());
-                            chatManager.addIncomingListener(ChatActivity.this);
+                try  {
+                    //Chat
+                    chatManager = ChatManager.getInstanceFor(App.getConnection());
+                    chatManager.addIncomingListener(ChatActivity.this);
 
-                            EntityBareJid jid = JidCreate.entityBareFrom(remoteJID);
-                            chat = chatManager.chatWith(jid);
+                    EntityBareJid jid = JidCreate.entityBareFrom(remoteJID);
+                    chat = chatManager.chatWith(jid);
 
-                        } catch (SmackException.EndpointConnectionException | UnknownHostException | XmppStringprepException e) {
-                            Toast.makeText(getApplicationContext(), "Couldn't connect to the server", Toast.LENGTH_LONG).show();
-                            e.printStackTrace();
-                        } catch (IOException e) {
-                            e.printStackTrace();
-                        } catch (InterruptedException e) {
-                            e.printStackTrace();
-                        } catch (SmackException e) {
-                            e.printStackTrace();
-                        } catch (XMPPException e) {
-                            e.printStackTrace();
-                        }
-                    }
-                });
+                } catch (SmackException.EndpointConnectionException | UnknownHostException | XmppStringprepException e) {
+                    Toast.makeText(getApplicationContext(), "Couldn't connect to the server", Toast.LENGTH_LONG).show();
+                    e.printStackTrace();
+                } catch (IOException e) {
+                    e.printStackTrace();
+                } catch (InterruptedException e) {
+                    e.printStackTrace();
+                } catch (SmackException e) {
+                    e.printStackTrace();
+                } catch (XMPPException e) {
+                    e.printStackTrace();
+                }
+
             } catch (XmppStringprepException e) {
                 //Invalid Jid Format
                 e.printStackTrace();
             }
 
-            return null;
         }
     }
 }
