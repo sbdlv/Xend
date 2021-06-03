@@ -22,9 +22,9 @@
             <corners android:radius="16dp" />
             <stroke
                 android:width="2dp"
-                android:color="#E0E0E0" />
+                android:color="@color/chatTextFieldBorder" />
             <solid
-                android:color="#fff"
+                android:color="@color/chatTextFieldBG"
                 android:paddingLeft="6dp"
                 android:paddingTop="6dp" />
             <padding

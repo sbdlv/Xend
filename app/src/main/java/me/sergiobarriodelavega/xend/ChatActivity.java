@@ -129,6 +129,11 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
 
     public void sendMessage(View view){
         try {
+            //Don't allow empty messages
+            if(txtChat.getText().toString().isEmpty()){
+                return;
+            }
+
             //Send msg
             chat.send(txtChat.getText());
 
