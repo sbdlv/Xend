@@ -7,7 +7,7 @@
                 android:width="2dp"
                 android:color="@color/colorAccent" />
             <solid
-                android:color="#fff"
+                android:color="@color/chatTextFieldBG"
                 android:paddingLeft="6dp"
                 android:paddingTop="6dp" />
             <padding

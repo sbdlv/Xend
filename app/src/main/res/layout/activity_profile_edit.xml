@@ -22,8 +22,8 @@
                 android:layout_height="match_parent"
                 android:onClick="changeImage"
                 app:srcCompat="@drawable/ic_user"
-                tools:srcCompat="@tools:sample/avatars"
-                android:scaleType="centerCrop"/>
+                android:scaleType="centerCrop"
+                style="@style/UserPicture"/>
         </androidx.cardview.widget.CardView>
 
         <TextView

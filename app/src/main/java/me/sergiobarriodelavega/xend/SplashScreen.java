@@ -9,7 +9,6 @@ import android.graphics.drawable.AnimatedVectorDrawable;
 import android.graphics.drawable.LayerDrawable;
 import android.os.Build;
 import android.os.Bundle;
-import android.widget.ImageView;
 
 import androidx.annotation.Nullable;
 import androidx.annotation.RequiresApi;
@@ -18,7 +17,6 @@ import androidx.localbroadcastmanager.content.LocalBroadcastManager;
 
 public class SplashScreen extends AppCompatActivity {
 
-    private ImageView ivSplashLogo;
     private BroadcastReceiver broadcastReceiverStartMainActivity;
     private BroadcastReceiver broadcastReceiverStartSetupWizard;
 
@@ -26,7 +24,6 @@ public class SplashScreen extends AppCompatActivity {
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
-        ivSplashLogo = findViewById(R.id.ivSplashLogo);
 
         //Splash Animation
         LayerDrawable ld = (LayerDrawable) getWindow().getDecorView().getBackground();

@@ -7,6 +7,7 @@
     <color name="primaryButtonColor">#fff</color>
     <color name="primaryIcon">#777</color>
     <color name="appBarIcon">#fff</color>
+    <color name="userPictureIcon">#fff</color>
     <color name="namHeaderBackground">#EDEDED</color>
     <color name="user_picture_background">#D8D8D8</color>
     <color name="scrollbar">#A049B2FD</color>
@@ -14,4 +15,5 @@
     <color name="chatTextFieldBG">#fff</color>
     <color name="chatTextFieldBorder">#E0E0E0</color>
     <color name="goToBottomBackground">#F1F1F1</color>
+    <color name="splashNight">#222</color>
 </resources>

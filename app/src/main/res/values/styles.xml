@@ -113,11 +113,9 @@
         <item name="android:padding">8dp</item>
     </style>
 
-    <style name="UserPictureViewHolder">
+    <style name="UserPicture.ViewHolder">asd
         <item name="android:layout_height">64dp</item>
         <item name="android:layout_width">64dp</item>
-        <item name="tint">@color/appBarIcon</item>
-        <item name="android:scaleType">centerCrop</item>
     </style>
 
     <style name="UserInfoLinearLayoutViewHolder">
@@ -204,6 +202,11 @@
         <item name="drawableTint">@color/primaryIcon</item>
         <item name="android:gravity">center_vertical</item>
         <item name="android:drawablePadding">8dp</item>
+    </style>
+
+    <style name="UserPicture">
+        <item name="android:tint">@color/userPictureIcon</item>
+        <item name="android:scaleType">centerCrop</item>
     </style>
 
     <!-- View Holder String -->

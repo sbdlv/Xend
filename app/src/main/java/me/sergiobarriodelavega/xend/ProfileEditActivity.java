@@ -19,6 +19,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.ImageViewCompat;
 
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
@@ -75,6 +76,7 @@ public class ProfileEditActivity extends AppCompatActivity {
             if(vCard.getAvatar() != null){
                 byte[] imageData = vCard.getAvatar();
                 Bitmap bmp = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
+                ImageViewCompat.setImageTintList(ivProfileImage, null);
                 ivProfileImage.setImageBitmap(bmp);
             }
 

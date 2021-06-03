@@ -2,7 +2,6 @@ package me.sergiobarriodelavega.xend;
 
 import android.graphics.Bitmap;
 import android.graphics.BitmapFactory;
-import android.graphics.drawable.BitmapDrawable;
 import android.os.AsyncTask;
 import android.os.Bundle;
 import android.view.MenuItem;
@@ -14,6 +13,7 @@ import android.widget.Toast;
 import androidx.annotation.NonNull;
 import androidx.annotation.Nullable;
 import androidx.appcompat.app.AppCompatActivity;
+import androidx.core.widget.ImageViewCompat;
 
 import org.jivesoftware.smack.SmackException;
 import org.jivesoftware.smack.XMPPException;
@@ -114,6 +114,7 @@ public class ProfileInfoActivity extends AppCompatActivity {
             if(vCard.getAvatar() != null){
                 byte[] imageData = vCard.getAvatar();
                 Bitmap bmp = BitmapFactory.decodeByteArray(imageData, 0, imageData.length);
+                ImageViewCompat.setImageTintList(ivProfileImage, null);
                 ivProfileImage.setImageBitmap(bmp);
             }
         }

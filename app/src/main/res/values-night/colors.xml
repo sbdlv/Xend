@@ -1,15 +1,11 @@
 <?xml version="1.0" encoding="utf-8"?>
 <resources>
-    <color name="colorPrimary">#0177CB</color>
-    <color name="colorPrimaryDark">#01477A</color>
-    <color name="colorAccent">#49B2FD</color>
-    <color name="localMessageBackground">#BDBEBF</color>
     <color name="primaryButtonColor">#fff</color>
-    <color name="primaryIcon">#777</color>
-    <color name="appBarIcon">#fff</color>
-    <color name="namHeaderBackground">#EDEDED</color>
-    <color name="user_picture_background">#D8D8D8</color>
+    <color name="primaryIcon">#ACACAC</color>
+    <color name="userPictureIcon">#9A9A9A</color>
+    <color name="namHeaderBackground">#232323</color>
+    <color name="user_picture_background">#656565</color>
     <color name="chatTextFieldBG">#333</color>
     <color name="chatTextFieldBorder">#232323</color>
-    <color name="goToBottomBackground">#A1A1A1</color>
+    <color name="goToBottomBackground">#C5C5C5</color>
 </resources>
