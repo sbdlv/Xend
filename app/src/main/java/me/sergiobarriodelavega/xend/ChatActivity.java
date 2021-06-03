@@ -51,6 +51,7 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
     private String remoteJID;
     private VCard remoteUser;
     private ChatLogDAO chatLogDAO;
+    private ChatManager chatManager;
 
     @Override
     protected void onCreate(@Nullable Bundle savedInstanceState) {
@@ -95,6 +96,8 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
 
     @Override
     public void newIncomingMessage(EntityBareJid from, Message message, Chat chat) {
+        Log.d(TAG, "Saving incoming message");
+
         //Generate ChatLog obj
         ChatLog chatLog = ChatLog.create(message.getBody(), remoteJID, App.localJID, false);
 
@@ -184,6 +187,7 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
     @Override
     protected void onDestroy() {
         super.onDestroy();
+        chatManager.removeIncomingListener(this);
         App.onChatWith = null;
     }
 
@@ -220,7 +224,7 @@ public class ChatActivity extends AppCompatActivity implements IncomingChatMessa
                     public void run() {
                         try  {
                             //Chat
-                            ChatManager chatManager = ChatManager.getInstanceFor(App.getConnection());
+                            chatManager = ChatManager.getInstanceFor(App.getConnection());
                             chatManager.addIncomingListener(ChatActivity.this);
 
                             EntityBareJid jid = JidCreate.entityBareFrom(remoteJID);

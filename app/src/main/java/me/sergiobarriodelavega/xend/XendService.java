@@ -276,6 +276,7 @@ public class XendService extends Service {
             public void run() {
                 ChatLog chatLog = ChatLog.create(message.getBody(), from.asEntityBareJidString(), App.localJID, false);
                 chatLogDAO.insert(chatLog);
+                Log.d(TAG, "Saving incoming message");
             }
         }).start();
     }
