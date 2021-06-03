@@ -70,8 +70,6 @@ public class App extends Application{
                         try {
                             //Make connection. Once its made, launch Main Activity
                             xendService.makeConnectionFromConfig();
-
-                            localJID = xendService.getAbstractXMPPConnection().getUser().asBareJid().toString();
                         } catch (Exception e){
                             e.printStackTrace();
                             //TODO: Manage reconnect dialog

@@ -127,6 +127,8 @@ public class XendService extends Service {
         //Notify Connection to Splash
         Intent notifyConnection = new Intent(LocalBroadcastsEnum.SUCCESSFUL_CONNECTION);
         LocalBroadcastManager.getInstance(getApplicationContext()).sendBroadcast(notifyConnection);
+
+        App.localJID = getAbstractXMPPConnection().getUser().asBareJid().toString();
     }
 
     /**
@@ -177,6 +179,8 @@ public class XendService extends Service {
         editor.putString("address",address);
         editor.putBoolean("hasSetup", true);
         editor.commit();
+
+        App.localJID = getAbstractXMPPConnection().getUser().asBareJid().toString();
     }
 
     /**
